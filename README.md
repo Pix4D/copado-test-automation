@@ -1,23 +1,24 @@
-# Test-Automation
+# CXOps Team COPADO Test Script Backup Repository
 
 ## Overview
-This repository hosts a test automation suite, leveraging Robot Framework and 
-Selenium, wrapped in Docker containers. The orchestration is done using Concourse CI. 
-It also features a Django application to manage tests and feature toggles.
+This repository is integrated with our Copado account for the CXOps team. 
+It serves as the central hub for backing up all test scripts written using the COPADO test automation tool 
+for various applications managed by our team.
 
-**Note:** This repository is currently in the development phase and not ready for 
-production use. Best practices and more features are actively being considered.
+## Purpose
+- Secure, centralized backup for COPADO test scripts.
+- Easy tracking of changes and version history.
+- Streamlined access and recovery of test scripts as needed.
 
-## Structure
-- `.github/`: GitHub Actions for continuous integration and deployment.
-- `.concourse/`: Concourse CI pipeline definitions.
-- `docker/`: Dockerfiles for the test environment setup.
-- `django_app/`: Django project for managing test features.
-- `tests/`: Robot Framework and Selenium test scripts.
-- `docker-compose.yml`: Orchestration of Docker services.
+## Repository Integration
+- This repository is directly linked with our cloud-based Copado account.
+- Commits to this repository are made through the Copado cloud editor.
 
-## Getting Started
-Ensure Docker and Docker Compose are installed. Clone the repository, and run:
+## Support and Contact
+For queries or support related to this repository or COPado scripts, 
+please contact [ Ali Mengütay] at [ali.mengutay@pix4d.com].
 
-```bash
-docker-compose up --build
+
+This repository is an integral part of the CXOps team’s workflow. 
+For detailed processes and standards, 
+please refer to our internal documentation or contact the team directly.
