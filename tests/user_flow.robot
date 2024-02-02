@@ -4,9 +4,9 @@ Documentation          New test suite
 Library                QWeb
 Suite Setup            Open Browser                about:blank                 chrome
 Suite Teardown         Close All Browsers
-Resource               resources/common.robot
-Resource               resources/licenses.robot
-Resource               resources/invoices.robot
+Resource               ../resources/common.robot
+Resource               ../resources/licenses.robot
+Resource               ../resources/invoices.robot
 
 *** Test Cases ***
 Create pix4d User
