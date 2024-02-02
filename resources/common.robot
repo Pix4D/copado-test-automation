@@ -24,9 +24,13 @@ Setup Browser
 
 LoginApp
     GoTo                        ${url}/admin_panel/
+    TypeText                    Email*                      ${username} 
+    ClickText                   Continue                   
     TypeText                    Username:                   ${username}
-    TypeText                    Password:                   ${password}
-    ClickText                   Log in
+    VerifyText                  Log in
+    TypeText                    Enter password              ${password}
+    ClickText                   Log in                      anchor=Back    index=2
+
 
 CreateRandomPerson
     [Documentation]             This will create a random person with first_name, last_name, email
