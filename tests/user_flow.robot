@@ -5,8 +5,8 @@ Library                QWeb
 Suite Setup            Open Browser                about:blank                 chrome
 Suite Teardown         Close All Browsers
 Resource               resources/common.robot
-Resource               resources/pages/Licenses.robot
-Resource               resources/pages/invoices.robot
+Resource               resources/Licenses.robot
+Resource               resources/invoices.robot
 
 *** Test Cases ***
 Create pix4d User
