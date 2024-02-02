@@ -27,10 +27,10 @@ CreateLicense2
     # UseTable           xpath\=//*[@id\='licenses']//table[1]
     ClickElement       xpath\=//select[@data-select2-id\='id_user']/following-sibling::span
     TypeText           xpath\=//input[@class\='select2-search__field']         test
-    DropDown           User                        ali.mengutay+robot@pix4d.com
+    DropDown           User                        cxops.robot@pix4d.work
     ClickText          ${is_paid}
     VerifyTable        r3c1                        ali.mengutay+
-    TypeText           /html[1]/body[1]/span[1]/span[1]/span[1]/input[1]       ali.mengutay+robot@pix4d.com
+    TypeText           /html[1]/body[1]/span[1]/span[1]/span[1]/input[1]       cxops.robot@pix4d.work
     DropDown           template                        ${product}
     ClickCell          r7c2
     TypeText           comment                     ${comment}

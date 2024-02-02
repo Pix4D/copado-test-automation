@@ -5,7 +5,7 @@ Library                QWeb
 Suite Setup            Open Browser                about:blank                 chrome
 Suite Teardown         Close All Browsers
 Resource               resources/common.robot
-Resource               resources/Licenses.robot
+Resource               resources/licenses.robot
 Resource               resources/invoices.robot
 
 *** Test Cases ***
@@ -27,7 +27,7 @@ Validate User exist
 Create Invoice
     [Documentation]    Test for creating invoice
     LoginApp
-    CreateLicense2      ali.mengutay+robot@pix4d.com    MAPPER-OTC-DESKTOP: PIX4Dmapper Desktop, Perpetual license    Yes    TEST_CXOps_QA
+    CreateLicense2      cxops.robot@pix4d.work    MAPPER-OTC-DESKTOP: PIX4Dmapper Desktop, Perpetual license    Yes    TEST_CXOps_QA
     Add Invoice        Oem    PCH - Pix4D SA (Switzerland)    Australia    ref_doc    AEC Software Bundle Yearly (PIX4Dmatic & PIX4Dsurvey & PIX4Dcloud Advanced) [MATIC-SURVEY-CLOUD-ADVANCED-YEAR]
 
 
