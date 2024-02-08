@@ -17,66 +17,65 @@ Setup Browser
     Set Library Search Order    QWeb
     Evaluate                    random.seed()
     Open Browser                about:blank                 ${BROWSER}
-    SetConfig                   LineBreak                   ${EMPTY}                    #\ue000
-    SetConfig                   DefaultTimeout              20s                         #sometimes salesforce is slow
-    SetConfig                   CaseInsensitive             True
-
+    Set Config                   LineBreak                   ${EMPTY}                    #\ue000
+    Set Config                   DefaultTimeout              20s                         #sometimes salesforce is slow
+    Set Config                   CaseInsensitive             True
 
 LoginApp
-    GoTo                        ${url}/admin_panel/
-    TypeText                    Email*                      ${username} 
-    ClickText                   Continue                   
-    TypeText                    Username:                   ${username}
-    VerifyText                  Log in
-    TypeText                    Enter password              ${password}
-    ClickText                   Log in                      anchor=Back    index=2
-
+    Setup Browser
+    Go To                        ${url}/admin_panel/         #timeout=5
+    Type Text                    Enter email                 ${username} 
+    Click Text                   Continue                   
+    Verify Text                  Log in
+    Type Text                    Enter password              ${password}
+    Click Text                   Log in                      anchor=Back    index=2  # <log in> button closest to <Back> button
 
 CreateRandomPerson
     [Documentation]             This will create a random person with first_name, last_name, email
-    ${fake_first_name}          FakerLibrary.first_name
+    ${fake_first_name}=          FakerLibrary.first_name
     Set Suite Variable          ${fake_first_name}
-    ${fake_last_name}           FakerLibrary.last_name
+    ${fake_last_name}=           FakerLibrary.last_name
     Set Suite Variable          ${fake_last_name}
-    ${fake_email}               FakerLibrary.email
+    ${fake_email}=               FakerLibrary.email
     Set Suite Variable          ${fake_email}
-    Log To Console              Created user: + ${fake_first_name} + , + ${fake_last_name} + , + ${fake_email}
+    Log To Console              Created user: ${fake_first_name}, ${fake_last_name}, ${fake_email}
+
+Fill User Form And Verify
+    [Documentation]             Fill the user form and verify 'Billing info'. Retry up to3 times if verification fails.
+    FOR                         ${index}    IN RANGE       3 # with varibale not working
+        Type Text               First name                  ${fake_first_name}
+        Type Text               Last name                   ${fake_last_name}
+        Type Text               Email address               ${fake_email}
+        Type Text               Password                    ${user_password}
+        Type Text               Password confirmation       ${user_password}
+        Click Text              SAVE
+        ${status}=              Is Text                     Billing info    timeout=5
+        IF                      ${status}
+            Log To Console      Billing info verified.
+            Return From Keyword
+        ELSE
+            Log To Console      Billing info not found, retrying...
+            Refresh Page
+            Sleep               2    # Wait for 2 seconds before retrying
+        END
+    END
+    Fail                        Billing info could not be verified after3 retries.
 
 CreateUser
-    [Documentation]             This will create a new user in the Pix4D application
+    [Documentation]             This will create a new user in the Admin Panel application
     CreateRandomPerson
-    GoTo                        ${url}/admin_panel/pixuser/new/
-    TypeText                    First name                  ${fake_first_name}
-    TypeText                    Last name                   ${fake_last_name}
-    TypeText                    Email address               ${fake_email}
-    TypeText                    Password                    ${user_password}
-    TypeText                    Password confirmation       ${user_password}
-    ClickText                   SAVE
-    VerifyText                  Billing info
-    RefreshPage
-    ClickText                   HubSpot
-    # VerifyText                HubSpot ID
-    ${hubspot_id}               GetText                     //*[@title\='Go user page in HubSpot']
+    Go To                       ${url}/admin_panel/pixuser/new/
+    Fill User Form And Verify
+    Refresh Page
+    ${my_user_url}      GetUrl
+    GoTo                ${my_user_url}
+    TypeText            id_comment                     TEST_CXOps_QA
+    ClickText           SAVE PROFILE
+    Click Text                  HubSpot
+    ${hubspot_id}=              Get Text                    //*[@title\='Go user page in HubSpot']
     Log To Console              ${hubspot_id}
     Set Suite Variable          ${hubspot_id}
 
-SignupUser
-    Setup Browser
-    [Documentation]             This flow will create user from sign up flow
-    GoTo                        https://dev.account.pix4d.com/signup
-    TypeText    First Name *    ali
-    TypeText    Last Name *    test
-    TypeText    Email *    demo@test.cooom
-    TypeText    Password *     ;jfsd9wef-0qwef
-    ClickText    Country *    
-    ClickText    Israel
-    TypeText    Company *      Alitech  
-    ClickText    Industries *
-    ClickText    Education
-    PressKey     Education      {ESCAPE}
-    ClickElement    //input[@id\="mat-checkbox-1-input"]
-    ClickElement    //input[@id\="mat-checkbox-2-input"]
-    ClickText       Continue
 
     
     
