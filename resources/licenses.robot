@@ -11,11 +11,6 @@ CreateLicense
     ClickText          Yes
     TypeText           comment                     TEST_CXOps_QA
     ClickText          Save
-    # UseTable           \n \n \n \n
-    # VerifyTable        r1c13                       1b718e99
-    # ${license_key}               GetText                     //*[@title\='Download Licence']
-    # Log To Console              ${license_key}
-    # Set Suite Variable          ${license_key}
 
 
 
