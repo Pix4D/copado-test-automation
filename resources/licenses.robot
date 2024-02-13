@@ -2,6 +2,7 @@
 Library                    QWeb
 Library                    String
 
+
 *** Variables ***
 ${product_key}             MAPPER-OTC1-DESKTOP
 ${product_description}     PIX4Dmapper Desktop, Single device, Perpetual license
@@ -18,7 +19,7 @@ CreateLicense
     Set Suite Variable     ${product_description}
     Log To Console         ${product_description}
     ClickText              playlist_add                # clicks license create button
-    DropDown               Product code                ${product_key}: ${product_description}    # DropDown template
+    DropDown               Product code                ${product_key}: ${product_description}             # DropDown template
     ClickText              Yes
     TypeText               comment                     TEST_CXOps_QA
     ClickText              Save
