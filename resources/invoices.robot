@@ -2,6 +2,13 @@
 Library                   QWeb
 Library                   String
 
+*** Variables ***
+${product_key}
+${product_description}
+${email_address}
+${license_key}
+
+
 *** Keywords ***
 CreateInvoice
     [Documentation]       Create invoice for user's license
