@@ -1,28 +1,28 @@
 *** Settings ***
 Library                         QWeb
-Library                         String
-Library                         DateTime
+# Library                       String
+# Library                       DateTime
 Library                         FakerLibrary
 
 *** Variables ***
-${BROWSER}                      chrome
-${first_name}                   CRT_user
-${last_name}                    CRT_last
-${email_address}                crt_user_test@test.com
-${user_password}                crt_pass123
-${hidde_test}                   FakerLibrary.email
+# ${BROWSER}                    chrome
+# ${first_name}                 CRT_user
+# ${last_name}                  CRT_last
+# ${email_address}              crt_user_test@test.com
+# ${user_password}              cxops_pass_123 # old password: crt_pass123
+# ${hidde_test}                 FakerLibrary.email
 
 *** Keywords ***
-Setup Browser
-    Set Library Search Order    QWeb
-    Evaluate                    random.seed()
-    Open Browser                about:blank                 ${BROWSER}
-    Set Config                  LineBreak                   ${EMPTY}                    #\ue000
-    Set Config                  DefaultTimeout              20s                         #sometimes salesforce is slow
-    Set Config                  CaseInsensitive             True
+    # Setup Browser
+    #                           Set Library Search Order    QWeb
+    #                           Evaluate                    random.seed()
+    #                           Open Browser                about:blank                 ${BROWSER}
+    #                           Set Config                  LineBreak                   ${EMPTY}                    #\ue000
+    #                           Set Config                  DefaultTimeout              20s                         #sometimes salesforce is slow
+    #                           Set Config                  CaseInsensitive             True
 
 LoginApp
-    Setup Browser
+    # Setup Browser
     Go To                       ${url}/admin_panel/         #timeout=5
     Type Text                   Enter email                 ${username}
     Click Text                  Continue
@@ -31,14 +31,16 @@ LoginApp
     Click Text                  Log in                      anchor=Back                 index=2                     # <log in> button closest to <Back> button
 
 CreateRandomPersonData
-    [Documentation]             This will create a random person with first_name, last_name, email
+    [Documentation]             This will create a random person with first_name, last_name, email, password
     ${fake_first_name}=         FakerLibrary.first_name
     Set Suite Variable          ${fake_first_name}
     ${fake_last_name}=          FakerLibrary.last_name
     Set Suite Variable          ${fake_last_name}
     ${fake_email}=              FakerLibrary.email          domain=cxops.com
     Set Suite Variable          ${fake_email}
-    Log To Console              Created user: ${fake_first_name}, ${fake_last_name}, ${fake_email}
+    ${fake_password}=           FakerLibrary.Password
+    Set Suite Variable          ${fake_password}
+    Log To Console              Created user: ${fake_first_name}, ${fake_last_name}, ${fake_email}, ${fake_password}
 
 Fill User Form And Verify
     [Documentation]             Fill the user form and verify 'Billing info'. Retry up to 3 times if verification fails.
@@ -48,8 +50,8 @@ Fill User Form And Verify
         Type Text               First name                  ${fake_first_name}
         Type Text               Last name                   ${fake_last_name}
         Type Text               Email address               ${fake_email}
-        Type Text               Password                    ${user_password}
-        Type Text               Password confirmation       ${user_password}
+        Type Text               Password                    ${fake_password}
+        Type Text               Password confirmation       ${fake_password}
         Click Text              SAVE
         ${status}=              Is Text                     Billing info                timeout=5
         IF                      ${status}
@@ -69,7 +71,6 @@ CreateUser
     Go To                       ${url}/admin_panel/pixuser/new/
     Fill User Form And Verify
     Refresh Page
-    # GoTo                        https://dev.cloud.pix4d.com/admin_panel/pixuser/796960/edit/ Remove this lione 
     ${my_user_url}              GetUrl
     Set Suite Variable          ${my_user_url}
     Log To Console              ${my_user_url}
@@ -92,3 +93,10 @@ Hubspot sync verify
 
 
 
+GDPR_Deletion
+    GoTo                        ${my_user_url}
+    VerifyText                  ${email_address}
+    VerifyAll                   ${email_address}, Profile info
+    ClickText                   GDPR Deletion               tag=button
+    CloseAlert                  accept                      10s
+    VerifyText                  Account disabled upon GDPR request from data subject
