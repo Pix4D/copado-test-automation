@@ -37,56 +37,36 @@ CreateRandomPersonData
     ${fake_password}=         FakerLibrary.Password
     Set Suite Variable        ${fake_password}
     Log To Console            Created user: ${fake_first_name}, ${fake_last_name}, ${fake_email}, ${fake_password}
+    Return From Keyword
 
-# Fill User Form And Verify
-#     [Documentation]           Fill the user form and verify 'Billing info'. Retry up to 3 times if verification fails.
-#     ${retries}=               Set Variable                3
-#     FOR                       ${index}                    IN RANGE                    ${retries} # with varibale not working
-#         CreateRandomPersonData
-#         # Go To               ${url}/admin_panel/pixuser/new/
-#         # Refresh Page
-#         # # Sleep             2
-#         Type Text             id_first_name               ${fake_first_name}
-#         Type Text             Last name                   ${fake_last_name}
-#         Type Text             Email address               ${fake_email}
-#         Type Text             Password                    ${fake_password}
-#         Type Text             Password confirmation       ${fake_password}
-#         Click Text            SAVE
-#         ${status}=            Is Text                     Billing info                timeout=5
-#         IF                    ${status}
-#             Log To Console    Billing info verified.
-#             Return From Keyword
-#         ELSE
-#             Log To Console    Billing info not found, retrying...
-#             Refresh Page
-#             Sleep             2                           # Wait for 2 seconds before retrying
-#         END
-#     END
-#     Fail                      Billing info could not be verified after: ${retries} retries.
+Fill User Form And Verify
+    [Documentation]           Fill the user form and verify 'Billing info'. Retry up to 3 times if verification fails.
+    ${retries}=               Set Variable                3
+    FOR                       ${index}                    IN RANGE                    ${retries} # with varibale not working
+        CreateRandomPersonData
+        Type Text             id_first_name               ${fake_first_name}
+        Type Text             Last name                   ${fake_last_name}
+        Type Text             Email address               ${fake_email}
+        Type Text             Password                    ${fake_password}
+        Type Text             Password confirmation       ${fake_password}
+        Click Text            SAVE
+        ${status}=            Is Text                     Billing info                timeout=5
+        IF                    ${status}
+            Log To Console    Billing info verified.
+            Return From Keyword
+        ELSE
+            Log To Console    Billing info not found, retrying...
+            Refresh Page
+            Sleep             2                           # Wait for 2 seconds before retrying
+        END
+    END
+    Fail                      Billing info could not be verified after: ${retries} retries.
 
 
 CreateUser
     [Documentation]           This will create a new user in the Admin Panel application
-    # CreateRandomPersonData
-    Go To                     ${url}/admin_panel/pixuser/new/
-    ${fake_first_name}=       FakerLibrary.first_name
-    Set Suite Variable        ${fake_first_name}
-    ${fake_last_name}=        FakerLibrary.last_name
-    Set Suite Variable        ${fake_last_name}
-    ${fake_email}=            FakerLibrary.email          domain=cxops.com
-    Set Suite Variable        ${fake_email}
-    ${fake_password}=         FakerLibrary.Password
-    Set Suite Variable        ${fake_password}
-    Log To Console            Created user: ${fake_first_name}, ${fake_last_name}, ${fake_email}, ${fake_password}
-    Go To                     ${url}/admin_panel/pixuser/new/
-    Sleep                     5
-    # Fill User Form And Verify
-    TypeText                  id_first_name               ${fake_first_name}
-    TypeText                  Last name                   ${fake_last_name}
-    TypeText                  Email address               ${fake_email}
-    TypeText                  Password                    ${fake_password}
-    TypeText                  Password confirmation       ${fake_password}
-    ClickText                 SAVE
+    CreateRandomPersonData
+    Fill User Form And Verify
     Refresh Page
     VerifyAll                 ${fake_email}, Profile info
     ${my_user_url}            GetUrl
