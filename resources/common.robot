@@ -69,8 +69,13 @@ CreateUser
     Go To                       ${url}/admin_panel/pixuser/new/
     Fill User Form And Verify
     Refresh Page
-    Set Suite Variable          ${my_user_url}             GetUrl 
+    # GoTo                        https://dev.cloud.pix4d.com/admin_panel/pixuser/796960/edit/ Remove this lione 
+    ${my_user_url}              GetUrl
+    Set Suite Variable          ${my_user_url}
     Log To Console              ${my_user_url}
+    ${email_address}            GetAttribute                id_email                    tag=input                   attribute=value
+    Set Suite Variable          ${email_address}
+    Log To Console              ${email_address}
     TypeText                    id_comment                  TEST_CXOps_QA
     ClickText                   SAVE PROFILE
 
