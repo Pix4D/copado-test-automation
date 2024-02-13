@@ -44,7 +44,8 @@ Fill User Form And Verify
     ${retries}=                 Set Variable                3
     FOR                         ${index}                    IN RANGE                    ${retries} # with varibale not working
         CreateRandomPersonData
-        GoTo                    ${url}/admin_panel/pixuser/new/
+        GoTo                    https://dev.cloud.pix4d.com/admin_panel/pixuser/new/
+        # Sleep                   15
         VerifyText              New User
         Type Text               id_first_name               ${fake_first_name}
         Type Text               Last name                   ${fake_last_name}
@@ -68,6 +69,8 @@ Fill User Form And Verify
 CreateUser
     [Documentation]             This will create a new user in the Admin Panel application
     # CreateRandomPersonData
+    GoTo                    https://dev.cloud.pix4d.com/admin_panel/pixuser/new/
+    Sleep                   3
     Fill User Form And Verify
     Refresh Page
     VerifyAll                   ${fake_email}, Profile info
