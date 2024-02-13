@@ -65,7 +65,7 @@ Fill User Form And Verify
 
 CreateUser
     [Documentation]           This will create a new user in the Admin Panel application
-    CreateRandomPersonData
+    # CreateRandomPersonData
     Fill User Form And Verify
     Refresh Page
     VerifyAll                 ${fake_email}, Profile info
