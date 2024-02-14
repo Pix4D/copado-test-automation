@@ -13,11 +13,9 @@ CreateInvoice
     TypeText              id-pix4d-contact-input      CXOps RoboticTesting
     TypeText              Company or Client Name      ${email_address}
     TypeText              trumbowyg-editor            CXOps RoboticTesting
-    ScrollTo              Product
     ${invoice_product}    Catenate                    ${product_description} [${product_key}]
     Log To Console        ${invoice_product}
-    # DropDown              id_product_list             ${invoice_product}
     DropDown              product-description         ${invoice_product}
-    TypeText              license id/sn               ${license_key}              anchor=Product
-    # ClickText           ${license_key}              anchor=2
-    # ClickText           Save
+    TypeText              license id/sn               ${license_key}              anchor=product-description
+    ClickText             ${license_key}              anchor=2
+    ClickText             Save
