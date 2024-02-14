@@ -18,4 +18,5 @@ CreateInvoice
     DropDown              product-description         ${invoice_product}
     TypeText              license id/sn               ${license_key}
     ClickText             ${license_key}              anchor=2
-    ClickText             Save
+    ClickText             Save                        # redirecting invoice list page
+    Sleep                 2
