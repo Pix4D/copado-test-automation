@@ -52,7 +52,7 @@ Fill User Form And Verify
 
 CreateUser
     [Documentation]             This will create a new user in the Admin Panel application
-    GoTo                        ${url}admin_panel/pixuser/new/
+    GoTo                        ${url}/admin_panel/pixuser/new/
     Sleep                       3
     Fill User Form And Verify
     Refresh Page
