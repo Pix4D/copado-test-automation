@@ -4,12 +4,12 @@ Library                         FakerLibrary
 
 *** Keywords ***
 LoginApp
-    Go To                       ${url}/admin_panel/         #timeout=5
-    Type Text                   Enter email                 ${username}
-    Click Text                  Continue
-    Verify Text                 Log in
-    Type Text                   Enter password              ${password}
-    Click Text                  Log in                      anchor=Back                 index=2                     # <log in> button closest to <Back> button
+    GoTo                        ${url}/admin_panel/         #timeout=5
+    TypeText                    Enter email                 ${username}
+    ClickText                   Continue
+    VerifyText                  Log in
+    TypeText                    Enter password              ${password}
+    ClickText                   Log in                      anchor=Back                 index=2                     # <log in> button closest to <Back> button
 
 CreateRandomPersonData
     [Documentation]             This will create a random person with first_name, last_name, email, password
