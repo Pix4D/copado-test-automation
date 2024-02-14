@@ -3,11 +3,6 @@ Library                    QWeb
 Library                    String
 
 
-# *** Variables ***
-# ${product_key}=            set Variable              MAPPER-OTC1-DESKTOP
-# ${product_description}=    set Variable              PIX4Dmapper Desktop, Single device, Perpetual license
-
-
 *** Keywords ***
 CreateLicense
     [Documentation]        Creating license: "MAPPER-OTC1-DESKTOP: PIX4Dmapper Desktop, Single device, Perpetual license"
