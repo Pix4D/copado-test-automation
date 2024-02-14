@@ -16,6 +16,6 @@ CreateInvoice
     ${invoice_product}    Catenate                    ${product_description} [${product_key}]
     Log To Console        ${invoice_product}
     DropDown              product-description         ${invoice_product}
-    TypeText              license id/sn               ${license_key}              anchor=product-description
+    TypeText              license id/sn               ${license_key}
     ClickText             ${license_key}              anchor=2
     ClickText             Save
