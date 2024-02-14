@@ -78,6 +78,7 @@ Hubspot sync verify
 
 
 GDPR_Deletion
+    [Documentation]    GDPR deletion of the test pixuser
     GoTo                        ${my_user_url}
     VerifyText                  ${email_address}
     VerifyAll                   ${email_address}, Profile info
