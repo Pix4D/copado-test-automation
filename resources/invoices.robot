@@ -6,7 +6,7 @@ Library                   String
 *** Keywords ***
 CreateInvoice
     [Documentation]       Create invoice for user's license
-    [Arguments]           ${email_address}    ${license_key}    ${product_description}     ${product_key}
+    [Arguments]           ${email_address}    ${license_key}    ${product_key}    ${product_description}
     GoTo                  ${url}/admin_panel/store/documents/invoice/new/
     DropDown              issuerSelect                PCH
     DropDown              country                     Switzerland
