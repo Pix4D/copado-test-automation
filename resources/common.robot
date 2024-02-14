@@ -1,24 +1,9 @@
 *** Settings ***
 Library                         QWeb
-# Library                       String
-# Library                       DateTime
 Library                         FakerLibrary
-
-*** Variables ***
-# ${BROWSER}                    chrome
-# ${first_name}                 CRT_user
-# ${last_name}                  CRT_last
-# ${email_address}              crt_user_test@test.com
-# ${user_password}              cxops_pass_123 # old password: crt_pass123
-# ${hidde_test}                 FakerLibrary.email
-${fake_first_name}
-${fake_last_name}
-${fake_email}
-${fake_password}
 
 *** Keywords ***
 LoginApp
-    # Setup Browser
     Go To                       ${url}/admin_panel/         #timeout=5
     Type Text                   Enter email                 ${username}
     Click Text                  Continue
@@ -44,8 +29,7 @@ Fill User Form And Verify
     ${retries}=                 Set Variable                3
     FOR                         ${index}                    IN RANGE                    ${retries} # with varibale not working
         CreateRandomPersonData
-        GoTo                    https://dev.cloud.pix4d.com/admin_panel/pixuser/new/
-        # Sleep                   15
+        GoTo                    ${url}/admin_panel/pixuser/new/
         VerifyText              New User
         Type Text               id_first_name               ${fake_first_name}
         Type Text               Last name                   ${fake_last_name}
@@ -68,9 +52,8 @@ Fill User Form And Verify
 
 CreateUser
     [Documentation]             This will create a new user in the Admin Panel application
-    # CreateRandomPersonData
-    GoTo                    https://dev.cloud.pix4d.com/admin_panel/pixuser/new/
-    Sleep                   3
+    GoTo                        ${url}admin_panel/pixuser/new/
+    Sleep                       3
     Fill User Form And Verify
     Refresh Page
     VerifyAll                   ${fake_email}, Profile info
