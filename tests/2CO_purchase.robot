@@ -1,8 +1,8 @@
 *** Settings ***
 Documentation              E2e test for 2Checkout purchase flow
 Library                    QWeb
-Library    SeleniumLibrary
-Library           CookieManager.py
+Library                    SeleniumLibrary
+Library                    ../Libraries/CookieManager.py
 Suite Setup                Open Browser                about:blank                 ${BROWSER}
 Suite Teardown             Close All Browsers
 # Resource                 ../resources/common.robot                               # Actually I can put evethings in common filed varibales etc
@@ -20,7 +20,7 @@ ${url_buy_product}         https://dev.account.pix4d.com/complete-purchase?PROD_
 ${url_dev}                 https://dev.cloud.pix4d.com
 ${username}                cxops.robot@pix4d.work
 ${password}                ?sKZZ=g5>K(NL];$7jXB
-${expected_new_domain}     https://checkout.pix4d.com
+${expected_2co_domain}     https://checkout.pix4d.com
 
 
 *** Keywords ***
@@ -48,6 +48,7 @@ LoginAppStagingAP
     Log To Console         ${product_description}, ${credit_amount}                # Remove this line
     VerifyAll              Your order, You are logged in as: ${username}, ${product_description}, ${credit_amount} Credits
     ClickText              Continue
+    Transfer Cookies       ${url_buy_product}    ${expected_2co_domain}
 
 
 
