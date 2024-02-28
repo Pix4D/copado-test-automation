@@ -15,7 +15,7 @@ ${product_key}             MAPPER-OTC1-DESKTOP
 ${product_description}     PIX4Dcloud Advanced, Monthly, Subscription
 ${credit_amount}           1,000
 ${product_credit_1000}      CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
-${url_buy_now}           https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_key}
+# ${url_buy_now}    https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_key}
 ${url_buy_product}         https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_1000}
 ${url_dev}                 https://dev.cloud.pix4d.com
 ${username}                cxops.robot@pix4d.work
