@@ -2,7 +2,7 @@
 Documentation              E2e test for 2Checkout purchase flow
 Library                    QWeb
 Library    SeleniumLibrary
-Library    
+Library           CookieManager.py
 Suite Setup                Open Browser                about:blank                 ${BROWSER}
 Suite Teardown             Close All Browsers
 # Resource                 ../resources/common.robot                               # Actually I can put evethings in common filed varibales etc
