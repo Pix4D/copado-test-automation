@@ -13,10 +13,10 @@ Suite Teardown             Close All Browsers
 ${BROWSER}                 chrome
 ${product_key}             MAPPER-OTC1-DESKTOP
 ${product_description}     PIX4Dcloud Advanced, Monthly, Subscription
-${credit_amount}           500
-${product_credit_500}      CLOUD-CREDITS-500,CLOUD-ADVANCED-MONTH-SUBS
-# ${url_buy_now}           https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_key}
-${url_buy_product}         https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_500}
+${credit_amount}           1,000
+${product_credit_1000}      CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
+${url_buy_now}           https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_key}
+${url_buy_product}         https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_1000}
 ${url_dev}                 https://dev.cloud.pix4d.com
 ${username}                cxops.robot@pix4d.work
 ${password}                ?sKZZ=g5>K(NL];$7jXB
@@ -43,12 +43,9 @@ LoginAppStagingAP
     Set Suite Variable     ${my_user_url}
     Log To Console         ${my_user_url}
     GoTo                   ${url_buy_product}
-    Set Test Variable      ${product_description}      PIX4Dcloud Advanced, Monthly, Subscription              # Remove this line
-    Set Test Variable      ${credit_amount}            500                         # Remove this line
-    Log To Console         ${product_description}, ${credit_amount}                # Remove this line
+    # GoTo                   https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_key}
     VerifyAll              Your order, You are logged in as: ${username}, ${product_description}, ${credit_amount} Credits
+    # ${cookies}             Store Cookies
     ClickText              Continue
-    Transfer Cookies       ${url_buy_product}    ${expected_2co_domain}
-
-
+    # Reapply Cookies        ${cookies}    ${expected_2co_domain}
 
