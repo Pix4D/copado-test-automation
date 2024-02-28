@@ -2,9 +2,7 @@ from robot.libraries.BuiltIn import BuiltIn
 
 class CookieManager:
     def __init__(self):
-        self.selenium_lib = BuiltIn().get_library_instance('SeleniumLibrary
-
-')
+        self.selenium_lib = BuiltIn().get_library_instance('SeleniumLibrary')
 
     def transfer_cookies(self, source_url, target_url):
         self.selenium_lib.open_browser(source_url, browser='chrome')
