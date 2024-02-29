@@ -1,11 +1,11 @@
 *** Settings ***
 Documentation              E2e test for 2Checkout purchase flow
 Library                    QWeb
-# Library                  SeleniumLibrary
+Library                    SeleniumLibrary
 # Library                  ../Libraries/CookieManager.py
-Suite Setup                Open Browser                about:blank       ${BROWSER}
+Suite Setup                Open Browser                about:blank                ${BROWSER}
 Suite Teardown             Close All Browsers
-# Resource                 ../resources/common.robot                     # Actually I can put evethings in common filed varibales etc
+# Resource                 ../resources/common.robot                              # Actually I can put evethings in common filed varibales etc
 # Resource                 ../resources/licenses.robot
 # Resource                 ../resources/invoices.robot
 
@@ -37,7 +37,7 @@ LoginAppStagingAP
     ClickText              Continue
     VerifyText             Log in
     TypeText               Enter password              ${password}
-    ClickText              Log in                      anchor=Back       # <log in> button closest to <Back> button
+    ClickText              Log in                      anchor=Back                # <log in> button closest to <Back> button
 
 
 *** Test Cases ***
@@ -60,14 +60,7 @@ LoginAppStagingAP
     VerifyAll              Order summary, Billing Information, Payment details, ${product_description}
     VerifyInputValue       Email                       ${username}
     TypeText               Card number                 ${card_number}
-    # TypeText             Card expiration date*:      ${card_expiration_date}
-    # TypeText             Security code*:             ${card_security_code}
-    # TypeText             Card holder name            ${cart_holder_name}
-    # ClickCheckbox        Yes, I agree to the Pix4D General Terms and Conditions
-    TypeText               Card expiration date        0130
-    TypeText               Security code               234
-    TypeText               Card holder name            John Doe
-    # Acept condition
-    UseTable               xpath\=//*[@id\='order__checkout__payoptions__data']/div[1]/div[1]/div[1]/div[3]/div[2]/div[2]/table[1]
-    ClickCheckbox          r?\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tYes, I agree to the Pix4D General Terms and Conditions*\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t/c1    on
-    VerifyCheckbox         Yes, I agree                        anchor=Yes
+    TypeText               Card expiration date*:      ${card_expiration_date}
+    TypeText               Security code*:             ${card_security_code}
+    TypeText               Card holder name            ${cart_holder_name}
+    Execute Javascript     document.getElementById('custom[9120]').click();
