@@ -5,6 +5,7 @@ Library                         BuiltIn
 # Library                       SeleniumLibrary
 Suite Setup                     Setup Browser
 Suite Teardown                  CloseAllBrowsers
+Resource                   ../resources/common.robot
 
 
 *** Variables ***
@@ -55,9 +56,29 @@ LoginAppStagingAP
     VerifyText                  CXOps RoboticTesting
     ClickText                   CXOps RoboticTesting
     VerifyAll                   ${username}, Profile info
-    ${my_user_url}              GetUrl
-    Set Suite Variable          ${my_user_url}
-    Log To Console              ${my_user_url}
+    ${robot_user_url}              GetUrl
+    Set Suite Variable          ${robot_user_url}
+    Log To Console              ${robot_user_url}
+    # Create Rondom user
+        # UUID => need for pandora task
+        # Get/store necessary info for user
+    # MIGRATE TO PANDORA
+        
+        # pandora tasks:  https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
+            # exec args replace exisitng with user uuid
+            # "Save and continue editing" button
+        # admin tasks page = https://dev.cloud.pix4d.com/admin/common/admintask/
+            # Migrate to Pandora	common.admin_tasks.one_off.migrate_to_pandora.migrate_to_pandora
+            # Tick Mark => Migrate to Pandora	common.admin_tasks.one_off.migrate_to_pandora.migrate_to_pandora
+            # Actions=> Run selected task => Run
+            # refresh page and back to user
+    
+    # EUM state: user with EUM org
+    
+    
+    
+    
+    # Migrate user to 
     ClickText                   ${eum_org_name}
     ${org_uuid}                 GetAttribute                id_uuid                     tag=input                   attribute=value
     Set Suite Variable          ${org_uuid}
@@ -69,6 +90,8 @@ LoginAppStagingAP
     ${org_account_page}         Set Variable                ${url_account_dev}/organization/${org_uuid}/credits
     Set Suite Variable          ${org_account_page}
     Log To Console              ${org_account_page}
+    # login as user
+    # https://dev.cloud.pix4d.com/login or log out
 
     # 2CO journey starting with chosed prodcut and credit
     GoTo                        ${url_buy_product}
