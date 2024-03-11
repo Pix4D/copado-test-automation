@@ -2,9 +2,16 @@
 Library                         QWeb
 Library                         FakerLibrary
 
+
+*** Variables ***
+
+${url_dev}                      https://dev.cloud.pix4d.com
+
+
+
 *** Keywords ***
 LoginApp
-    GoTo                        ${url}/admin_panel/         #timeout=5
+    GoTo                        ${url_dev}/admin_panel/         #timeout=5
     TypeText                    Enter email                 ${username}
     ClickText                   Continue
     VerifyText                  Log in
@@ -17,7 +24,7 @@ CreateRandomPersonData
     Set Suite Variable          ${fake_first_name}
     ${fake_last_name}=          FakerLibrary.last_name
     Set Suite Variable          ${fake_last_name}
-    ${fake_email}=              FakerLibrary.email          domain=cxops.com
+    ${fake_email}=              FakerLibrary.email          domain=pix4d.work
     Set Suite Variable          ${fake_email}
     ${fake_password}=           FakerLibrary.Password
     Set Suite Variable          ${fake_password}
@@ -29,7 +36,7 @@ Fill User Form And Verify
     ${retries}=                 Set Variable                3
     FOR                         ${index}                    IN RANGE                    ${retries} # with varibale not working
         CreateRandomPersonData
-        GoTo                    ${url}/admin_panel/pixuser/new/
+        GoTo                    ${url_dev}/admin_panel/pixuser/new/
         VerifyText              New User
         Type Text               id_first_name               ${fake_first_name}
         Type Text               Last name                   ${fake_last_name}
@@ -52,12 +59,12 @@ Fill User Form And Verify
 
 CreateUser
     [Documentation]             This will create a new user in the Admin Panel application
-    GoTo                        ${url}/admin_panel/pixuser/new/
+    GoTo                        ${url_dev}/admin_panel/pixuser/new/
     Sleep                       3
     Fill User Form And Verify
     Refresh Page
     VerifyAll                   ${fake_email}, Profile info
-    ${my_user_url}              GetUrl
+    ${user_url}              GetUrl
     Set Suite Variable          ${my_user_url}
     Log To Console              ${my_user_url}
     ${email_address}=           GetAttribute                id_email                    tag=input                   attribute=value
