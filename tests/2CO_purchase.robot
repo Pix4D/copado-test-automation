@@ -2,7 +2,7 @@
 Documentation                   E2e test for 2Checkout purchase flow
 Library                         QWeb
 Library                         BuiltIn
-# Library                       SeleniumLibrary
+Library                         String
 Suite Setup                     Setup Browser
 Suite Teardown                  CloseAllBrowsers
 Resource                   ../resources/common.robot
@@ -21,8 +21,8 @@ ${url_buy_product}              https://dev.account.pix4d.com/complete-purchase?
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 # Remove credentials tehy'e going github XXXXXXXX
-${username}                     cxops.robot@pix4d.work
-${password}                     ?sKZZ=g5>K(NL];$7jXB
+${robot_username}                     cxops.robot@pix4d.work
+${robot_password}                     ?sKZZ=g5>K(NL];$7jXB
 ${card_number}                  4111111111111111
 ${card_expiration_date}         0130
 ${card_security_code}           234
@@ -41,10 +41,10 @@ Setup Browser
     #                           Open Browser                url=about:blank             browser_alias=chrome        options=add_argument("--disable-notifications")
 LoginAppStagingAP
     GoTo                        ${url_dev}/admin_panel/     timeout=5
-    TypeText                    Enter email                 ${username}
+    TypeText                    Enter email                 ${robot_username}
     ClickText                   Continue
     VerifyText                  Log in
-    TypeText                    Enter password              ${password}
+    TypeText                    Enter password              ${robot_password}
     ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
 
 *** Test Cases ***
@@ -55,15 +55,15 @@ LoginAppStagingAP
     # Verify user and get necessary org value
     VerifyText                  CXOps RoboticTesting
     ClickText                   CXOps RoboticTesting
-    VerifyAll                   ${username}, Profile info
+    VerifyAll                   ${robot_username}, Profile info
     ${robot_user_url}              GetUrl
     Set Suite Variable          ${robot_user_url}
     Log To Console              ${robot_user_url}
     # Create Rondom user
+    CreateUser
         # UUID => need for pandora task
         # Get/store necessary info for user
     # MIGRATE TO PANDORA
-        
         # pandora tasks:  https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
             # exec args replace exisitng with user uuid
             # "Save and continue editing" button
@@ -74,7 +74,7 @@ LoginAppStagingAP
             # refresh page and back to user
     
     # EUM state: user with EUM org
-    
+        # 
     
     
     
@@ -95,11 +95,11 @@ LoginAppStagingAP
 
     # 2CO journey starting with chosed prodcut and credit
     GoTo                        ${url_buy_product}
-    VerifyAll                   Your order, You are logged in as: ${username}, ${product_description}, ${credit_amount_ui} Credits
+    VerifyAll                   Your order, You are logged in as: ${robot_username}, ${product_description}, ${credit_amount_ui} Credits
     ClickText                   Continue
     # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details, ${product_description}
-    VerifyInputValue            Email                       ${username}
+    VerifyInputValue            Email                       ${robot_username}
     TypeText                    Card number                 ${card_number}
     TypeText                    Card expiration date*:      ${card_expiration_date}
     TypeText                    Security code*:             ${card_security_code}
@@ -138,7 +138,9 @@ LoginAppStagingAP
     # # ${license_key}            GetText                     //a[@title\='Download Licence']
     # VerifyText                  ${product_description}      anchor=//a[@title\='Edit invoice']
     # VerifyElement               //a[@title\='Edit invoice']
-
+    
+    # GDPR deletion
+        # 
 
 
 
