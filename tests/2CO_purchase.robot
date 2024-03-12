@@ -137,8 +137,18 @@ LoginAsUser
     # Link user to the org billing info
     GoTo                        ${eum_org_url}
     RefreshPage
-    UseTable                    ${eum_org_name}             anchor=Add new billing information
-    Get Cell Text               r1/c1                       anchor=ID
+    # UseTable                  ${eum_org_name}             anchor=Add new billing information                      index=1
+    # Get Cell Text             r1/c1                       anchor=ID
+
+    ${billing_id}=              Get Text                    //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
+    Set Suite Variable          ${billing_id}
+    Log To Console              ${billing_id}
+    ${pixuser_id_name}=         GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]                       anchor=3
+    Log To Console              ${pixuser_id_name}
+    @{pixuser_id_name}=         Split String                ${pixuser_id_name}          -
+    ${fake_user_id}             Strip String                ${pixuser_id_name}[1]
+
+
     # Logout first
     Goto                        ${url_dev}/logout
     VerifyText                  Log in
