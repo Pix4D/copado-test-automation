@@ -1,5 +1,6 @@
 *** Settings ***
 Library                         QWeb
+Library                         String
 Library                         FakerLibrary
 
 
@@ -10,14 +11,6 @@ ${url_dev}                      https://dev.cloud.pix4d.com
 
 
 *** Keywords ***
-LoginApp
-    GoTo                        ${url_dev}/admin_panel/         #timeout=5
-    TypeText                    Enter email                 ${username}
-    ClickText                   Continue
-    VerifyText                  Log in
-    TypeText                    Enter password              ${password}
-    ClickText                   Log in                      anchor=Back                 index=2                     # <log in> button closest to <Back> button
-
 CreateRandomPersonData
     [Documentation]             This will create a random person with first_name, last_name, email, password
     ${fake_first_name}=         FakerLibrary.first_name
@@ -64,31 +57,37 @@ CreateUser
     Fill User Form And Verify
     Refresh Page
     VerifyAll                   ${fake_email}, Profile info
-    ${user_url}              GetUrl
-    Set Suite Variable          ${my_user_url}
-    Log To Console              ${my_user_url}
-    ${email_address}=           GetAttribute                id_email                    tag=input                   attribute=value
-    Set Suite Variable          ${email_address}
-    Log To Console              ${email_address}
+    ${fake_user_url}            GetUrl
+    Set Suite Variable          ${fake_user_url}
+    Log To Console              ${fake_user_url}
+    # ${email_address}=         GetAttribute                id_email                    tag=input                   attribute=value
+    # Set Suite Variable        ${email_address}
+    # Log To Console            ${email_address}
+    # GoTo                      https://dev.cloud.pix4d.com/admin_panel/pixuser/813952/edit/
+    ${example_string}=          Set Variable                Hello, World!
+    ${uppercase_string}=        Convert To Uppercase        ${example_string}
+    Log To Console              ${uppercase_string}
+    ${full_uuid_text}           GetText                     //div[contains(@class, 'mdl-cell-full') and contains(., 'UUID:')]
+    Log To Console              ${full_uuid_text}
+    @{split_text}=              Split String                ${full_uuid_text}           UUID:
+    Log To Console              @{split_text}
+    ${fake_user_uuid}=          Strip String                ${split_text}[1]
+    Log To Console              ${fake_user_uuid}
+
+    # ${fake_user_uuid}         Fetch From Right            ${full_uuid_text}           UUID:
+    Log To Console              ${fake_user_uuid}
+
+    Set Suite Variable          ${fake_user_uuid}
+    Log To Console              ${fake_user_uuid}
     TypeText                    id_comment                  TEST_CXOps_QA
     ClickText                   SAVE PROFILE
 
 
-Hubspot sync verify
-    [Documentation]             This will check user hubspot sync
-    [Arguments]                 ${my_user_url}
-    GoTo                        ${my_user_url}
-    Click Text                  HubSpot
-    ${hubspot_id}=              Get Text                    //*[@title\='Go user page in HubSpot']
-    Log To Console              ${hubspot_id}
-    Set Suite Variable          ${hubspot_id}
-
-
 GDPR_Deletion
-    [Documentation]    GDPR deletion of the test pixuser
-    GoTo                        ${my_user_url}
-    VerifyText                  ${email_address}
-    VerifyAll                   ${email_address}, Profile info
+    [Documentation]             GDPR deletion of the test pixuser
+    GoTo                        ${fake_user_url}
+    VerifyText                  ${fake_email}
+    VerifyAll                   ${fake_email}, Profile info
     ClickText                   GDPR Deletion               tag=button
     CloseAlert                  accept                      10s
     VerifyText                  Account disabled upon GDPR request from data subject
