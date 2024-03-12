@@ -5,12 +5,12 @@ Library                         BuiltIn
 Library                         String
 Suite Setup                     Setup Browser
 Suite Teardown                  CloseAllBrowsers
-Resource                   ../resources/common.robot
+Resource                        ../resources/common.robot
 
 
 *** Variables ***
 ${BROWSER}                      chrome
-${eum_org_name}                 CXOps RoboticTesting CREDITS
+# ${eum_org_name}               CXOps RoboticTesting CREDITS
 ${product_key}                  MAPPER-OTC1-DESKTOP
 ${product_description}          PIX4Dcloud Advanced, Monthly, Subscription
 # credit amount view ui variable
@@ -21,13 +21,14 @@ ${url_buy_product}              https://dev.account.pix4d.com/complete-purchase?
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 # Remove credentials tehy'e going github XXXXXXXX
-${robot_username}                     cxops.robot@pix4d.work
-${robot_password}                     ?sKZZ=g5>K(NL];$7jXB
+${robot_username}               cxops.robot@pix4d.work
+${robot_password}               ?sKZZ=g5>K(NL];$7jXB
 ${card_number}                  4111111111111111
 ${card_expiration_date}         0130
 ${card_security_code}           234
 ${cart_holder_name}             John Doe
-
+${pandora_migration_task}       https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
+${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/admintask/
 
 
 *** Keywords ***
@@ -47,6 +48,14 @@ LoginAppStagingAP
     TypeText                    Enter password              ${robot_password}
     ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
 
+LoginAsUser
+    # log out and login as user name can be
+    TypeText                    Enter email                 ${fake_email}
+    ClickText                   Continue
+    VerifyText                  Log in
+    TypeText                    Enter password              ${fake_password}
+    ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
+
 *** Test Cases ***
 2CO Purchase Flow
     [Documentation]             2Checkoutcredit purshase flow
@@ -56,29 +65,48 @@ LoginAppStagingAP
     VerifyText                  CXOps RoboticTesting
     ClickText                   CXOps RoboticTesting
     VerifyAll                   ${robot_username}, Profile info
-    ${robot_user_url}              GetUrl
+    ${robot_user_url}           GetUrl
     Set Suite Variable          ${robot_user_url}
     Log To Console              ${robot_user_url}
     # Create Rondom user
     CreateUser
-        # UUID => need for pandora task
-        # Get/store necessary info for user
+    # some user verifications
+    # UUID => need for pandora task
+    # Get/store necessary info for user
     # MIGRATE TO PANDORA
-        # pandora tasks:  https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
-            # exec args replace exisitng with user uuid
-            # "Save and continue editing" button
-        # admin tasks page = https://dev.cloud.pix4d.com/admin/common/admintask/
-            # Migrate to Pandora	common.admin_tasks.one_off.migrate_to_pandora.migrate_to_pandora
-            # Tick Mark => Migrate to Pandora	common.admin_tasks.one_off.migrate_to_pandora.migrate_to_pandora
-            # Actions=> Run selected task => Run
-            # refresh page and back to user
-    
+    VerifyAll                   ${fake_email}, ${fake_user_uuid}
+    GoTo                        ${pandora_migration_task}
+    # GoTo                      https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
+    TypeText                    Exec args:                  ${fake_user_uuid}
+    ClickText                   SAVE                        anchor=Save and continue editing
+    VerifyText                  Select admin task to change
+    ClickCheckbox               Migrate to Pandora          on                          anchor=63
+    DropDown                    ---------                   Run selected tasks          anchor=Action:
+    ClickText                   Go                          anchor=Run the selected action                          timeout=5
+    VerifyText                  Task Migrate to Pandora executed
+    # back to user page
+    GoTo                        ${fake_user_url}            timeout=3
+    ${eum_org_name}             Set Variable                ${fake_first_name} ${fake_last_name} space
+    Log To Console              ${eum_org_name}
+    Set Suite Variable          ${eum_org_name}
+    VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}
+    # MigrateUserToPandora
+
+    # pandora tasks:            https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
+    # exec args replace exisitng with user uuid
+    # "Save and continue editing" button
+    # admin tasks page = https://dev.cloud.pix4d.com/admin/common/admintask/
+    # Migrate to Pandora        common.admin_tasks.one_off.migrate_to_pandora.migrate_to_pandora
+    # Tick Mark => Migrate to Pandora                       common.admin_tasks.one_off.migrate_to_pandora.migrate_to_pandora
+    # Actions=> Run selected task => Run
+    # refresh page and back to user
+
     # EUM state: user with EUM org
-        # 
-    
-    
-    
-    # Migrate user to 
+    #
+
+
+
+    # Migrate user to
     ClickText                   ${eum_org_name}
     ${org_uuid}                 GetAttribute                id_uuid                     tag=input                   attribute=value
     Set Suite Variable          ${org_uuid}
@@ -90,12 +118,44 @@ LoginAppStagingAP
     ${org_account_page}         Set Variable                ${url_account_dev}/organization/${org_uuid}/credits
     Set Suite Variable          ${org_account_page}
     Log To Console              ${org_account_page}
+    # SET ORG billing info
+    ClickText                   Add new billing information
+    Sleep                       2
+    VerifyText                  Billing information
+    TypeText                    id_first_name               ${fake_first_name}
+    TypeText                    id_last_name                ${fake_last_name}
+    TypeText                    id_title                    Mr.
+    TypeText                    id_email                    ${fake_email}
+    TypeText                    id_company_name             ${eum_org_name}
+    TypeText                    id_address                  Rue de Pix4D 5
+    TypeText                    id_phone                    +41887776655
+    TypeText                    id_city                     Lausanne
+    TypeText                    id_zip                      1001
+    DropDown                    id_country                  Switzerland                 anchor=Country
+    TypeText                    id_vat_code                 CHE-123.456.789 TVA
+    ClickText                   SAVE                        anchor=Cancel
+    # Link user to the org billing info
+    GoTo                        ${eum_org_url}
+    RefreshPage
+    UseTable                    ${eum_org_name}             anchor=Add new billing information
+    Get Cell Text               r1/c1                       anchor=ID
+    # Logout first
+    Goto                        ${url_dev}/logout
+    VerifyText                  Log in
+    LoginAsUser
+    # Goto                      ${url_dev}/admin/logout/    Useful as well
+    TypeText                    Enter email                 ${fake_email}
+    ClickText                   Continue
+    VerifyText                  Log in
+    TypeText                    Enter password              ${fake_password}
+    ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
+
     # login as user
     # https://dev.cloud.pix4d.com/login or log out
 
     # 2CO journey starting with chosed prodcut and credit
     GoTo                        ${url_buy_product}
-    VerifyAll                   Your order, You are logged in as: ${robot_username}, ${product_description}, ${credit_amount_ui} Credits
+    VerifyAll                   Your order, You are logged in as: ${fake_email}, ${product_description}, ${credit_amount_ui} Credits
     ClickText                   Continue
     # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details, ${product_description}
@@ -131,16 +191,16 @@ LoginAppStagingAP
     Should Contain              ${invoice_product}          ${product_description}
     Should Contain              ${invoice_product}          ${credit_amount_ui}
 
-    # VerifyTable                 r1c8                        ${product_description} ${credit_amount_ui} Credits
-    # VerifyText                  ${product_description}      anchor=//a[@title\='Edit invoice']
+    # VerifyTable               r1c8                        ${product_description} ${credit_amount_ui} Credits
+    # VerifyText                ${product_description}      anchor=//a[@title\='Edit invoice']
     # # //*[@id='section-invoices']
-    # # UseTable                  //*[@id='section-invoices']
-    # # ${license_key}            GetText                     //a[@title\='Download Licence']
-    # VerifyText                  ${product_description}      anchor=//a[@title\='Edit invoice']
-    # VerifyElement               //a[@title\='Edit invoice']
-    
+    # # UseTable                //*[@id='section-invoices']
+    # # ${license_key}          GetText                     //a[@title\='Download Licence']
+    # VerifyText                ${product_description}      anchor=//a[@title\='Edit invoice']
+    # VerifyElement             //a[@title\='Edit invoice']
+
     # GDPR deletion
-        # 
+    #
 
 
 
