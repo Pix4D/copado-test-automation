@@ -143,10 +143,11 @@ LoginAsUser
     ${billing_id}=              Get Text                    //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
     Set Suite Variable          ${billing_id}
     Log To Console              ${billing_id}
-    ${pixuser_id_name}=         GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]                       anchor=3
+    ${pixuser_id_name}=         GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]                       anchor=Users
     Log To Console              ${pixuser_id_name}
-    @{pixuser_id_name}=         Split String                ${pixuser_id_name}          -
-    ${fake_user_id}             Strip String                ${pixuser_id_name}[1]
+    @{id_name}=                 Split String                ${pixuser_id_name}          -
+    ${fake_user_id}             Strip String                ${id_name}[1]
+    Log To Console              ${fake_user_id}
 
 
     # Logout first
