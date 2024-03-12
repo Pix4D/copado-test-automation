@@ -64,21 +64,15 @@ CreateUser
     # Set Suite Variable        ${email_address}
     # Log To Console            ${email_address}
     # GoTo                      https://dev.cloud.pix4d.com/admin_panel/pixuser/813952/edit/
-    ${example_string}=          Set Variable                Hello, World!
-    ${uppercase_string}=        Convert To Uppercase        ${example_string}
-    Log To Console              ${uppercase_string}
+    # ${example_string}=        Set Variable                Hello, World!
+    # ${uppercase_string}=      Convert To Uppercase        ${example_string}
+    # Log To Console            ${uppercase_string}
     ${full_uuid_text}           GetText                     //div[contains(@class, 'mdl-cell-full') and contains(., 'UUID:')]
     Log To Console              ${full_uuid_text}
     @{split_text}=              Split String                ${full_uuid_text}           UUID:
-    Log To Console              @{split_text}
     ${fake_user_uuid}=          Strip String                ${split_text}[1]
     Log To Console              ${fake_user_uuid}
-
-    # ${fake_user_uuid}         Fetch From Right            ${full_uuid_text}           UUID:
-    Log To Console              ${fake_user_uuid}
-
     Set Suite Variable          ${fake_user_uuid}
-    Log To Console              ${fake_user_uuid}
     TypeText                    id_comment                  TEST_CXOps_QA
     ClickText                   SAVE PROFILE
 
