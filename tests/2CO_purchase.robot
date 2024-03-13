@@ -36,17 +36,14 @@ Setup Browser
     ${chrome_options}=          Evaluate                    sys.modules['selenium.webdriver'].ChromeOptions()       sys, selenium.webdriver
     Call Method                 ${chrome_options}           add_experimental_option     prefs                       {'profile.default_content_setting_values.notifications': 2}
     Open Browser                about:blank                 chrome                      options=${chrome_options}
-    # Setup Browser
-    #                           # ${chrome_options}=        Set Variable                --disable-save-password-bubble;--no-first-run;--disable-infobars
-    #                           # Open Browser              about:blank                 chrome                      options=${chrome_options}
-    #                           Open Browser                url=about:blank             browser_alias=chrome        options=add_argument("--disable-notifications")
-LoginAppStagingAP
+
+Robot_Login_To_Staging_AP
     GoTo                        ${url_dev}/admin_panel/     timeout=5
     TypeText                    Enter email                 ${robot_username}
     ClickText                   Continue
     VerifyText                  Log in
     TypeText                    Enter password              ${robot_password}
-    ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
+    ClickText                   Log in                      anchor=Back
 
 LoginAsUser
     # log out and login as user name can be
@@ -54,13 +51,13 @@ LoginAsUser
     ClickText                   Continue
     VerifyText                  Log in
     TypeText                    Enter password              ${fake_password}
-    ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
+    ClickText                   Log in                      anchor=Back
 
 *** Test Cases ***
 2CO Purchase Flow
     [Documentation]             2Checkoutcredit purshase flow
-    # User Should be member of EUM ORG
-    LoginAppStagingAP
+    Log                         2CO Test flow is starting                               console=True
+    Robot_Login_To_Staging_AP
     # Verify user and get necessary org value
     VerifyText                  CXOps RoboticTesting
     ClickText                   CXOps RoboticTesting
@@ -69,7 +66,7 @@ LoginAsUser
     Set Suite Variable          ${robot_user_url}
     Log To Console              ${robot_user_url}
     # Create Rondom user
-    CreateUser
+    Create_New_Rondom_User
     # some user verifications
     # UUID => need for pandora task
     # ID need for billing infor linking
@@ -105,8 +102,6 @@ LoginAsUser
     # EUM state: user with EUM org
     #
 
-
-
     # Migrate user to
     ClickText                   ${eum_org_name}
     ${org_uuid}                 GetAttribute                id_uuid                     tag=input                   attribute=value
@@ -139,18 +134,18 @@ LoginAsUser
     GoTo                        ${eum_org_url}
     RefreshPage
     ScrollText                  Billing information
-    ${billing_info_id}=              GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
+    ${billing_info_id}=         GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
     Set Suite Variable          ${billing_info_id}
     Log To Console              ${billing_info_id}
-    # Add user to the ORG billing info 
-    ${org_billing_info_url}         Set Variable                ${url_dev}/admin/user_account/billinginformation/${billing_info_id}/change/
+    # Add user to the ORG billing info
+    ${org_billing_info_url}     Set Variable                ${url_dev}/admin/user_account/billinginformation/${billing_info_id}/change/
     Log To Console              ${org_billing_info_url}
     Set Suite Variable          ${org_billing_info_url}
     Goto                        ${org_billing_info_url}
     VerifyAll                   Change billing information, BillingInformation[${billing_info_id}]:
-    TypeText                    id_pixuser                      ${fake_user_id}
-    ClickText                   Save and continue editing                        anchor=Save and add another
-    VerifyText                  was changed successfully                        timeout=4
+    TypeText                    id_pixuser                  ${fake_user_id}
+    ClickText                   Save and continue editing                               anchor=Save and add another
+    VerifyText                  was changed successfully    timeout=4
 
     # Logout from Robot user to login as user
     Goto                        ${url_dev}/logout
@@ -212,8 +207,8 @@ LoginAsUser
     # VerifyText                ${product_description}      anchor=//a[@title\='Edit invoice']
     # VerifyElement             //a[@title\='Edit invoice']
 
-    # GDPR deletion
-    
+    # GDPR_Deletion_Rondom_User
+
 
 
 
