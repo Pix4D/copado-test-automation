@@ -60,6 +60,10 @@ CreateUser
     ${fake_user_url}            GetUrl
     Set Suite Variable          ${fake_user_url}
     Log To Console              ${fake_user_url}
+    @{url_parts}=    Split String    ${fake_user_url}    /
+    ${fake_user_id}=    Set Variable    ${url_parts}[5]
+    Log To Console                   ${fake_user_id}
+    Set Suite Variable          ${fake_user_id}
     # ${email_address}=         GetAttribute                id_email                    tag=input                   attribute=value
     # Set Suite Variable        ${email_address}
     # Log To Console            ${email_address}
