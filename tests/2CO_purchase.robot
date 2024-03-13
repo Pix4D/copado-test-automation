@@ -72,6 +72,7 @@ LoginAsUser
     CreateUser
     # some user verifications
     # UUID => need for pandora task
+    # ID need for billing infor linking
     # Get/store necessary info for user
     # MIGRATE TO PANDORA
     VerifyAll                   ${fake_email}, ${fake_user_uuid}
@@ -134,23 +135,24 @@ LoginAsUser
     DropDown                    id_country                  Switzerland                 anchor=Country
     TypeText                    id_vat_code                 CHE-123.456.789 TVA
     ClickText                   SAVE                        anchor=Cancel
-    # Link user to the org billing info
+    # Get Billing info ID from ORG page
     GoTo                        ${eum_org_url}
     RefreshPage
-    # UseTable                  ${eum_org_name}             anchor=Add new billing information                      index=1
-    # Get Cell Text             r1/c1                       anchor=ID
+    ScrollText                  Billing information
+    ${billing_info_id}=              GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
+    Set Suite Variable          ${billing_info_id}
+    Log To Console              ${billing_info_id}
+    # Add user to the ORG billing info 
+    ${org_billing_info_url}         Set Variable                ${url_dev}/admin/user_account/billinginformation/${billing_info_id}/change/
+    Log To Console              ${org_billing_info_url}
+    Set Suite Variable          ${org_billing_info_url}
+    Goto                        ${org_billing_info_url}
+    VerifyAll                   Change billing information, BillingInformation[${billing_info_id}]:
+    TypeText                    id_pixuser                      ${fake_user_id}
+    ClickText                   Save and continue editing                        anchor=Save and add another
+    VerifyText                  was changed successfully                        timeout=4
 
-    ${billing_id}=              Get Text                    //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
-    Set Suite Variable          ${billing_id}
-    Log To Console              ${billing_id}
-    ${pixuser_id_name}=         GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]                       anchor=Users
-    Log To Console              ${pixuser_id_name}
-    @{id_name}=                 Split String                ${pixuser_id_name}          -
-    ${fake_user_id}             Strip String                ${id_name}[1]
-    Log To Console              ${fake_user_id}
-
-
-    # Logout first
+    # Logout from Robot user to login as user
     Goto                        ${url_dev}/logout
     VerifyText                  Log in
     LoginAsUser
@@ -159,12 +161,12 @@ LoginAsUser
     ClickText                   Continue
     VerifyText                  Log in
     TypeText                    Enter password              ${fake_password}
-    ClickText                   Log in                      anchor=Back                 # <log in> button closest to <Back> button
+    ClickText                   Log in                      anchor=Back
 
     # login as user
     # https://dev.cloud.pix4d.com/login or log out
 
-    # 2CO journey starting with chosed prodcut and credit
+    # 2CO user journey starting with chosed product and credit
     GoTo                        ${url_buy_product}
     VerifyAll                   Your order, You are logged in as: ${fake_email}, ${product_description}, ${credit_amount_ui} Credits
     ClickText                   Continue
@@ -211,7 +213,7 @@ LoginAsUser
     # VerifyElement             //a[@title\='Edit invoice']
 
     # GDPR deletion
-    #
+    
 
 
 
