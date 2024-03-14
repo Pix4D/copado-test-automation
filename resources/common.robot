@@ -196,7 +196,7 @@ Logout_From_Current_User
 
 2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
     [Documentation]             2CO user journey starting with chosed product and credit
-    GoTo                        ${url_buy_product}
+    GoTo                        ${url_buy_product}          timeout=5
     VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits
     ClickText                   Continue
     # Retrives ORG Billing info of the org
