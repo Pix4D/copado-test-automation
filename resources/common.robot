@@ -19,7 +19,7 @@ CreateRandomPersonData
     Set Suite Variable          ${fake_last_name}
     ${fake_email}=              FakerLibrary.email          domain=cxops.com
     Set Suite Variable          ${fake_email}
-    ${fake_password}=           FakerLibrary.Password
+    ${fake_password}=           FakerLibrary.Password       special_chars=False
     Set Suite Variable          ${fake_password}
     Log To Console              Created user: ${fake_first_name}, ${fake_last_name}, ${fake_email}, ${fake_password}
     Return From Keyword
@@ -78,7 +78,7 @@ Hubspot sync verify
 
 
 GDPR_Deletion
-    [Documentation]    GDPR deletion of the test pixuser
+    [Documentation]             GDPR deletion of the test pixuser
     GoTo                        ${my_user_url}
     VerifyText                  ${email_address}
     VerifyAll                   ${email_address}, Profile info
