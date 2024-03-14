@@ -1,8 +1,5 @@
 *** Settings ***
 Documentation                   E2e test for 2Checkout purchase flow
-# Library                       QWeb
-# Library                       BuiltIn
-# Library                       String
 Suite Setup                     Open Browser                about:blank                 ${BROWSER}
 Suite Teardown                  CloseAllBrowsers
 Resource                        ../resources/common.robot
@@ -10,30 +7,6 @@ Resource                        ../resources/common.robot
 
 *** Variables ***
 ${BROWSER}                      chrome
-# # ${eum_org_name}             CXOps RoboticTesting CREDITS
-# ${product_key}                MAPPER-OTC1-DESKTOP
-# ${product_description}        PIX4Dcloud Advanced, Monthly, Subscription
-# # credit amount view ui variable
-# ${credit_amount_ui}           1,000
-# ${total_user_credit}          2200
-# ${product_credit_1000}        CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
-# ${url_buy_product}            https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_1000}
-# ${url_dev}                    https://dev.cloud.pix4d.com
-# ${url_account_dev}            https://dev.account.pix4d.com
-# ${card_number}                4111111111111111
-# ${card_expiration_date}       0130
-# ${card_security_code}         234
-# ${cart_holder_name}           John Doe
-# ${pandora_migration_task}     https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
-# ${admin_tasks}                https://dev.cloud.pix4d.com/admin/common/admintask/
-
-
-*** Keywords ***
-# Setup Browser
-#     ${chrome_options}=          Evaluate                    sys.modules['selenium.webdriver'].ChromeOptions()       sys, selenium.webdriver
-#     Call Method                 ${chrome_options}           add_experimental_option     prefs                       {'profile.default_content_setting_values.notifications': 2}
-#     Open Browser                about:blank                 chrome                      options=${chrome_options}
-
 
 
 *** Test Cases ***
@@ -91,12 +64,3 @@ ${BROWSER}                      chrome
 
     # Back to fake user page and delete user
     GDPR_Deletion_Rondom_User
-
-
-
-
-
-
-
-
-
