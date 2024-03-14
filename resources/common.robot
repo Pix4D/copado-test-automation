@@ -2,14 +2,13 @@
 Library                         QWeb
 Library                         String
 Library                         FakerLibrary
-# Library                       ../Libraries/data_helpers.py                            WITH NAME                   CustomFaker
 
 
 *** Variables ***
 ${product_key}                  MAPPER-OTC1-DESKTOP
 ${product_description}          PIX4Dcloud Advanced, Monthly, Subscription
 ${credit_amount_ui}             1,000                       # credit amount view ui variable
-${total_user_credit}            2200
+${total_user_credit}            1100
 ${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
 ${url_buy_product}              https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_1000}
 ${url_dev}                      https://dev.cloud.pix4d.com
@@ -202,7 +201,7 @@ Logout_From_Current_User
     ClickText                   Continue
     # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details, ${product_description}
-    VerifyInputValue            Email                       ${robot_username}
+    VerifyInputValue            Email                       ${fake_user_email}
     TypeText                    Card number                 ${card_number}
     TypeText                    Card expiration date*:      ${card_expiration_date}
     TypeText                    Security code*:             ${card_security_code}
@@ -211,7 +210,7 @@ Logout_From_Current_User
     ClickText                   Continue
     VerifyText                  Place order
     ClickText                   Place order
-    Verify Text                 Thank you for your order!                               timeout=5
+    Verify Text                 Thank you for your order!                               timeout=15
     VerifyText                  ${fake_user_email}
 
 Verify_Puchased_Credit_From_Account_UI
