@@ -2,7 +2,7 @@
 Library                         QWeb
 Library                         String
 Library                         FakerLibrary
-Library                         ../Libraries/data_helpers.py
+# Library                       ../Libraries/data_helpers.py                            WITH NAME                   CustomFaker
 
 
 *** Variables ***
@@ -34,14 +34,17 @@ Robot_Login_To_Staging_AP
 
 
 Create_Random_Person_Data
-    [Documentation]    This will create a random person with first_name, last_name, email, password
-    ${fake_user_first_name}=    First Name
+    [Documentation]             This will create a random person with first_name, last_name, email, password
+    ${fake_user_first_name}=    FakerLibrary.first_name
+    Log To Console              ${fake_user_first_name}
     Set Suite Variable          ${fake_user_first_name}
-    ${fake_user_last_name}=     Last Name
+    ${fake_user_last_name}=     FakerLibrary.last_name
     Set Suite Variable          ${fake_user_last_name}
-    ${fake_user_email}=         Email    domain=pix4d.work
+    ${fake_user_email}=         FakerLibrary.email          domain=pix4d.work
+    Log To Console              ${fake_user_last_name}
     Set Suite Variable          ${fake_user_email}
-    ${fake_user_password}=      Safe Password
+    ${fake_user_password}=      FakerLibrary.Password       special_chars=False
+    Log To Console              ${fake_user_password}
     Set Suite Variable          ${fake_user_password}
     Log To Console              Created user: ${fake_user_first_name}, ${fake_user_last_name}, ${fake_user_email}, ${fake_user_password}
     Return From Keyword
@@ -50,7 +53,7 @@ Fill_User_Form_And_Verify
     [Documentation]             Fill the user form and verify 'Billing info'. Retry up to 3 times if verification fails.
     ${retries}=                 Set Variable                3
     FOR                         ${index}                    IN RANGE                    ${retries} # with varibale not working
-        CreateRandomPersonData
+        Create_Random_Person_Data
         GoTo                    ${url_dev}/admin_panel/pixuser/new/
         VerifyText              New User
         Type Text               id_first_name               ${fake_user_first_name}
@@ -95,7 +98,7 @@ Create_New_Rondom_User
     [Documentation]             This will create a new user in the Admin Panel application
     GoTo                        ${url_dev}/admin_panel/pixuser/new/
     Sleep                       3
-    Fill User Form And Verify
+    Fill_User_Form_And_Verify
     Refresh Page
     Get_User_Data_And_Save
     Add_QA_Comment_To_User
