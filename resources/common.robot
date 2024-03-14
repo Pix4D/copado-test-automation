@@ -143,7 +143,7 @@ Verify_EUM_Org_Migration_From_User_Page
 
 Get_EUM_Org_uuid_And_Set_Acount_UI_path
     ClickText                   ${eum_org_name}
-    ${org_uuid}                 GetAttribute                id_uuid                     tag=input                   attribute=value
+    ${eum_org_uuid}             GetAttribute                id_uuid                     tag=input                   attribute=value
     Set Suite Variable          ${eum_org_uuid}
     Log To Console              ${eum_org_uuid}
     ${eum_org_url}              GetUrl
