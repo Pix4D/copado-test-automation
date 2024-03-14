@@ -3,7 +3,7 @@ Documentation                   E2e test for 2Checkout purchase flow
 # Library                       QWeb
 # Library                       BuiltIn
 # Library                       String
-Suite Setup                     Setup Browser
+Suite Setup                     Open Browser                about:blank                 ${BROWSER}
 Suite Teardown                  CloseAllBrowsers
 Resource                        ../resources/common.robot
 
@@ -29,10 +29,10 @@ ${BROWSER}                      chrome
 
 
 *** Keywords ***
-Setup Browser
-    ${chrome_options}=          Evaluate                    sys.modules['selenium.webdriver'].ChromeOptions()       sys, selenium.webdriver
-    Call Method                 ${chrome_options}           add_experimental_option     prefs                       {'profile.default_content_setting_values.notifications': 2}
-    Open Browser                about:blank                 chrome                      options=${chrome_options}
+# Setup Browser
+#     ${chrome_options}=          Evaluate                    sys.modules['selenium.webdriver'].ChromeOptions()       sys, selenium.webdriver
+#     Call Method                 ${chrome_options}           add_experimental_option     prefs                       {'profile.default_content_setting_values.notifications': 2}
+#     Open Browser                about:blank                 chrome                      options=${chrome_options}
 
 
 
