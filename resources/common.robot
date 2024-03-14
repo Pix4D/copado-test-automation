@@ -2,12 +2,13 @@
 Library                         QWeb
 Library                         String
 Library                         FakerLibrary
+Library                         ../Libraries/data_helpers.py
 
 
 *** Variables ***
 ${product_key}                  MAPPER-OTC1-DESKTOP
 ${product_description}          PIX4Dcloud Advanced, Monthly, Subscription
-${credit_amount_ui}             1,000    # credit amount view ui variable
+${credit_amount_ui}             1,000                       # credit amount view ui variable
 ${total_user_credit}            2200
 ${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
 ${url_buy_product}              https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_1000}
@@ -19,8 +20,6 @@ ${card_security_code}           234
 ${cart_holder_name}             John Doe
 ${pandora_migration_task}       https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
 ${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/admintask/
-
-
 
 
 *** Keywords ***
@@ -35,14 +34,14 @@ Robot_Login_To_Staging_AP
 
 
 Create_Random_Person_Data
-    [Documentation]             This will create a random person with first_name, last_name, email, password
-    ${fake_user_first_name}=    FakerLibrary.first_name
+    [Documentation]    This will create a random person with first_name, last_name, email, password
+    ${fake_user_first_name}=    First Name
     Set Suite Variable          ${fake_user_first_name}
-    ${fake_user_last_name}=     FakerLibrary.last_name
+    ${fake_user_last_name}=     Last Name
     Set Suite Variable          ${fake_user_last_name}
-    ${fake_user_email}=         FakerLibrary.email          domain=pix4d.work
+    ${fake_user_email}=         Email    domain=pix4d.work
     Set Suite Variable          ${fake_user_email}
-    ${fake_user_password}=      FakerLibrary.Password
+    ${fake_user_password}=      Safe Password
     Set Suite Variable          ${fake_user_password}
     Log To Console              Created user: ${fake_user_first_name}, ${fake_user_last_name}, ${fake_user_email}, ${fake_user_password}
     Return From Keyword
@@ -109,8 +108,6 @@ Login_As_User
     TypeText                    Enter password              ${fake_user_password}
     ClickText                   Log in                      anchor=Back
 
-
-
 Robot_User_Verify_And_Save_Data
     VerifyText                  CXOps RoboticTesting
     ClickText                   CXOps RoboticTesting
@@ -118,6 +115,7 @@ Robot_User_Verify_And_Save_Data
     ${robot_user_url}           GetUrl
     Set Suite Variable          ${robot_user_url}
     Log To Console              ${robot_user_url}
+
 Migrate_User_To_Pandora_Verify_Execution
     [Documentation]             Migrates user to pandora to get EUM Org for the user
     VerifyAll                   ${fake_user_email}, ${fake_user_uuid}
@@ -208,10 +206,10 @@ Logout_From_Current_User
     TypeText                    Card holder name            ${cart_holder_name}
     Execute Javascript          document.getElementById('custom[9120]').click();
     ClickText                   Continue
-    VerifyText                Place order
-    ClickText                 Place order
-    Verify Text               Thank you for your order!                               timeout=5
-    VerifyText                ${fake_user_email}
+    VerifyText                  Place order
+    ClickText                   Place order
+    Verify Text                 Thank you for your order!                               timeout=5
+    VerifyText                  ${fake_user_email}
 
 Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
@@ -224,7 +222,7 @@ Verify_Puchased_Credit_From_Account_UI
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
     GoTo                        ${eum_org_url}
-    VerifyInputValue            id_uuid                     ${eum_org_uuid}                 anchor=UUID
+    VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID
     Log To Console              ${eum_org_uuid}
     ScrollTo                    Invoice number
     UseTable                    Invoice number
