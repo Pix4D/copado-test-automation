@@ -198,8 +198,8 @@ Logout_From_Current_User
     ${url_buy_product}          Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
     Set Suite Variable          ${url_buy_product}
     Log                         Buy product url: ${url_buy_product}                     console=True
-    GoTo                        ${url_buy_product}          timeout=15
-    VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits
+    GoTo                        ${url_buy_product}          timeout=15          
+    VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
     ClickText                   Continue
     # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details, ${product_description}
@@ -225,7 +225,7 @@ Verify_Puchased_Credit_From_Account_UI
 
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
-    GoTo                        ${eum_org_url}
+    GoTo                        ${eum_org_url}              timeout=5
     VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID
     Log To Console              ${eum_org_uuid}
     ScrollTo                    Invoice number
