@@ -199,7 +199,7 @@ Logout_From_Current_User
     Set Suite Variable          ${url_buy_product}
     Log                         Buy product url: ${url_buy_product}                     console=True
     Sleep                       3
-    GoTo                        ${url_buy_product}          timeout=15          
+    GoTo                        ${url_buy_product}          timeout=15
     VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
     ClickText                   Continue
     # Retrives ORG Billing info of the org
@@ -215,7 +215,7 @@ Logout_From_Current_User
     ClickText                   Place order
     Verify Text                 Thank you for your order!                               timeout=15
     VerifyText                  ${fake_user_email}
-    Sleep                       3                        # Give time to backend execution
+    Sleep                       3                           # Give time to backend execution
 
 Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
@@ -228,7 +228,7 @@ Verify_Puchased_Credit_From_Account_UI
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
     GoTo                        ${eum_org_url}              timeout=5
-    VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID
+    VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID                 timeout=5
     Log To Console              ${eum_org_uuid}
     ScrollTo                    Invoice number
     UseTable                    Invoice number
@@ -238,8 +238,8 @@ Verify_Invoice_Generation_With_Correct_Product
 
 GDPR_Deletion_Rondom_User
     [Documentation]             GDPR deletion of the test pixuser
-    GoTo                        ${fake_user_url}    timeout=5
-    VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}
+    GoTo                        ${fake_user_url}            timeout=5
+    VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}    timeout=5
     ClickText                   GDPR Deletion               tag=button
     CloseAlert                  accept                      10s
     VerifyText                  Account disabled upon GDPR request from data subject
