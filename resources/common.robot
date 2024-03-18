@@ -215,11 +215,11 @@ Logout_From_Current_User
     ClickText                   Place order
     Verify Text                 Thank you for your order!                               timeout=15
     VerifyText                  ${fake_user_email}
+    Sleep                       3                        # Give time to backend execution
 
 Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
     GoTo                        ${org_account_page}         timeout=5
-    RefreshPage
     ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
     Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
     Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
