@@ -219,6 +219,7 @@ Logout_From_Current_User
 Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
     GoTo                        ${org_account_page}         timeout=5
+    RefreshPage
     ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
     Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
     Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
@@ -237,7 +238,7 @@ Verify_Invoice_Generation_With_Correct_Product
 
 GDPR_Deletion_Rondom_User
     [Documentation]             GDPR deletion of the test pixuser
-    GoTo                        ${fake_user_url}
+    GoTo                        ${fake_user_url}    timeout=5
     VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}
     ClickText                   GDPR Deletion               tag=button
     CloseAlert                  accept                      10s
