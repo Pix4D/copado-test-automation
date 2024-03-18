@@ -227,6 +227,7 @@ Verify_Puchased_Credit_From_Account_UI
 
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
+    Sleep                       3
     GoTo                        ${eum_org_url}              timeout=5
     VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID                 timeout=5
     Log To Console              ${eum_org_uuid}
