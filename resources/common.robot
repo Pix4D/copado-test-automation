@@ -10,7 +10,6 @@ ${product_description}          PIX4Dcloud Advanced, Monthly, Subscription
 ${credit_amount_ui}             1,000                       # credit amount view ui variable
 ${total_user_credit}            1100
 ${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
-${url_buy_product}              https://dev.account.pix4d.com/complete-purchase?PROD_KEYS=${product_credit_1000}
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 ${card_number}                  4111111111111111
@@ -196,7 +195,9 @@ Logout_From_Current_User
 
 2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
     [Documentation]             2CO user journey starting with chosed product and credit
-    Log                         buy product url:${url_buy_product}                      console=True
+    ${url_buy_product}          Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
+    Set Suite Variable          ${url_buy_product}
+    Log                         Buy product url: ${url_buy_product}                     console=True
     GoTo                        ${url_buy_product}          timeout=15
     VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits
     ClickText                   Continue
