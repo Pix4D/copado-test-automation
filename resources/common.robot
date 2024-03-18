@@ -198,6 +198,7 @@ Logout_From_Current_User
     ${url_buy_product}          Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
     Set Suite Variable          ${url_buy_product}
     Log                         Buy product url: ${url_buy_product}                     console=True
+    Sleep                       3
     GoTo                        ${url_buy_product}          timeout=15          
     VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
     ClickText                   Continue
