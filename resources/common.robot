@@ -34,17 +34,14 @@ Robot_Login_To_Staging_AP
 Create_Random_Person_Data
     [Documentation]             This will create a random person with first_name, last_name, email, password
     ${fake_user_first_name}=    FakerLibrary.first_name
-    Log To Console              ${fake_user_first_name}
     Set Suite Variable          ${fake_user_first_name}
     ${fake_user_last_name}=     FakerLibrary.last_name
     Set Suite Variable          ${fake_user_last_name}
     ${fake_user_email}=         FakerLibrary.email          domain=pix4d.work
-    Log To Console              ${fake_user_last_name}
     Set Suite Variable          ${fake_user_email}
     ${fake_user_password}=      FakerLibrary.Password       special_chars=False
-    Log To Console              ${fake_user_password}
     Set Suite Variable          ${fake_user_password}
-    Log To Console              Created user: ${fake_user_first_name}, ${fake_user_last_name}, ${fake_user_email}, ${fake_user_password}
+    Log To Console              Created user, name: ${fake_user_first_name} ${fake_user_last_name}, username: ${fake_user_email}, password: ${fake_user_password}
     Return From Keyword
 
 Fill_User_Form_And_Verify
@@ -220,7 +217,7 @@ Logout_From_Current_User
 Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
     GoTo                        ${org_account_page}         timeout=5
-    Sleep                       5                        # Wait backed to add credit
+    Sleep                       5                           # Wait backed to add credit
     RefreshPage
     ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
     Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
@@ -242,7 +239,7 @@ Verify_Invoice_Generation_With_Correct_Product
 GDPR_Deletion_Rondom_User
     [Documentation]             GDPR deletion of the test pixuser
     GoTo                        ${fake_user_url}            timeout=5
-    VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}    timeout=5
+    VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}     timeout=5
     ClickText                   GDPR Deletion               tag=button
     CloseAlert                  accept                      10s
     VerifyText                  Account disabled upon GDPR request from data subject
