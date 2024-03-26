@@ -18,6 +18,7 @@ ${card_security_code}           234
 ${cart_holder_name}             John Doe
 ${pandora_migration_task}       https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
 ${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/admintask/
+${partner_dev_base_url}         https://dev.partner.pix4d.com
 
 
 *** Keywords ***
@@ -85,8 +86,9 @@ Get_User_Data_And_Save
     ${fake_user_uuid}=          Strip String                ${split_text}[1]
     Log To Console              ${fake_user_uuid}
     Set Suite Variable          ${fake_user_uuid}
-Add_QA_Comment_To_User
+Add_QA_Comment_And_Marked_as_Staff
     TypeText                    id_comment                  TEST_CXOps_QA
+    ClickText                   Is staff                    anchor=id_is_staff
     ClickText                   SAVE PROFILE
 
 Create_New_Rondom_User
@@ -96,7 +98,7 @@ Create_New_Rondom_User
     Fill_User_Form_And_Verify
     Refresh Page
     Get_User_Data_And_Save
-    Add_QA_Comment_To_User
+    Add_QA_Comment_And_Marked_as_Staff
 
 Login_As_User
     [Documentation]             Login as fake user
