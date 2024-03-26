@@ -31,6 +31,11 @@ ${BROWSER}                      chrome
     Get_Billing_Info_Id_From_EUM_Org_Page
     # Link user to the ORG billing info: from org page to admin
     Link_The_User_To_The_Org_Billing_Info
+
+    # Convert Org to Partner og 
+    # Set store etc
+    # https://dev.cloud.pix4d.com/admin/partner/partnerorganization/715/change/
+    
     # Logout from Robot user to login as user
     Logout_From_Current_User
     # Login as fake user
