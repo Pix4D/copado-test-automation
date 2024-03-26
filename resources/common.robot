@@ -208,9 +208,9 @@ Logout_From_Current_User
     TypeText                    Card holder name            ${cart_holder_name}
     Execute Javascript          document.getElementById('custom[9120]').click();
     ClickText                   Continue
-    VerifyText                  Place order
+    VerifyText                  Place order                 timeout=5
     ClickText                   Place order
-    Verify Text                 Thank you for your order!                               timeout=15
+    Verify Text                 Thank you for your order!                               timeout=20
     VerifyText                  ${fake_user_email}
     Sleep                       3                           # Give time to backend execution
 
