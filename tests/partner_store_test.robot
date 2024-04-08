@@ -79,10 +79,13 @@ ${partner_dev_base_url}         https://dev.partner.pix4d.com
     # put in variable => ${partner_dev_base_url}            https://dev.partner.pix4d.com
 
     # PARTNER STORE
-    # ${partner_store_url}      Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/store-product/all
-    ${partner_store_url}        Set Variable                https://dev.partner.pix4d.com/organization/${eum_org_uuid}/store-product/all
+    ${partner_store_url}      Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/store-product/all
     Set Suite Variable          ${partner_store_url}
     Log To Console              ${partner_store_url}
+    # Partner home page
+    ${partner_home_url}      Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/home
+    Set Suite Variable          ${partner_home_url}
+    Log To Console              ${partner_home_url}
 
 
 
@@ -94,7 +97,7 @@ ${partner_dev_base_url}         https://dev.partner.pix4d.com
     
     # HERE ==> 
     
-    # Go partner store page
+    # Go partner store page select products and comlate order
     GoTo                        ${partner_store_url}        timeout=5
     VerifyAll                   All products, Store Products
     TypeText                    Search by name              2,500 Credits              
@@ -107,15 +110,30 @@ ${partner_dev_base_url}         https://dev.partner.pix4d.com
     VerifyText                  Complete purchase
     ClickText                   Complete purchase           anchor=Close
     VerifyText                  Summary
+    ClickText                   Complete purchase
 
 
 
-    # -----
-    # 2CO user journey starting with chosed product and credit
+
+    # Order summary page for Partner
     2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
 
     # Check credits from Account UI
-    Verify_Puchased_Credit_From_Account_UI
+     # -----
+    # back to home page => https://dev.partner.pix4d.com/organization/uuid/store-product/all
+    #     https://dev.partner.pix4d.com/organization/eum_org_uuid/home
+    # Verify_Puchase_From_Account_UI
+    [Documentation]             Verify pruchase from account UI organization page
+    GoTo                        https://dev.partner.pix4d.com/organization/${eum_org_uuid}/home         timeout=5
+    # GoTo                        ${partner_home_url}         timeout=5
+    ClickText                   Invoices
+    
+    Sleep                       5                           # Wait backed to add credit
+    RefreshPage
+    ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
+    Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
+    Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
+
 
     # Logout from User account
     Logout_From_Current_User
