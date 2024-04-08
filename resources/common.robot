@@ -198,6 +198,7 @@ Logout_From_Current_User
     Sleep                       3
     GoTo                        ${url_buy_product}          timeout=15
     VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
+    ClickText                   ${eum_org_name}
     ClickText                   Continue
     # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details, ${product_description}
