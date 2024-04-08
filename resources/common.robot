@@ -5,10 +5,10 @@ Library                         FakerLibrary
 
 
 *** Variables ***
-${product_key}                  MAPPER-OTC1-DESKTOP
-${product_description}          PIX4Dcloud Advanced, Monthly, Subscription
+${product_key}                  MAPPER-OTC1-DESKTOP    # XXXX remove
+${product_description}          PIX4Dcloud Advanced, Monthly, Subscription    # XXXX remove
 ${credit_amount_ui}             1,000                       # credit amount view ui variable
-${total_user_credit}            1100
+${total_user_credit}            1100    # XXXX remove
 ${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
@@ -193,16 +193,16 @@ Logout_From_Current_User
 
 
 2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
-    [Documentation]             2CO user journey starting with chosed product and credit
-    ${url_buy_product}          Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
-    Set Suite Variable          ${url_buy_product}
-    Log                         Buy product url: ${url_buy_product}                     console=True
-    Sleep                       3
-    GoTo                        ${url_buy_product}          timeout=15
-    VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
-    ClickText                   Continue
+    [Documentation]    2Checkout order summary page for Partner
+    # ${url_buy_product}          Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
+    # Set Suite Variable          ${url_buy_product}
+    # Log                         Buy product url: ${url_buy_product}                     console=True
+    # Sleep                       3
+    # GoTo                        ${url_buy_product}          timeout=15
+    # VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
+    # ClickText                   Continue
     # Retrives ORG Billing info of the org
-    VerifyAll                   Order summary, Billing Information, Payment details, ${product_description}
+    VerifyAll                   Order summary, Billing Information, Payment details
     VerifyInputValue            Email                       ${fake_user_email}
     TypeText                    Card number                 ${card_number}
     TypeText                    Card expiration date*:      ${card_expiration_date}
@@ -216,7 +216,7 @@ Logout_From_Current_User
     VerifyText                  ${fake_user_email}
     Sleep                       3                           # Give time to backend execution
 
-Verify_Puchased_Credit_From_Account_UI
+Verify_Puchase_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
     GoTo                        ${org_account_page}         timeout=5
     Sleep                       5                           # Wait backed to add credit
