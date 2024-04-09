@@ -5,11 +5,11 @@ Library                         FakerLibrary
 
 
 *** Variables ***
-${product_key}                  MAPPER-OTC1-DESKTOP    # XXXX remove
-${product_description}          PIX4Dcloud Advanced, Monthly, Subscription    # XXXX remove
-${credit_amount_ui}             1,000                       # credit amount view ui variable
-${total_user_credit}            1100    # XXXX remove
-${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
+${product_credits}               2,500 Credits
+${product_cloud_advance}         PIX4Dcloud Advanced, Yearly, rental
+# ${credit_amount_ui}             1,000                       # credit amount view ui variable
+# ${total_user_credit}            1100    # XXXX remove
+# ${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 ${card_number}                  4111111111111111
@@ -230,14 +230,23 @@ Verify_Puchase_From_Account_UI
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
     Sleep                       3
+    # Goto                        https://dev.cloud.pix4d.com/admin_panel/organization/819395/edit/
     GoTo                        ${eum_org_url}              timeout=5
     VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID                 timeout=5
     Log To Console              ${eum_org_uuid}
     ScrollTo                    Invoice number
     UseTable                    Invoice number
-    ${invoice_product}=         Get Cell Text               r1c8
-    Should Contain              ${invoice_product}          ${product_description}
-    Should Contain              ${invoice_product}          ${credit_amount_ui}
+    # UseTable                       child=True
+    # ${invoice_number_in_AP}=         Get Cell Text               r1c1
+    ${invoice_number_in_AP}=       Get Text                    //*[@title\='Edit invoice']
+    ${invoice_product_AP}=         Get Cell Text               r1c8
+    Log To Console                 ${invoice_number_in_AP}
+    Should Contain              ${invoice_number_in_AP}          ${invoice_number_account_UI}
+    Should Be Equal As Strings                        ${invoice_number_in_AP}          ${invoice_number_account_UI}
+    # Should Be Equal As Strings                        ${invoice_number_in_AP}          202404-I-R-CH-067040
+    Should Contain              ${invoice_product_AP}          ${product_cloud_advanced}
+    Should Contain              ${invoice_product_AP}          ${product_credits}
+
 
 GDPR_Deletion_Rondom_User
     [Documentation]             GDPR deletion of the test pixuser
