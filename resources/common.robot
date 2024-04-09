@@ -133,7 +133,8 @@ Verify_EUM_Org_Migration_From_User_Page
     ${eum_org_name}             Set Variable                ${fake_user_first_name} ${fake_user_last_name} space
     Log To Console              ${eum_org_name}
     Set Suite Variable          ${eum_org_name}
-    VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}
+    RefreshPage
+    VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}    timeout=3
 
 
 Get_EUM_Org_uuid_And_Set_Acount_UI_path
