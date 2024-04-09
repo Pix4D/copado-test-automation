@@ -8,6 +8,9 @@ Resource                        ../resources/common.robot
 *** Variables ***
 ${BROWSER}                      chrome
 ${partner_dev_base_url}         https://dev.partner.pix4d.com
+${product_credits}              2,500 Credits
+${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
+${license_product_description}    PIX4Dcloud Advanced, Yearly rental license
 
 *** Test Cases ***
 2Checkout Credit Product Purchase E2E Test Flow
@@ -79,11 +82,11 @@ ${partner_dev_base_url}         https://dev.partner.pix4d.com
     # put in variable => ${partner_dev_base_url}            https://dev.partner.pix4d.com
 
     # PARTNER STORE
-    ${partner_store_url}      Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/store-product/all
+    ${partner_store_url}        Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/store-product/all
     Set Suite Variable          ${partner_store_url}
     Log To Console              ${partner_store_url}
     # Partner home page
-    ${partner_home_url}      Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/home
+    ${partner_home_url}         Set Variable                ${partner_dev_base_url}/organization/${eum_org_uuid}/home
     Set Suite Variable          ${partner_home_url}
     Log To Console              ${partner_home_url}
 
@@ -94,18 +97,18 @@ ${partner_dev_base_url}         https://dev.partner.pix4d.com
 
     # Login as fake user
     Login_As_User
-    
-    # HERE ==> 
-    
+
+    # HERE ==>
+
     # Go partner store page select products and comlate order
     GoTo                        ${partner_store_url}        timeout=5
     VerifyAll                   All products, Store Products
-    TypeText                    Search by name              2,500 Credits              
-    VerifyText                  2,500 Credits
-    ClickText                   Add to cart                 anchor=2,500 Credits       
-    TypeText                    Search by name              PIX4Dcloud Advanced, Yearly, rental
-    VerifyText                  PIX4Dcloud Advanced, Yearly, rental                     anchor=Product
-    ClickText                   Add to cart                 anchor=PIX4Dcloud Advanced, Yearly, rental 
+    TypeText                    Search by name              ${product_credits}
+    VerifyText                  ${product_credits}
+    ClickText                   Add to cart                 anchor=2,500 Credits
+    TypeText                    Search by name              ${product_cloud_advanced}
+    VerifyText                  ${product_cloud_advanced}                               anchor=Product
+    ClickText                   Add to cart                 anchor=PIX4Dcloud Advanced, Yearly, rental
     ClickText                   Show cart                   anchor=Subtotal:
     VerifyText                  Complete purchase
     ClickText                   Complete purchase           anchor=Close
@@ -119,21 +122,43 @@ ${partner_dev_base_url}         https://dev.partner.pix4d.com
     2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
 
     # Check credits from Account UI
-     # -----
-    # back to home page => https://dev.partner.pix4d.com/organization/uuid/store-product/all
-    #     https://dev.partner.pix4d.com/organization/eum_org_uuid/home
-    # Verify_Puchase_From_Account_UI
-    [Documentation]             Verify pruchase from account UI organization page
-    GoTo                        https://dev.partner.pix4d.com/organization/${eum_org_uuid}/home         timeout=5
-    # GoTo                        ${partner_home_url}         timeout=5
-    ClickText                   Invoices
-    
-    Sleep                       5                           # Wait backed to add credit
-    RefreshPage
-    ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
-    Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
-    Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
+    #
+    [Documentation]             Verify pruchase from account UI organization page 
+    GoTo                        ${partner_home_url}         timeout=5
+    # Verify Invoice and set variables
+    ClickText                   Invoices                    anchor=Home
+    UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=3
+    ${invoice_products}=        Get Cell Text               r1c2
+    ${invoice_paid}=            Get Cell Text               r1c6
+    Should Contain              ${invoice_products}         ${product_credits}
+    Should Contain              ${invoice_products}         ${product_cloud_advanced}
+    Should Contain              ${invoice_paid}             PAID
+    ${invoice_number_account_UI}=          Get Cell Text               r1c1
+    Set Suite Variable          ${invoice_number_account_UI}
+    Log To Console              ${invoice_number_account_UI}
 
+
+    # Switch to licence tab verify product set lisence key variable
+    ClickText                   Licenses                    anchor=Organization management
+    UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
+    ${license_product}=         Get Cell Text               r1c2
+    Should Contain              ${license_product}          ${license_product_description}
+    ${license_key}=             Get Cell Text               r1c1
+    Set Suite Variable          ${license_key}
+    Log To Console              ${license_key}
+
+    # ${billing_info_id}=         GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
+    # Set Suite Variable          ${billing_info_id}
+    # Log To Console              ${billing_info_id}
+    # ${invoice_product}=         Get Cell Text               r1c8
+    # Should Contain              ${invoice_product}          ${product_description}
+    # Should Contain              ${invoice_product}          ${credit_amount_ui}
+
+    # Sleep                       5                           # Wait backed to add credit
+    # RefreshPage
+    # ${creditAmount}             GetText                     //*[@data-test\='creditAmount']           timeout=5
+    # Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
+    # Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
 
     # Logout from User account
     Logout_From_Current_User
