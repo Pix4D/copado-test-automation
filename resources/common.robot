@@ -86,6 +86,7 @@ Get_User_Data_And_Save
     ${fake_user_uuid}=          Strip String                ${split_text}[1]
     Log To Console              ${fake_user_uuid}
     Set Suite Variable          ${fake_user_uuid}
+
 Add_QA_Comment_And_Save
     TypeText                    id_comment                  TEST_CXOps_QA
     ClickText                   SAVE PROFILE
@@ -137,7 +138,8 @@ Verify_EUM_Org_Migration_From_User_Page
     VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}
 
 
-Get_EUM_Org_uuid_And_Set_Account_UI_path
+Get_EUM_Org_uuid_And_Set_Partner_Account_UI_path
+    [Documentation]             Get and set org variables for future execution 
     ClickText                   ${eum_org_name}
     ${eum_org_uuid}             GetAttribute                id_uuid                     tag=input                   attribute=value
     Set Suite Variable          ${eum_org_uuid}
@@ -265,7 +267,7 @@ Order_Product_from_Partner_Store
     VerifyText                  ${fake_user_email}
     Sleep                       3                           # Give time to backend execution
 
-Invoice_And_License_Geneartion_Verication_On_Partner_Page
+Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
     # Verify Invoice product and set invoice variable to variables
