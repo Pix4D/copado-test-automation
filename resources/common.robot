@@ -5,11 +5,8 @@ Library                         FakerLibrary
 
 
 *** Variables ***
-${product_credits}               2,500 Credits
-${product_cloud_advance}         PIX4Dcloud Advanced, Yearly, rental
-# ${credit_amount_ui}             1,000                       # credit amount view ui variable
-# ${total_user_credit}            1100    # XXXX remove
-# ${product_credit_1000}          CLOUD-CREDITS-1000,CLOUD-ADVANCED-MONTH-SUBS
+${product_credits}              2,500 Credits
+${product_cloud_advance}        PIX4Dcloud Advanced, Yearly, rental
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 ${card_number}                  4111111111111111
@@ -18,7 +15,7 @@ ${card_security_code}           234
 ${cart_holder_name}             John Doe
 ${pandora_migration_task}       https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
 ${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/admintask/
-${partner_dev_base_url}         https://dev.partner.pix4d.com
+${partner_account_base_url}     https://dev.partner.pix4d.com
 
 
 *** Keywords ***
@@ -89,7 +86,7 @@ Get_User_Data_And_Save
 Add_QA_Comment_And_Save
     TypeText                    id_comment                  TEST_CXOps_QA
     # TODO : Remove below line
-    # ClickText                   Is staff                    anchor=id_is_staff    
+    # ClickText                 Is staff                    anchor=id_is_staff
     ClickText                   SAVE PROFILE
 
 Create_New_Rondom_User
@@ -151,6 +148,15 @@ Get_EUM_Org_uuid_And_Set_Acount_UI_path
     ${org_account_page}         Set Variable                ${url_account_dev}/organization/${eum_org_uuid}/credits
     Set Suite Variable          ${org_account_page}
     Log To Console              ${org_account_page}
+    # Set partner store page
+    ${partner_store_url}        Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/store-product/all
+    Set Suite Variable          ${partner_store_url}
+    Log To Console              ${partner_store_url}
+    # Set partner home page
+    ${partner_home_url}         Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/home
+    Set Suite Variable          ${partner_home_url}
+    Log To Console              ${partner_home_url}
+
 
 Set_EUM_Org_Billing_Info
     [Documentation]             Seeting EUM org billin info
@@ -194,14 +200,14 @@ Logout_From_Current_User
 
 
 2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
-    [Documentation]    2Checkout order summary page for Partner
-    # ${url_buy_product}          Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
-    # Set Suite Variable          ${url_buy_product}
-    # Log                         Buy product url: ${url_buy_product}                     console=True
-    # Sleep                       3
-    # GoTo                        ${url_buy_product}          timeout=15
-    # VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
-    # ClickText                   Continue
+    [Documentation]             2Checkout order summary page for Partner
+    # ${url_buy_product}        Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
+    # Set Suite Variable        ${url_buy_product}
+    # Log                       Buy product url: ${url_buy_product}                     console=True
+    # Sleep                     3
+    # GoTo                      ${url_buy_product}          timeout=15
+    # VerifyAll                 Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
+    # ClickText                 Continue
     # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details
     VerifyInputValue            Email                       ${fake_user_email}
@@ -230,22 +236,22 @@ Verify_Puchase_From_Account_UI
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
     Sleep                       3
-    # Goto                        https://dev.cloud.pix4d.com/admin_panel/organization/819395/edit/
+    # Goto                      https://dev.cloud.pix4d.com/admin_panel/organization/819395/edit/
     GoTo                        ${eum_org_url}              timeout=5
     VerifyInputValue            id_uuid                     ${eum_org_uuid}             anchor=UUID                 timeout=5
     Log To Console              ${eum_org_uuid}
     ScrollTo                    Invoice number
     UseTable                    Invoice number
-    # UseTable                       child=True
-    # ${invoice_number_in_AP}=         Get Cell Text               r1c1
-    ${invoice_number_in_AP}=       Get Text                    //*[@title\='Edit invoice']
-    ${invoice_product_AP}=         Get Cell Text               r1c8
-    Log To Console                 ${invoice_number_in_AP}
-    Should Contain              ${invoice_number_in_AP}          ${invoice_number_account_UI}
-    Should Be Equal As Strings                        ${invoice_number_in_AP}          ${invoice_number_account_UI}
-    # Should Be Equal As Strings                        ${invoice_number_in_AP}          202404-I-R-CH-067040
-    Should Contain              ${invoice_product_AP}          ${product_cloud_advanced}
-    Should Contain              ${invoice_product_AP}          ${product_credits}
+    # UseTable                  child=True
+    # ${invoice_number_in_AP}=                              Get Cell Text               r1c1
+    ${invoice_number_in_AP}=    Get Text                    //*[@title\='Edit invoice']
+    ${invoice_product_AP}=      Get Cell Text               r1c8
+    Log To Console              ${invoice_number_in_AP}
+    Should Contain              ${invoice_number_in_AP}     ${invoice_number_account_UI}
+    Should Be Equal As Strings                              ${invoice_number_in_AP}     ${invoice_number_account_UI}
+    # Should Be Equal As Strings                            ${invoice_number_in_AP}     202404-I-R-CH-067040
+    Should Contain              ${invoice_product_AP}       ${product_cloud_advanced}
+    Should Contain              ${invoice_product_AP}       ${product_credits}
 
 
 GDPR_Deletion_Rondom_User
