@@ -10,11 +10,13 @@ ${BROWSER}                      chrome
 
 
 *** Test Cases ***
-2Checkout Credit Product Purchase E2E Test Flow
-    [Documentation]             2Checkout credit product purchase e2e test flow
-    Log                         2CO credit product purchase e2e test flow is starting                 console=True
+Partner_Store_Test
+    [Documentation]             New Partner portal e2e test flow
+    Log                         New Partner portal e2e test flow is starting                 console=True
+
     # Robot user login to staging admin panel
     Robot_Login_To_Staging_AP
+
     # Verify user and get necessary org value
     Robot_User_Verify_And_Save_Data
 
@@ -30,7 +32,7 @@ ${BROWSER}                      chrome
 
     # From user to org page and get uuid and set
     # is it necessary ? Since wont visit
-    Get_EUM_Org_uuid_And_Set_Account_UI_path
+    Get_EUM_Org_uuid_And_Set_Partner_Account_UI_path
 
     # Set EUM org billling info from org page
     Set_EUM_Org_Billing_Info
@@ -102,7 +104,7 @@ ${BROWSER}                      chrome
     2Checkout_Order_Summary_With_Retrived_Billing_Info
 
     # Check credits from Account UI
-    Invoice_And_License_Geneartion_Verication_On_Partner_Page
+    Invoice_And_License_Generation_Verication_On_Partner_Page
     # [Documentation]             Verify pruchase from account UI organization page
     # GoTo                        ${partner_home_url}         timeout=5
     # # Verify Invoice product and set invoice variable to variables
