@@ -7,10 +7,7 @@ Resource                        ../resources/common.robot
 
 *** Variables ***
 ${BROWSER}                      chrome
-${partner_account_base_url}                             https://dev.partner.pix4d.com
-${product_credits}              2,500 Credits
-${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
-${license_product_description}                              PIX4Dcloud Advanced, Yearly rental license
+
 
 *** Test Cases ***
 2Checkout Credit Product Purchase E2E Test Flow
@@ -33,7 +30,7 @@ ${license_product_description}                              PIX4Dcloud Advanced,
 
     # From user to org page and get uuid and set
     # is it necessary ? Since wont visit
-    Get_EUM_Org_uuid_And_Set_Acount_UI_path
+    Get_EUM_Org_uuid_And_Set_Account_UI_path
 
     # Set EUM org billling info from org page
     Set_EUM_Org_Billing_Info
@@ -45,42 +42,33 @@ ${license_product_description}                              PIX4Dcloud Advanced,
     Link_The_User_To_The_Org_Billing_Info
 
     # Convert Org to Partner og
-    GoTo                        ${eum_org_url}              timeout=5
-    VerifyInputValue            id_uuid                     ${eum_org_uuid}
-    VerifyText                  Convert to partner          anchor=Credits
-    ClickText                   Convert to partner
+    Convert_EUM_Org_To_Partner
+    # GoTo                        ${eum_org_url}              timeout=5
+    # VerifyInputValue            id_uuid                     ${eum_org_uuid}
+    # VerifyText                  Convert to partner          anchor=Credits
+    # ClickText                   Convert to partner
 
     # Set partner ORG
-    # place: from AP to Admin
-    ${partner_org_url}          GetUrl
-    Set Suite Variable          ${partner_org_url}
-    Log To Console              ${partner_org_url}
-    @{partner_org_url_parts}=                               Split String                ${partner_org_url}    /
-    ${partner_org_id}=          Set Variable                ${partner_org_url_parts}[5]
-    Log To Console              ${partner_org_id}
-    Set Suite Variable          ${partner_org_id}
-    ${partner_org_admin_url}    Set Variable                ${url_dev}/admin/partner/partnerorganization/${partner_org_id}/change/
-    Set Suite Variable          ${partner_org_admin_url}
-    Log To Console              ${partner_org_admin_url}
-    GoTo                        ${partner_org_admin_url}    timeout=3
-    VerifyText                  Change partner organization                             timeout=3
-    DropDown                    Partner type:               Premier Reseller
-    TypeText                    id_reference_user           ${fake_user_id}
-    DropDown                    Access profile:             Store Premium
-    DropDown                    Currency code:              CHF
-    TypeText                    id_pix4d_manager            ${fake_user_id}
-    ClickText                   Save and continue editing                               anchor=Save and add another
-    VerifyText                  was changed successfully    timeout=4
-
-
-    # # NePARTNER STORE
-    # ${partner_store_url}        Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/store-product/all
-    # Set Suite Variable          ${partner_store_url}
-    # Log To Console              ${partner_store_url}
-    # # Partner home page
-    # ${partner_home_url}         Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/home
-    # Set Suite Variable          ${partner_home_url}
-    # Log To Console              ${partner_home_url}
+    Set_The_Partner_Org
+    # ${partner_org_url}          GetUrl
+    # Set Suite Variable          ${partner_org_url}
+    # Log To Console              ${partner_org_url}
+    # @{partner_org_url_parts}=                               Split String                ${partner_org_url}    /
+    # ${partner_org_id}=          Set Variable                ${partner_org_url_parts}[5]
+    # Log To Console              ${partner_org_id}
+    # Set Suite Variable          ${partner_org_id}
+    # ${partner_org_admin_url}    Set Variable                ${url_dev}/admin/partner/partnerorganization/${partner_org_id}/change/
+    # Set Suite Variable          ${partner_org_admin_url}
+    # Log To Console              ${partner_org_admin_url}
+    # GoTo                        ${partner_org_admin_url}    timeout=3
+    # VerifyText                  Change partner organization                             timeout=3
+    # DropDown                    Partner type:               Premier Reseller
+    # TypeText                    id_reference_user           ${fake_user_id}
+    # DropDown                    Access profile:             Store Premium
+    # DropDown                    Currency code:              CHF
+    # TypeText                    id_pix4d_manager            ${fake_user_id}
+    # ClickText                   Save and continue editing                               anchor=Save and add another
+    # VerifyText                  was changed successfully    timeout=4
 
 
     # Logout from Robot user to login as user
@@ -89,67 +77,53 @@ ${license_product_description}                              PIX4Dcloud Advanced,
     # Login as fake user
     Login_As_User
 
-    # HERE ==>
 
     # Go partner store page select products and comlate order
-    GoTo                        ${partner_store_url}        timeout=5
-    VerifyAll                   All products, Store Products
-    TypeText                    Search by name              ${product_credits}
-    VerifyText                  ${product_credits}
-    ClickText                   Add to cart                 anchor=2,500 Credits
-    TypeText                    Search by name              ${product_cloud_advanced}
-    VerifyText                  ${product_cloud_advanced}                               anchor=Product
-    ClickText                   Add to cart                 anchor=PIX4Dcloud Advanced, Yearly, rental
-    ClickText                   Show cart                   anchor=Subtotal:
-    VerifyText                  Complete purchase
-    ClickText                   Complete purchase           anchor=Close
-    VerifyText                  Summary
-    ClickText                   Complete purchase
+    # Order_Product_from_Partner_Store
+    # GoTo                        ${partner_store_url}        timeout=5
+    # VerifyAll                   All products, Store Products
+    # TypeText                    Search by name              ${product_credits}
+    # VerifyText                  ${product_credits}
+    # ClickText                   Add to cart                 anchor=2,500 Credits
+    # TypeText                    Search by name              ${product_cloud_advanced}
+    # VerifyText                  ${product_cloud_advanced}                               anchor=Product
+    # ClickText                   Add to cart                 anchor=PIX4Dcloud Advanced, Yearly, rental
+    # ClickText                   Show cart                   anchor=Subtotal:
+    # VerifyText                  Complete purchase
+    # ClickText                   Complete purchase           anchor=Close
+    # VerifyText                  Summary
+    # ClickText                   Complete purchase
+
+    # Go partner store page select products and comlate order
+    Order_Product_from_Partner_Store
 
 
-
-
-    # Order summary page for Partner
-    2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
+    # Order summary page, verify order, card input
+    2Checkout_Order_Summary_With_Retrived_Billing_Info
 
     # Check credits from Account UI
-    #
-    [Documentation]             Verify pruchase from account UI organization page
-    GoTo                        ${partner_home_url}         timeout=5
-    # Verify Invoice and set variables
-    ClickText                   Invoices                    anchor=Home
-    UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=3
-    ${invoice_products}=        Get Cell Text               r1c2
-    ${invoice_paid}=            Get Cell Text               r1c6
-    Should Contain              ${invoice_products}         ${product_credits}
-    Should Contain              ${invoice_products}         ${product_cloud_advanced}
-    Should Contain              ${invoice_paid}             PAID
-    ${invoice_number_account_UI}=                           Get Cell Text               r1c1
-    Set Suite Variable          ${invoice_number_account_UI}
-    Log To Console              ${invoice_number_account_UI}
-
-
-    # Switch to licence tab verify product set lisence key variable
-    ClickText                   Licenses                    anchor=Organization management
-    UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
-    ${license_product}=         Get Cell Text               r1c2
-    Should Contain              ${license_product}          ${license_product_description}
-    ${license_key}=             Get Cell Text               r1c1
-    Set Suite Variable          ${license_key}
-    Log To Console              ${license_key}
-
-    # ${billing_info_id}=       GetText                     //table[contains(@class, 'mdl-data-table')]/tbody/tr[1]/td[1]
-    # Set Suite Variable        ${billing_info_id}
-    # Log To Console            ${billing_info_id}
-    # ${invoice_product}=       Get Cell Text               r1c8
-    # Should Contain            ${invoice_product}          ${product_description}
-    # Should Contain            ${invoice_product}          ${credit_amount_ui}
-
-    # Sleep                     5                           # Wait backed to add credit
-    # RefreshPage
-    # ${creditAmount}           GetText                     //*[@data-test\='creditAmount']           timeout=5
-    # Log To Console            Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
-    # Should Be Equal As Strings                            ${creditAmount}             ${total_user_credit}
+    Invoice_And_License_Geneartion_Verication_On_Partner_Page
+    # [Documentation]             Verify pruchase from account UI organization page
+    # GoTo                        ${partner_home_url}         timeout=5
+    # # Verify Invoice product and set invoice variable to variables
+    # ClickText                   Invoices                    anchor=Home
+    # UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=3
+    # ${invoice_products}=        Get Cell Text               r1c2
+    # ${invoice_paid}=            Get Cell Text               r1c6
+    # Should Contain              ${invoice_products}         ${product_credits}
+    # Should Contain              ${invoice_products}         ${product_cloud_advanced}
+    # Should Contain              ${invoice_paid}             PAID
+    # ${invoice_number_account_UI}=                           Get Cell Text               r1c1
+    # Set Suite Variable          ${invoice_number_account_UI}
+    # Log To Console              ${invoice_number_account_UI}
+    # # Switch to licence tab verify product, set lisence key to variable
+    # ClickText                   Licenses                    anchor=Organization management
+    # UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
+    # ${license_product}=         Get Cell Text               r1c2
+    # Should Contain              ${license_product}          ${license_product_description}
+    # ${license_key}=             Get Cell Text               r1c1
+    # Set Suite Variable          ${license_key}
+    # Log To Console              ${license_key}
 
     # Logout from User account
     Logout_From_Current_User
