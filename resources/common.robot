@@ -6,7 +6,7 @@ Library                         FakerLibrary
 
 *** Variables ***
 ${product_credits}              2,500 Credits
-${product_cloud_advance}        PIX4Dcloud Advanced, Yearly, rental
+${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 ${card_number}                  4111111111111111
@@ -16,6 +16,9 @@ ${cart_holder_name}             John Doe
 ${pandora_migration_task}       https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
 ${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/admintask/
 ${partner_account_base_url}     https://dev.partner.pix4d.com
+${product_credits}              2,500 Credits
+${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
+${license_product_description}                              PIX4Dcloud Advanced, Yearly rental license
 
 
 *** Keywords ***
@@ -85,8 +88,6 @@ Get_User_Data_And_Save
     Set Suite Variable          ${fake_user_uuid}
 Add_QA_Comment_And_Save
     TypeText                    id_comment                  TEST_CXOps_QA
-    # TODO : Remove below line
-    # ClickText                 Is staff                    anchor=id_is_staff
     ClickText                   SAVE PROFILE
 
 Create_New_Rondom_User
@@ -136,7 +137,7 @@ Verify_EUM_Org_Migration_From_User_Page
     VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}
 
 
-Get_EUM_Org_uuid_And_Set_Acount_UI_path
+Get_EUM_Org_uuid_And_Set_Account_UI_path
     ClickText                   ${eum_org_name}
     ${eum_org_uuid}             GetAttribute                id_uuid                     tag=input                   attribute=value
     Set Suite Variable          ${eum_org_uuid}
@@ -177,6 +178,7 @@ Set_EUM_Org_Billing_Info
     ClickText                   SAVE                        anchor=Cancel
 
 Get_Billing_Info_Id_From_EUM_Org_Page
+    [Documentation]             Get billing info id from AP org page
     GoTo                        ${eum_org_url}
     RefreshPage
     ScrollText                  Billing information
@@ -185,6 +187,7 @@ Get_Billing_Info_Id_From_EUM_Org_Page
     Log To Console              ${billing_info_id}
 
 Link_The_User_To_The_Org_Billing_Info
+    [Documentation]             Link org user to org billing info
     ${org_billing_info_url}     Set Variable                ${url_dev}/admin/user_account/billinginformation/${billing_info_id}/change/
     Log To Console              ${org_billing_info_url}
     Set Suite Variable          ${org_billing_info_url}
@@ -194,21 +197,60 @@ Link_The_User_To_The_Org_Billing_Info
     ClickText                   Save and continue editing                               anchor=Save and add another
     VerifyText                  was changed successfully    timeout=4
 
+Convert_EUM_Org_To_Partner
+    [Documentation]             Covert EUM Org to partner Org
+    GoTo                        ${eum_org_url}              timeout=5
+    VerifyInputValue            id_uuid                     ${eum_org_uuid}
+    VerifyText                  Convert to partner          anchor=Credits
+    ClickText                   Convert to partner
+
+Set_The_Partner_Org
+    [Documentation]             Set newly created partner org details from admin page
+    ${partner_org_url}          GetUrl
+    Set Suite Variable          ${partner_org_url}
+    Log To Console              ${partner_org_url}
+    @{partner_org_url_parts}=                               Split String                ${partner_org_url}          /
+    ${partner_org_id}=          Set Variable                ${partner_org_url_parts}[5]
+    Log To Console              ${partner_org_id}
+    Set Suite Variable          ${partner_org_id}
+    ${partner_org_admin_url}    Set Variable                ${url_dev}/admin/partner/partnerorganization/${partner_org_id}/change/
+    Set Suite Variable          ${partner_org_admin_url}
+    Log To Console              ${partner_org_admin_url}
+    GoTo                        ${partner_org_admin_url}    timeout=3
+    VerifyText                  Change partner organization                             timeout=3
+    DropDown                    Partner type:               Premier Reseller
+    TypeText                    id_reference_user           ${fake_user_id}
+    DropDown                    Access profile:             Store Premium
+    DropDown                    Currency code:              CHF
+    TypeText                    id_pix4d_manager            ${fake_user_id}
+    ClickText                   Save and continue editing                               anchor=Save and add another
+    VerifyText                  was changed successfully    timeout=4
+
 Logout_From_Current_User
+    [Documentation]             Logout from current user
     Goto                        ${url_dev}/logout
     VerifyText                  Log in
 
 
-2Checkout_Credit_Product_Order_With_Retrived_Billing_Info
+Order_Product_from_Partner_Store
+    [Documentation]             Place an order from new partner store
+    GoTo                        ${partner_store_url}        timeout=5
+    VerifyAll                   All products, Store Products
+    TypeText                    Search by name              ${product_credits}
+    VerifyText                  ${product_credits}
+    ClickText                   Add to cart                 anchor=2,500 Credits
+    TypeText                    Search by name              ${product_cloud_advanced}
+    VerifyText                  ${product_cloud_advanced}                               anchor=Product
+    ClickText                   Add to cart                 anchor=PIX4Dcloud Advanced, Yearly, rental
+    ClickText                   Show cart                   anchor=Subtotal:
+    VerifyText                  Complete purchase
+    ClickText                   Complete purchase           anchor=Close
+    VerifyText                  Summary
+    ClickText                   Complete purchase
+
+
+2Checkout_Order_Summary_With_Retrived_Billing_Info
     [Documentation]             2Checkout order summary page for Partner
-    # ${url_buy_product}        Set Variable                ${url_account_dev}/complete-purchase?PROD_KEYS=${product_credit_1000}
-    # Set Suite Variable        ${url_buy_product}
-    # Log                       Buy product url: ${url_buy_product}                     console=True
-    # Sleep                     3
-    # GoTo                      ${url_buy_product}          timeout=15
-    # VerifyAll                 Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
-    # ClickText                 Continue
-    # Retrives ORG Billing info of the org
     VerifyAll                   Order summary, Billing Information, Payment details
     VerifyInputValue            Email                       ${fake_user_email}
     TypeText                    Card number                 ${card_number}
@@ -223,15 +265,28 @@ Logout_From_Current_User
     VerifyText                  ${fake_user_email}
     Sleep                       3                           # Give time to backend execution
 
-Verify_Puchase_From_Account_UI
-    [Documentation]             Verify pruchased credits from account UI organization page
-    GoTo                        ${org_account_page}         timeout=5
-    Sleep                       5                           # Wait backed to add credit
-    RefreshPage
-    ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
-    Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
-    Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
-
+Invoice_And_License_Geneartion_Verication_On_Partner_Page
+    [Documentation]             Verify pruchase from partner account UI
+    GoTo                        ${partner_home_url}         timeout=5
+    # Verify Invoice product and set invoice variable to variables
+    ClickText                   Invoices                    anchor=Home
+    UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=3
+    ${invoice_products}=        Get Cell Text               r1c2
+    ${invoice_paid}=            Get Cell Text               r1c6
+    Should Contain              ${invoice_products}         ${product_credits}
+    Should Contain              ${invoice_products}         ${product_cloud_advanced}
+    Should Contain              ${invoice_paid}             PAID
+    ${invoice_number_account_UI}=                           Get Cell Text               r1c1
+    Set Suite Variable          ${invoice_number_account_UI}
+    Log To Console              ${invoice_number_account_UI}
+    # Switch to licence tab verify product, set lisence key to variable
+    ClickText                   Licenses                    anchor=Organization management
+    UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
+    ${license_product}=         Get Cell Text               r1c2
+    Should Contain              ${license_product}          ${license_product_description}
+    ${license_key}=             Get Cell Text               r1c1
+    Set Suite Variable          ${license_key}
+    Log To Console              ${license_key}
 
 Verify_Invoice_Generation_With_Correct_Product
     [Documentation]             Verify invoice geneartion with correct prodcut on admin panel organization page
