@@ -147,10 +147,10 @@ Get_EUM_Org_uuid_And_Set_Partner_Account_UI_path
     ${eum_org_url}              GetUrl
     Set Suite Variable          ${eum_org_url}
     Log To Console              ${eum_org_url}
-    # Set account UI page
-    ${org_account_page}         Set Variable                ${url_account_dev}/organization/${eum_org_uuid}/credits
-    Set Suite Variable          ${org_account_page}
-    Log To Console              ${org_account_page}
+    # # Set account UI page
+    # ${org_account_page}         Set Variable                ${url_account_dev}/organization/${eum_org_uuid}/credits
+    # Set Suite Variable          ${org_account_page}
+    # Log To Console              ${org_account_page}
     # Set partner store page
     ${partner_store_url}        Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/store-product/all
     Set Suite Variable          ${partner_store_url}
@@ -236,8 +236,8 @@ Logout_From_Current_User
 
 Order_Product_from_Partner_Store
     [Documentation]             Place an order from new partner store
-    GoTo                        ${partner_store_url}        timeout=5
-    VerifyAll                   All products, Store Products
+    GoTo                        ${partner_store_url}
+    VerifyAll                   All products, Store Products    timeout=5
     TypeText                    Search by name              ${product_credits}
     VerifyText                  ${product_credits}
     ClickText                   Add to cart                 anchor=2,500 Credits
