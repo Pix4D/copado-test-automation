@@ -281,7 +281,7 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Set Suite Variable          ${invoice_number_account_UI}
     Log To Console              ${invoice_number_account_UI}
     # Switch to licence tab verify product, set lisence key to variable
-    ClickText                   Licenses                    anchor=Organization management                          timeout=2
+    ClickText                   Licenses                    anchor=Organization management                          timeout=3
     UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
     ${license_product}=         Get Cell Text               r1c2                        timeout=3
     Log To Console              ${license_product}, ${license_product_description}
