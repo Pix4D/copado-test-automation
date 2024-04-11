@@ -16,7 +16,7 @@ ${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/adminta
 ${partner_account_base_url}     https://dev.partner.pix4d.com
 ${product_credits}              2,500 Credits
 ${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
-${license_product_description}                              PIX4Dcloud Advanced, Yearly rental licens
+${expected_license_product_description}                     PIX4Dcloud Advanced, Yearly rental license - only cloud
 
 *** Keywords ***
 Robot_Login_To_Staging_AP
@@ -270,12 +270,22 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
     # Verify Invoice product and set invoice variable to variables
-    ClickText                   Invoices                    anchor=Home
-    UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=3
-    ${invoice_products}=        Get Cell Text               r1c2
+    ClickText                   Invoices                    anchor=Home                 timeout=5
+    UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
-    Should Contain              ${invoice_products}         ${product_credits}
-    Should Contain              ${invoice_products}         ${product_cloud_advanced}
+    # -------
+    ${credit_text}=             Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[1]
+    ${product_text}=            Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[2]
+    Log To Console              ${credit_text}
+    Log To Console              ${product_text}
+    Should Contain              ${credit_text}              ${product_credits}
+    Should Contain              ${product_text}             ${product_cloud_advanced}
+    # -------
+    # ${invoice_products}=        Get Cell Text               r1c2
+    # ${invoice_paid}=            Get Cell Text               r1c6
+    # Log To Console              ${invoice_products}
+    # Should Contain              ${invoice_products}         ${product_credits}
+    # Should Contain              ${invoice_products}         ${product_cloud_advanced}
     Should Contain              ${invoice_paid}             PAID
     ${invoice_number_account_UI}=                           Get Cell Text               r1c1
     Set Suite Variable          ${invoice_number_account_UI}
@@ -283,9 +293,9 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     # Switch to licence tab verify product, set lisence key to variable
     ClickText                   Licenses                    anchor=Organization management                          timeout=3
     UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
-    ${license_product}=         Get Cell Text               r1c2                        timeout=3
-    Log To Console              ${license_product}, ${license_product_description}
-    Should Contain              ${license_product}          ${license_product_description}
+    ${license_product_generated}=                           Get Cell Text               r1c2                        timeout=3
+    Log To Console              ${license_product_generated}, ${expected_license_product_description}
+    Should Contain              ${license_product_generated}                            ${expected_license_product_description}
     ${license_key}=             Get Cell Text               r1c1
     Set Suite Variable          ${license_key}
     Log To Console              ${license_key}
