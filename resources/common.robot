@@ -5,8 +5,6 @@ Library                         FakerLibrary
 
 
 *** Variables ***
-${product_credits}              2,500 Credits
-${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${url_account_dev}              https://dev.account.pix4d.com
 ${card_number}                  4111111111111111
@@ -18,8 +16,7 @@ ${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/adminta
 ${partner_account_base_url}     https://dev.partner.pix4d.com
 ${product_credits}              2,500 Credits
 ${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
-${license_product_description}                              PIX4Dcloud Advanced, Yearly rental license
-
+${license_product_description}                              PIX4Dcloud Advanced, Yearly rental licens
 
 *** Keywords ***
 Robot_Login_To_Staging_AP
@@ -139,7 +136,7 @@ Verify_EUM_Org_Migration_From_User_Page
 
 
 Get_EUM_Org_uuid_And_Set_Partner_Account_UI_path
-    [Documentation]             Get and set org variables for future execution 
+    [Documentation]             Get and set org variables for future execution
     ClickText                   ${eum_org_name}
     ${eum_org_uuid}             GetAttribute                id_uuid                     tag=input                   attribute=value
     Set Suite Variable          ${eum_org_uuid}
@@ -148,9 +145,9 @@ Get_EUM_Org_uuid_And_Set_Partner_Account_UI_path
     Set Suite Variable          ${eum_org_url}
     Log To Console              ${eum_org_url}
     # # Set account UI page
-    # ${org_account_page}         Set Variable                ${url_account_dev}/organization/${eum_org_uuid}/credits
-    # Set Suite Variable          ${org_account_page}
-    # Log To Console              ${org_account_page}
+    # ${org_account_page}       Set Variable                ${url_account_dev}/organization/${eum_org_uuid}/credits
+    # Set Suite Variable        ${org_account_page}
+    # Log To Console            ${org_account_page}
     # Set partner store page
     ${partner_store_url}        Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/store-product/all
     Set Suite Variable          ${partner_store_url}
@@ -193,7 +190,7 @@ Link_The_User_To_The_Org_Billing_Info
     ${org_billing_info_url}     Set Variable                ${url_dev}/admin/user_account/billinginformation/${billing_info_id}/change/
     Log To Console              ${org_billing_info_url}
     Set Suite Variable          ${org_billing_info_url}
-    Goto                        ${org_billing_info_url}
+    GoTo                        ${org_billing_info_url}
     VerifyAll                   Change billing information, BillingInformation[${billing_info_id}]:
     TypeText                    id_pixuser                  ${fake_user_id}
     ClickText                   Save and continue editing                               anchor=Save and add another
@@ -230,14 +227,16 @@ Set_The_Partner_Org
 
 Logout_From_Current_User
     [Documentation]             Logout from current user
-    Goto                        ${url_dev}/logout
+    GoTo                        ${url_dev}/logout
     VerifyText                  Log in
 
 
 Order_Product_from_Partner_Store
     [Documentation]             Place an order from new partner store
-    GoTo                        ${partner_store_url}
-    VerifyAll                   All products, Store Products    timeout=5
+    Sleep                       3
+    GoTo                        ${partner_store_url}        timeout=5
+    Log To Console              ${partner_store_url}
+    VerifyAll                   All products, Store Products                            timeout=5
     TypeText                    Search by name              ${product_credits}
     VerifyText                  ${product_credits}
     ClickText                   Add to cart                 anchor=2,500 Credits
@@ -282,9 +281,10 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Set Suite Variable          ${invoice_number_account_UI}
     Log To Console              ${invoice_number_account_UI}
     # Switch to licence tab verify product, set lisence key to variable
-    ClickText                   Licenses                    anchor=Organization management
+    ClickText                   Licenses                    anchor=Organization management                          timeout=2
     UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
-    ${license_product}=         Get Cell Text               r1c2
+    ${license_product}=         Get Cell Text               r1c2                        timeout=3
+    Log To Console              ${license_product}, ${license_product_description}
     Should Contain              ${license_product}          ${license_product_description}
     ${license_key}=             Get Cell Text               r1c1
     Set Suite Variable          ${license_key}
