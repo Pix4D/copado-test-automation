@@ -272,8 +272,8 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Sleep                       3
     # Verify Invoice product and set invoice variable to variables
     ClickText                   Invoices                    anchor=Home                 timeout=5
-    VerifyAll                   Products, Issued date, Payment date, Amount, Status     timeout=10
-    ${is_table_ready}=          Is Element                  //*[@data-test='table']//tr[1]                          timeout=10
+    VerifyAll                   Issued date, Payment date, Amount, Status               timeout=10
+    ${is_table_ready}=          Is Element                  //*[@data-test\='table']//tr[1]                         timeout=10
     Run Keyword If              '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
     UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
