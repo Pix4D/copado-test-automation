@@ -296,8 +296,9 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Log To Console              ${invoice_number_account_UI}
     # Switch to licence tab verify product, set lisence key to variable
     ClickText                   Licenses                    anchor=Organization management                          timeout=3
+    VerifyAll                   Software code, Creation date, Activation date           timeout=10
     UseTable                    //*[@data-test\='table']    anchor=Licenses             timeout=3
-    ${license_product_generated}=                           Get Cell Text               r1c2                        timeout=3
+    ${license_product_generated}=                           Get Cell Text               r1c2                        anchor=Software code    timeout=3
     Log To Console              ${license_product_generated}, ${expected_license_product_description}
     Should Contain              ${license_product_generated}                            ${expected_license_product_description}
     ${license_key}=             Get Cell Text               r1c1
