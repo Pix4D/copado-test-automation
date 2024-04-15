@@ -269,7 +269,7 @@ Order_Product_from_Partner_Store
 Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
-    Sleep                       5
+    Sleep                       3
     # Verify Invoice product and set invoice variable to variables
     ClickText                   Invoices                    anchor=Home                 timeout=5
     VerifyAll                   Products, Issued date, Payment date, Amount, Status     timeout=10
