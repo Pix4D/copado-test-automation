@@ -269,8 +269,12 @@ Order_Product_from_Partner_Store
 Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
+    Sleep                       5
     # Verify Invoice product and set invoice variable to variables
     ClickText                   Invoices                    anchor=Home                 timeout=5
+    VerifyAll                   Products, Issued date, Payment date, Amount, Status     timeout=10
+    ${is_table_ready}=          Is Element                  //*[@data-test='table']//tr[1]                          timeout=10
+    Run Keyword If              '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
     UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
     # -------
@@ -281,11 +285,11 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Should Contain              ${credit_text}              ${product_credits}
     Should Contain              ${product_text}             ${product_cloud_advanced}
     # -------
-    # ${invoice_products}=        Get Cell Text               r1c2
-    # ${invoice_paid}=            Get Cell Text               r1c6
-    # Log To Console              ${invoice_products}
-    # Should Contain              ${invoice_products}         ${product_credits}
-    # Should Contain              ${invoice_products}         ${product_cloud_advanced}
+    # ${invoice_products}=      Get Cell Text               r1c2
+    # ${invoice_paid}=          Get Cell Text               r1c6
+    # Log To Console            ${invoice_products}
+    # Should Contain            ${invoice_products}         ${product_credits}
+    # Should Contain            ${invoice_products}         ${product_cloud_advanced}
     Should Contain              ${invoice_paid}             PAID
     ${invoice_number_account_UI}=                           Get Cell Text               r1c1
     Set Suite Variable          ${invoice_number_account_UI}
