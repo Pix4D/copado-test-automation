@@ -144,15 +144,9 @@ Get_EUM_Org_uuid_And_Set_Partner_Account_UI_path
     ${eum_org_url}              GetUrl
     Set Suite Variable          ${eum_org_url}
     Log To Console              ${eum_org_url}
-    # # Set account UI page
-    # ${org_account_page}       Set Variable                ${url_account_dev}/organization/${eum_org_uuid}/credits
-    # Set Suite Variable        ${org_account_page}
-    # Log To Console            ${org_account_page}
-    # Set partner store page
     ${partner_store_url}        Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/store-product/all
     Set Suite Variable          ${partner_store_url}
     Log To Console              ${partner_store_url}
-    # Set partner home page
     ${partner_home_url}         Set Variable                ${partner_account_base_url}/organization/${eum_org_uuid}/home
     Set Suite Variable          ${partner_home_url}
     Log To Console              ${partner_home_url}
@@ -277,19 +271,12 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Run Keyword If              '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
     UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
-    # -------
     ${credit_text}=             Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[1]
     ${product_text}=            Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[2]
     Log To Console              ${credit_text}
     Log To Console              ${product_text}
     Should Contain              ${credit_text}              ${product_credits}
     Should Contain              ${product_text}             ${product_cloud_advanced}
-    # -------
-    # ${invoice_products}=      Get Cell Text               r1c2
-    # ${invoice_paid}=          Get Cell Text               r1c6
-    # Log To Console            ${invoice_products}
-    # Should Contain            ${invoice_products}         ${product_credits}
-    # Should Contain            ${invoice_products}         ${product_cloud_advanced}
     Should Contain              ${invoice_paid}             PAID
     ${invoice_number_account_UI}=                           Get Cell Text               r1c1
     Set Suite Variable          ${invoice_number_account_UI}
