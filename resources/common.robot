@@ -261,15 +261,15 @@ Order_Product_from_Partner_Store
     Sleep                       5                           # Give time to backend execution
 
 Retry Until Elements Visible
-    [Arguments]    @{texts_to_verify}
-    ${attempt}=    Set Variable    1
-    FOR    ${index}    IN RANGE    1    4
+    [Arguments]                 @{texts_to_verify}
+    ${attempt}=                 Set Variable                1
+    FOR                         ${index}                    IN RANGE                    3
         Refresh Page
-        ${is_visible}=    Run Keyword And Return Status    Verify All    ${texts_to_verify}    timeout=3
-        Exit For Loop If    '${is_visible}'=='PASS'
-        ${attempt}=    Evaluate    ${attempt}+1
-        Continue For Loop
-        Run Keyword If    ${attempt} > 3    Fail    "Elements not visible after 3 attempts."
+        ${is_visible}=          Run Keyword And Return Status                           Verify All                  @{texts_to_verify}    timeout=3
+        Log                     is_visible: ${is_visible}                               console=True
+        Exit For Loop If        ${is_visible}
+        ${attempt}=             Evaluate                    ${attempt}+1
+        Run Keyword If          ${attempt} > 3              Fail                        "Elements not visible after 3 attempts."
     END
 
 Invoice_And_License_Generation_Verication_On_Partner_Page
@@ -278,10 +278,10 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     Sleep                       5
     # Verify Invoice product and set invoice variable to variables
     ClickText                   Invoices                    anchor=Home                 timeout=5
-    Retry Until Elements Visible    Issued date    Payment date    Amount    Status
-    # VerifyAll                   Issued date, Payment date, Amount, Status               timeout=10
-    # ${is_table_ready}=          Is Element                  //*[@data-test\='table']//tr[1]                         timeout=10
-    # Run Keyword If              '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
+    Retry Until Elements Visible                            Issued date                 Payment date                Amount             Status
+    # VerifyAll                 Issued date, Payment date, Amount, Status               timeout=10
+    # ${is_table_ready}=        Is Element                  //*[@data-test\='table']//tr[1]                         timeout=10
+    # Run Keyword If            '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
     UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
     ${credit_text}=             Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[1]
