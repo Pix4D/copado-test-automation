@@ -260,6 +260,18 @@ Order_Product_from_Partner_Store
     VerifyText                  ${fake_user_email}
     Sleep                       5                           # Give time to backend execution
 
+Retry Until Elements Visible
+    [Arguments]    @{texts_to_verify}
+    ${attempt}=    Set Variable    1
+    FOR    ${index}    IN RANGE    1    4
+        Refresh Page
+        ${is_visible}=    Run Keyword And Return Status    Verify All    ${texts_to_verify}    timeout=2
+        Exit For Loop If    '${is_visible}'=='PASS'
+        ${attempt}=    Evaluate    ${attempt}+1
+        Continue For Loop
+        Run Keyword If    ${attempt} > 3    Fail    "Elements not visible after 3 attempts."
+    END
+
 Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
@@ -267,6 +279,7 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     # Verify Invoice product and set invoice variable to variables
     ClickText                   Invoices                    anchor=Home                 timeout=5
     RefreshPage
+    Retry Until Elements Visible    Issued date    Payment date    Amount    Status
     VerifyAll                   Issued date, Payment date, Amount, Status               timeout=10
     ${is_table_ready}=          Is Element                  //*[@data-test\='table']//tr[1]                         timeout=10
     Run Keyword If              '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
