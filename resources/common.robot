@@ -134,7 +134,7 @@ Verify_EUM_Org_Migration_From_User_Page
     Log To Console              ${eum_org_name}
     Set Suite Variable          ${eum_org_name}
     RefreshPage
-    VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}    timeout=3
+    VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}                             timeout=3
 
 
 Get_EUM_Org_uuid_And_Set_Acount_UI_path
@@ -198,7 +198,7 @@ Logout_From_Current_User
     Log                         Buy product url: ${url_buy_product}                     console=True
     Sleep                       3
     GoTo                        ${url_buy_product}          timeout=15
-    VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits    timeout=5
+    VerifyAll                   Your order, You are logged in as: ${fake_user_email}, ${product_description}, ${credit_amount_ui} Credits       timeout=5
     ClickText                   ${eum_org_name}
     ClickText                   Continue
     # Retrives ORG Billing info of the org
@@ -220,8 +220,19 @@ Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
     GoTo                        ${org_account_page}         timeout=5
     Sleep                       5                           # Wait backed to add credit
-    RefreshPage
-    Sleep                       2
+    # RefreshPage
+    # Sleep                     2
+    # ----------
+    ${attempt}=                 Set Variable                1
+    FOR                         ${index}                    IN RANGE                    3
+        Refresh Page
+        ${is_credit_visible}=                               Run Keyword And Return Status                           VerifyText                  ${total_user_credit}    anchor=//*[@data-test\='creditAmount']    timeout=3
+        Log                     is_visible: ${is_credit_visible}                        console=True
+        Exit For Loop If        ${is_credit_visible}
+        ${attempt}=             Evaluate                    ${attempt}+1
+        Run Keyword If          ${attempt} > 3              Fail                        "Elements not visible after 3 attempts."
+    END
+    # ----------
     ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
     Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
     Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
