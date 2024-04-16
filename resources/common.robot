@@ -221,6 +221,7 @@ Verify_Puchased_Credit_From_Account_UI
     GoTo                        ${org_account_page}         timeout=5
     Sleep                       5                           # Wait backed to add credit
     RefreshPage
+    Sleep                       2
     ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
     Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
     Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
