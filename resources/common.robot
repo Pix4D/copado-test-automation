@@ -276,12 +276,8 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
     Sleep                       5
-    # Verify Invoice product and set invoice variable to variables
-    # ClickText                   Invoices                    anchor=Home                 timeout=5
-    Retry Until Invoice Elements Visible                    # 3 times
-    # VerifyAll                 Issued date, Payment date, Amount, Status               timeout=10
-    # ${is_table_ready}=        Is Element                  //*[@data-test\='table']//tr[1]                         timeout=10
-    # Run Keyword If            '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
+    # Switch to Invoice tab, verify invoice, store invoice number
+    Retry Until Invoice Elements Visible                    # Try 3 times to see invoice 
     UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
     ${credit_text}=             Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[1]
