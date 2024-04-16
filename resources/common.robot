@@ -258,14 +258,15 @@ Order_Product_from_Partner_Store
     ClickText                   Place order
     Verify Text                 Thank you for your order!                               timeout=15
     VerifyText                  ${fake_user_email}
-    Sleep                       3                           # Give time to backend execution
+    Sleep                       5                           # Give time to backend execution
 
 Invoice_And_License_Generation_Verication_On_Partner_Page
     [Documentation]             Verify pruchase from partner account UI
     GoTo                        ${partner_home_url}         timeout=5
-    Sleep                       3
+    Sleep                       5
     # Verify Invoice product and set invoice variable to variables
     ClickText                   Invoices                    anchor=Home                 timeout=5
+    RefreshPage
     VerifyAll                   Issued date, Payment date, Amount, Status               timeout=10
     ${is_table_ready}=          Is Element                  //*[@data-test\='table']//tr[1]                         timeout=10
     Run Keyword If              '${is_table_ready}' == 'False'                          Fail                        "Invoice table is not ready"
