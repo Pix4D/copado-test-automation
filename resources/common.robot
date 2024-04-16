@@ -220,9 +220,7 @@ Verify_Puchased_Credit_From_Account_UI
     [Documentation]             Verify pruchased credits from account UI organization page
     GoTo                        ${org_account_page}         timeout=5
     Sleep                       5                           # Wait backed to add credit
-    # RefreshPage
-    # Sleep                     2
-    # ----------
+    # Try 3 times to verify credits
     ${attempt}=                 Set Variable                1
     FOR                         ${index}                    IN RANGE                    3
         Refresh Page
@@ -232,7 +230,6 @@ Verify_Puchased_Credit_From_Account_UI
         ${attempt}=             Evaluate                    ${attempt}+1
         Run Keyword If          ${attempt} > 3              Fail                        "Elements not visible after 3 attempts."
     END
-    # ----------
     ${creditAmount}             GetText                     //*[@data-test\='creditAmount']                         timeout=5
     Log To Console              Credit in account: ${creditAmount}, Expected credit: ${total_user_credit}
     Should Be Equal As Strings                              ${creditAmount}             ${total_user_credit}
