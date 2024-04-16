@@ -125,6 +125,7 @@ Migrate_User_To_Pandora_Verify_Execution
     DropDown                    ---------                   Run selected tasks          anchor=Action:
     ClickText                   Go                          anchor=Run the selected action                          timeout=5
     VerifyText                  Task Migrate to Pandora executed
+    Sleep                       3
 
 
 Verify_EUM_Org_Migration_From_User_Page
