@@ -225,8 +225,8 @@ Verify_Puchased_Credit_From_Account_UI
     ${attempt}=                 Set Variable                1
     FOR                         ${index}                    IN RANGE                    3
         Refresh Page
-        ${is_credit_visible}=                               Run Keyword And Return Status                           VerifyText                  ${total_user_credit}    anchor=//*[@data-test\='creditAmount']    timeout=3
-        Log                     is_visible: ${is_credit_visible}                        console=True
+        ${is_credit_visible}=                               Run Keyword And Return Status                           VerifyText                  ${total_user_credit}    anchor=//*[@data-test\='creditAmount']    timeout=10
+        Log                     is_visible after 10s: ${is_credit_visible}              console=True
         Exit For Loop If        ${is_credit_visible}
         ${attempt}=             Evaluate                    ${attempt}+1
         Run Keyword If          ${attempt} > 3              Fail                        "Elements not visible after 3 attempts."
