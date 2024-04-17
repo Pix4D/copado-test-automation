@@ -267,7 +267,7 @@ Retry Until Invoice Elements Visible
     FOR                         ${index}                    IN RANGE                    3
         Refresh Page
         ClickText               Invoices                    anchor=Home                 timeout=5
-        ${is_visible}=          Run Keyword And Return Status                           VerifyAll                   Issued date, Payment date, Amount, Status    timeout=3
+        ${is_visible}=          Run Keyword And Return Status                           VerifyAll                   Issued date, Payment date, Amount, Status    timeout=5
         Log                     is_visible: ${is_visible}                               console=True
         Exit For Loop If        ${is_visible}
         ${attempt}=             Evaluate                    ${attempt}+1
