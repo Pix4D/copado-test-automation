@@ -13,7 +13,7 @@ ${BROWSER}                      chrome
 2Checkout Credit Product Purchase E2E Test Flow
     [Documentation]             2Checkout credit product purchase e2e test flow
     Log                         2CO credit product purchase e2e test flow is starting                               console=True
-    # Robot user login to staging admin panel
+    # Robot user login to staging
     Robot_Login_To_Staging_AP
     # Verify user and get necessary org value
     Robot_User_Verify_And_Save_Data
