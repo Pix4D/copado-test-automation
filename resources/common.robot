@@ -2,22 +2,16 @@
 Library                         QWeb
 Library                         String
 Library                         FakerLibrary
-Library                         UUID
 
 
 *** Variables ***
 ${url_dev}                      https://dev.cloud.pix4d.com
-${url_account_dev}              https://dev.account.pix4d.com
-${card_number}                  4111111111111111
-${card_expiration_date}         0130
-${card_security_code}           234
-${cart_holder_name}             John Doe
-${pandora_migration_task}       https://dev.cloud.pix4d.com/admin/common/admintask/63/change/?_changelist_filters=q%3Dpandora
-${admin_tasks}                  https://dev.cloud.pix4d.com/admin/common/admintask/
-${partner_account_base_url}     https://dev.partner.pix4d.com
-${product_credits}              2,500 Credits
-${product_cloud_advanced}       PIX4Dcloud Advanced, Yearly, rental
-${expected_license_product_description}                     PIX4Dcloud Advanced, Yearly rental license - only cloud
+${email_domain}                 pix4d.work
+${coutry}                       Switzerland
+${company}                      CXOps_TEST_AUTOMATION
+${industries}                   Engineering                         
+
+
 
 *** Keywords ***
 Robot_Login_To_Staging_AP
@@ -31,13 +25,15 @@ Robot_Login_To_Staging_AP
 
 
 Create_Random_Person_Data
-    [Documentation]             This will create a random person with first_name, last_name, email, password
+    [Documentation]             Creation random user data
     ${fake_user_first_name}=    FakerLibrary.first_name
     Set Suite Variable          ${fake_user_first_name}
     ${fake_user_last_name}=     FakerLibrary.last_name
     Set Suite Variable          ${fake_user_last_name}
-    ${uuid}=                    Generate UUID
-    ${fake_user_email}=         FakerLibrary.email          domain=pix4d.work
+    ${uuid}=                    FakerLibrary.Uuid4
+    Log To Console              ${uuid}
+    ${fake_user_email}=         Set Variable    ${uuid}@pix4d.work
+    Log To Console              ${fake_user_email}
     Set Suite Variable          ${fake_user_email}
     ${fake_user_password}=      FakerLibrary.Password       special_chars=False
     Set Suite Variable          ${fake_user_password}
@@ -49,7 +45,7 @@ Fill_User_Form_And_Verify
     ${retries}=                 Set Variable                3
     FOR                         ${index}                    IN RANGE                    ${retries} # with varibale not working
         Create_Random_Person_Data
-        GoTo                    ${url_dev}/admin_panel/pixuser/new/
+        GoTo                    ${url_dev}/signup
         VerifyText              New User
         Type Text               id_first_name               ${fake_user_first_name}
         Type Text               Last name                   ${fake_user_last_name}
@@ -57,7 +53,7 @@ Fill_User_Form_And_Verify
         Type Text               Password                    ${fake_user_password}
         Type Text               Password confirmation       ${fake_user_password}
         Click Text              SAVE
-        ${status}=              Is Text                     Create your account                timeout=5
+        ${status}=              Is Text                     Create your account         timeout=5
         IF                      ${status}
             Log To Console      Email is not in use verified.
             Return From Keyword
@@ -281,7 +277,7 @@ Invoice_And_License_Generation_Verication_On_Partner_Page
     GoTo                        ${partner_home_url}         timeout=5
     Sleep                       5
     # Switch to Invoice tab, verify invoice, store invoice number
-    Retry Until Invoice Elements Visible                    # Try 3 times to see invoice 
+    Retry Until Invoice Elements Visible                    # Try 3 times to see invoice
     UseTable                    //*[@data-test\='table']    anchor=Invoices             timeout=5
     ${invoice_paid}=            Get Cell Text               r1c6
     ${credit_text}=             Get Text                    //*[@data-test\='table']//tr[1]/td[2]//p4d-table-product-cell/p[1]
