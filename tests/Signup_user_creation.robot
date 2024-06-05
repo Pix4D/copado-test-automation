@@ -9,7 +9,7 @@ Library                         FakerLibrary
 
 *** Variables ***
 ${BROWSER}                      chrome
-${url_signup_dev}              https://dev.account.pix4d.com/signup
+
 
 
 *** Test Cases ***
