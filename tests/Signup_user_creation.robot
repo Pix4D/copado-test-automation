@@ -37,6 +37,3 @@ Signup_user_creation_test
     GDPR_Deletion_Rondom_User
 
     # Test Webhook with TRY except
-
- 
-
