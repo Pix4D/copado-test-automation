@@ -92,6 +92,21 @@ Robot_Login_To_Staging_AP
     ClickText                   Log in                      anchor=Back
 
 
+Find_The_User
+    [Documentation]             Find the user
+
+
+
+GDPR_Deletion_Rondom_User
+    [Documentation]             GDPR deletion of the test pixuser
+    GoTo                        ${fake_user_url}            timeout=5
+    VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}     timeout=5
+    ClickText                   GDPR Deletion               tag=button
+    CloseAlert                  accept                      10s
+    VerifyText                  Account disabled upon GDPR request from data subject
+
+# ----------------------------------------------------------------------------------------
+
 # Get_User_Data_And_Save
 #     [Documentation]             Get user url, id, uuid and store to variable
 #     VerifyAll                   ${fake_user_email}, Profile info
