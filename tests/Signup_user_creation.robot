@@ -17,29 +17,26 @@ Signup_user_creation_test
     [Documentation]             New Partner portal e2e test flow
     [Tags]                      signup
     Log                         Signup user creation test starting                 console=True
-    
-    #-------------------------
+
     # Create your account email
-    # name CXOps TestAutomation
-    # Email: uuid                 
-    # User uuid to      
-
-
+    Fill_User_Email_And_Verify
 
     # Create your account personal info
-
+    Fill_User_Form_And_Verify
 
     # We take your data very seriously
-
+    Fill_Communication_Preference
 
     # login AP staging with Test user
+    Robot_Login_To_Staging_AP
 
-
+    # Find created user in staging
+    Find_The_User
+    
     # GDPR deletion of the test user
+    GDPR_Deletion_Rondom_User
 
+    # Test Webhook with TRY except
 
-    # Test Webshook with TRY except
-
-    #-------------------------
  
 
