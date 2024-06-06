@@ -1,107 +1,121 @@
 *** Settings ***
-Library                         QWeb
-Library                         String
-Library                         FakerLibrary
+Library                        QWeb
+Library                        String
+Library                        FakerLibrary
 
 
 *** Variables ***
-${url_dev}                      https://dev.cloud.pix4d.com
-${email_domain}                 pix4d.work
-${country}                      Switzerland
-${company_name}                 CXOps_TEST_AUTOMATION
-${industries}                   Engineering
+${url_dev}                     https://dev.cloud.pix4d.com
+${email_domain}                pix4d.work
+${country}                     Switzerland
+${company_name}                CXOps_TEST_AUTOMATION
+${industries}                  Engineering
 
 
 
 *** Keywords ***
 Create_Account_Email
-    [Documentation]             Create account email with Uuid4.
-    ${uuid}=                    FakerLibrary.Uuid4
-    Log To Console              ${uuid}
-    ${user_email}=              Set Variable                ${uuid}@pix4d.work
-    Log To Console              ${user_email}
-    Set Suite Variable          ${user_email}
+    [Documentation]            Create account email with Uuid4.
+    ${uuid}=                   FakerLibrary.Uuid4
+    Log To Console             ${uuid}
+    ${user_email}=             Set Variable                ${uuid}@pix4d.work
+    Log To Console             ${user_email}
+    Set Suite Variable         ${user_email}
 
 Fill_User_Email_And_Verify
-    [Documentation]             Fill the user email and verify. Retry up to 3 times if verification fails.
-    ${retries}=                 Set Variable                3
-    FOR                         ${index}                    IN RANGE                    ${retries}
+    [Documentation]            Fill the user email and verify. Retry up to 3 times if verification fails.
+    ${retries}=                Set Variable                3
+    FOR                        ${index}                    IN RANGE                    ${retries}
         Create_Account_Email
-        GoTo                    ${url_dev}/signup
-        VerifyAll               Create your account, Enter email
-        Type Text               Enter email                 ${user_email}
-        Click Text              Continue
-        ${status}=              Is Text                     First Name                  timeout=5
-        IF                      ${status}
-            Log To Console      Email is not in use verified.
+        GoTo                   ${url_dev}/signup
+        VerifyAll              Create your account, Enter email
+        Type Text              Enter email                 ${user_email}
+        Click Text             Continue
+        ${status}=             Is Text                     First Name                  timeout=5
+        IF                     ${status}
+            Log To Console     Email is not in use verified.
             Return From Keyword
         ELSE
-            Log To Console      Email in use or something else, retrying...
+            Log To Console     Email in use or something else, retrying...
             Refresh Page
-            Sleep               2                           # Wait for 2 seconds before retrying
+            Sleep              2                           # Wait for 2 seconds before retrying
         END
     END
-    Fail                        Email registery could not be verify after: ${retries} retries.
+    Fail                       Email registery could not be verify after: ${retries} retries.
 
 Create_Random_User_Data
-    [Documentation]             Creating random user data
-    ${user_first_name}=         FakerLibrary.first_name
-    Set Suite Variable          ${user_first_name}
-    ${user_last_name}=          FakerLibrary.last_name
-    Set Suite Variable          ${user_last_name}
-    ${user_password}=           FakerLibrary.Password       special_chars=False
-    Set Suite Variable          ${user_password}
-    Log To Console              Created user, name: ${user_first_name} ${user_last_name}, username: ${user_email}, password: ${user_password}
+    [Documentation]            Creating random user data
+    ${user_first_name}=        FakerLibrary.first_name
+    Set Suite Variable         ${user_first_name}
+    ${user_last_name}=         FakerLibrary.last_name
+    Set Suite Variable         ${user_last_name}
+    ${user_password}=          FakerLibrary.Password       special_chars=False
+    Set Suite Variable         ${user_password}
+    Log To Console             Created user, name: ${user_first_name} ${user_last_name}, username: ${user_email}, password: ${user_password}
     Return From Keyword
 
 Fill_User_Form_And_Verify
-    [Documentation]             Fill the user creation form and verify.
-    VerifyText                  Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
-    VerifyText                  ${user_email}
+    [Documentation]            Fill the user creation form and verify.
+    VerifyText                 Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
+    VerifyText                 ${user_email}
     Create_Random_User_Data
-    Type Text                   Password                    ${user_password}
-    Type Text                   Fist Name                   ${user_first_name}
-    Type Text                   Last Name                   ${user_last_name}
-    DropDown                    Country                     ${country}                  anchor=Country
-    DropDown                    Prefered language           English
-    TypeText                    Company                     ${company_name}
-    DropDown                    Industries                  Engineering
-    ClickText                   Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
-    ClickText                   Yes, I agree to Pix4D's Privacy Policy.
-    Click Text                  Continue                    anchor=Back
+    Type Text                  Password                    ${user_password}
+    Type Text                  Fist Name                   ${user_first_name}
+    Type Text                  Last Name                   ${user_last_name}
+    DropDown                   Country                     ${country}                  anchor=Country
+    DropDown                   Prefered language           English
+    TypeText                   Company                     ${company_name}
+    DropDown                   Industries                  Engineering
+    ClickText                  Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
+    ClickText                  Yes, I agree to Pix4D's Privacy Policy.
+    Click Text                 Continue                    anchor=Back
 
 
 Fill_Communication_Preference
-    [Documentation]             Fill the user communication preference form and verify.
-    VerifyText                  We take your data very seriously                        timeout=5
-    # ClickCheckbox               Migrate to Pandora          on                          anchor=63
-    ClickText                   Yes                         anchor=1
-    ClickText                   Yes                         anchor=2
-    ClickText                   Yes                         anchor=3
-    ClickText                   Save                        anchor=Cancel
-    VerifyText                  You are almost done!        timeout=5
+    [Documentation]            Fill the user communication preference form and verify.
+    VerifyText                 We take your data very seriously                        timeout=5
+    # ClickCheckbox            Migrate to Pandora          on                          anchor=63
+    ClickText                  Yes                         anchor=1
+    ClickText                  Yes                         anchor=2
+    ClickText                  Yes                         anchor=3
+    ClickText                  Save                        anchor=Cancel
+    VerifyText                 You are almost done!        timeout=5
 
 
 Robot_Login_To_Staging_AP
-    [Documentation]             Robot loging to staging Admin Panel
-    GoTo                        ${url_dev}/admin_panel/     timeout=5
-    TypeText                    Enter email                 ${robot_username}
-    ClickText                   Continue
-    VerifyText                  Log in
-    TypeText                    Enter password              ${robot_password}
-    ClickText                   Log in                      anchor=Back
+    [Documentation]            Robot loging to staging Admin Panel
+    GoTo                       ${url_dev}/admin_panel/     timeout=5
+    TypeText                   Enter email                 ${robot_username}
+    ClickText                  Continue
+    VerifyText                 Log in
+    TypeText                   Enter password              ${robot_password}
+    ClickText                  Log in                      anchor=Back
 
 
 Find_The_User
-    [Documentation]             Find the user
-
+    [Documentation]            Find the user
+    GoTo                       ${url_dev}/admin_panel/users/                           timeout=5
+    ${is_user_visible}=        Run Keyword And Return Status                           VerifyText        ${user_email}    anchor=Email
+    Log To Console             ${is_user_visible}
+    IF                         ${is_user_visible}
+        ClickText              ${user_email}               anchor=User
+        VerifyAll              ${user_email}, Profile info
+        # RETURN
+    ELSE
+        TypeText               username, name, email, company,                         ${user_email}
+        ClickText              SEARCH                      anchor=country              timeout=5
+        VerifyText             ${user_email}               anchor=Email
+        ClickText              ${user_email}               anchor=User
+        VerifyAll              ${user_email}, Profile info
+        # RETURN
+    END
 
 
 GDPR_Deletion_Rondom_User
-    [Documentation]             GDPR deletion of the test pixuser
-    GoTo                        ${user_url}            timeout=5
-    VerifyAll                   ${user_email}, Profile info         timeout=5
-    ClickText                   GDPR Deletion               tag=button
-    CloseAlert                  accept                      10s
-    VerifyText                  Account disabled upon GDPR request from data subject
+    [Documentation]            GDPR deletion of the test pixuser
+    # GoTo                     ${user_url}                 timeout=5
+    VerifyAll                  ${user_email}, Profile info                             timeout=5
+    ClickText                  GDPR Deletion               tag=button
+    CloseAlert                 accept                      10s
+    VerifyText                 Account disabled upon GDPR request from data subject
 
