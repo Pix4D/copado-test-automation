@@ -7,13 +7,81 @@ Library                         FakerLibrary
 *** Variables ***
 ${url_dev}                      https://dev.cloud.pix4d.com
 ${email_domain}                 pix4d.work
-${coutry}                       Switzerland
-${company}                      CXOps_TEST_AUTOMATION
-${industries}                   Engineering                         
+${country}                      Switzerland
+${company_name}                 CXOps_TEST_AUTOMATION
+${industries}                   Engineering
 
 
 
 *** Keywords ***
+Create_Account_Email
+    [Documentation]             Create account email with Uuid4.
+    ${uuid}=                    FakerLibrary.Uuid4
+    Log To Console              ${uuid}
+    ${user_email}=              Set Variable                ${uuid}@pix4d.work
+    Log To Console              ${user_email}
+    Set Suite Variable          ${user_email}
+
+Fill_User_Email_And_Verify
+    [Documentation]             Fill the user email and verify. Retry up to 3 times if verification fails.
+    ${retries}=                 Set Variable                3
+    FOR                         ${index}                    IN RANGE                    ${retries}
+        Create_Account_Email
+        GoTo                    ${url_dev}/signup
+        VerifyAll               Create your account, Enter email
+        Type Text               Enter email                 ${user_email}
+        Click Text              Continue
+        ${status}=              Is Text                     First Name                  timeout=5
+        IF                      ${status}
+            Log To Console      Email is not in use verified.
+            Return From Keyword
+        ELSE
+            Log To Console      Email in use or something else, retrying...
+            Refresh Page
+            Sleep               2                           # Wait for 2 seconds before retrying
+        END
+    END
+    Fail                        Email registery could not be verify after: ${retries} retries.
+
+Create_Random_User_Data
+    [Documentation]             Creating random user data
+    ${user_first_name}=         FakerLibrary.first_name
+    Set Suite Variable          ${user_first_name}
+    ${user_last_name}=          FakerLibrary.last_name
+    Set Suite Variable          ${user_last_name}
+    ${user_password}=           FakerLibrary.Password       special_chars=False
+    Set Suite Variable          ${user_password}
+    Log To Console              Created user, name: ${user_first_name} ${user_last_name}, username: ${user_email}, password: ${user_password}
+    Return From Keyword
+
+Fill_User_Form_And_Verify
+    [Documentation]             Fill the user creation form and verify.
+    VerifyText                  Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
+    VerifyText                  ${user_email}
+    Create_Random_User_Data
+    Type Text                   Password                    ${user_password}
+    Type Text                   Fist Name                   ${user_first_name}
+    Type Text                   Last Name                   ${user_last_name}
+    DropDown                    Country                     ${country}                  anchor=Country
+    DropDown                    Prefered language           English
+    TypeText                    Company                     ${company_name}
+    DropDown                    Industries                  Engineering
+    ClickText                   Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
+    ClickText                   Yes, I agree to Pix4D's Privacy Policy.
+    Click Text                  Continue                    anchor=Back
+
+
+Fill_Communication_Preference
+    [Documentation]             Fill the user communication preference form and verify.
+    VerifyText                  We take your data very seriously                        timeout=5
+    # ClickCheckbox               Migrate to Pandora          on                          anchor=63
+    ClickText                   Yes                         anchor=1
+    ClickText                   Yes                         anchor=2
+    ClickText                   Yes                         anchor=3
+    ClickText                   Save                        anchor=Cancel
+    VerifyText                  You are almost done!        timeout=5
+
+
 Robot_Login_To_Staging_AP
     [Documentation]             Robot loging to staging Admin Panel
     GoTo                        ${url_dev}/admin_panel/     timeout=5
@@ -24,67 +92,26 @@ Robot_Login_To_Staging_AP
     ClickText                   Log in                      anchor=Back
 
 
-Create_Random_Person_Data
-    [Documentation]             Creation random user data
-    ${fake_user_first_name}=    FakerLibrary.first_name
-    Set Suite Variable          ${fake_user_first_name}
-    ${fake_user_last_name}=     FakerLibrary.last_name
-    Set Suite Variable          ${fake_user_last_name}
-    ${uuid}=                    FakerLibrary.Uuid4
-    Log To Console              ${uuid}
-    ${fake_user_email}=         Set Variable    ${uuid}@pix4d.work
-    Log To Console              ${fake_user_email}
-    Set Suite Variable          ${fake_user_email}
-    ${fake_user_password}=      FakerLibrary.Password       special_chars=False
-    Set Suite Variable          ${fake_user_password}
-    Log To Console              Created user, name: ${fake_user_first_name} ${fake_user_last_name}, username: ${fake_user_email}, password: ${fake_user_password}
-    Return From Keyword
+# Get_User_Data_And_Save
+#     [Documentation]             Get user url, id, uuid and store to variable
+#     VerifyAll                   ${fake_user_email}, Profile info
+#     ${fake_user_url}            GetUrl
+#     Set Suite Variable          ${fake_user_url}
+#     Log To Console              ${fake_user_url}
+#     @{url_parts}=               Split String                ${fake_user_url}            /
+#     ${fake_user_id}=            Set Variable                ${url_parts}[5]
+#     Log To Console              ${fake_user_id}
+#     Set Suite Variable          ${fake_user_id}
+#     ${full_uuid_text}           GetText                     //div[contains(@class, 'mdl-cell-full') and contains(., 'UUID:')]
+#     Log To Console              ${full_uuid_text}
+#     @{split_text}=              Split String                ${full_uuid_text}           UUID:
+#     ${fake_user_uuid}=          Strip String                ${split_text}[1]
+#     Log To Console              ${fake_user_uuid}
+#     Set Suite Variable          ${fake_user_uuid}
 
-Fill_User_Form_And_Verify
-    [Documentation]             Fill the user form and verify 'Billing info'. Retry up to 3 times if verification fails.
-    ${retries}=                 Set Variable                3
-    FOR                         ${index}                    IN RANGE                    ${retries} # with varibale not working
-        Create_Random_Person_Data
-        GoTo                    ${url_dev}/signup
-        VerifyText              New User
-        Type Text               id_first_name               ${fake_user_first_name}
-        Type Text               Last name                   ${fake_user_last_name}
-        Type Text               Email address               ${fake_user_email}
-        Type Text               Password                    ${fake_user_password}
-        Type Text               Password confirmation       ${fake_user_password}
-        Click Text              SAVE
-        ${status}=              Is Text                     Create your account         timeout=5
-        IF                      ${status}
-            Log To Console      Email is not in use verified.
-            Return From Keyword
-        ELSE
-            Log To Console      Billing info not found, retrying...
-            Refresh Page
-            Sleep               2                           # Wait for 2 seconds before retrying
-        END
-    END
-    Fail                        Billing info could not be verified after: ${retries} retries.
-
-Get_User_Data_And_Save
-    [Documentation]             Get user url, id, uuid and store to variable
-    VerifyAll                   ${fake_user_email}, Profile info
-    ${fake_user_url}            GetUrl
-    Set Suite Variable          ${fake_user_url}
-    Log To Console              ${fake_user_url}
-    @{url_parts}=               Split String                ${fake_user_url}            /
-    ${fake_user_id}=            Set Variable                ${url_parts}[5]
-    Log To Console              ${fake_user_id}
-    Set Suite Variable          ${fake_user_id}
-    ${full_uuid_text}           GetText                     //div[contains(@class, 'mdl-cell-full') and contains(., 'UUID:')]
-    Log To Console              ${full_uuid_text}
-    @{split_text}=              Split String                ${full_uuid_text}           UUID:
-    ${fake_user_uuid}=          Strip String                ${split_text}[1]
-    Log To Console              ${fake_user_uuid}
-    Set Suite Variable          ${fake_user_uuid}
-
-Add_QA_Comment_And_Save
-    TypeText                    id_comment                  TEST_CXOps_QA
-    ClickText                   SAVE PROFILE
+# Add_QA_Comment_And_Save
+#     TypeText                    id_comment                  TEST_CXOps_QA
+#     ClickText                   SAVE PROFILE
 
 Create_New_Rondom_User
     [Documentation]             This will create a new user in the Admin Panel application
