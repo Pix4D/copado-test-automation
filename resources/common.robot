@@ -99,8 +99,8 @@ Find_The_User
 
 GDPR_Deletion_Rondom_User
     [Documentation]             GDPR deletion of the test pixuser
-    GoTo                        ${fake_user_url}            timeout=5
-    VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}     timeout=5
+    GoTo                        ${user_url}            timeout=5
+    VerifyAll                   ${user_email}, Profile info         timeout=5
     ClickText                   GDPR Deletion               tag=button
     CloseAlert                  accept                      10s
     VerifyText                  Account disabled upon GDPR request from data subject
