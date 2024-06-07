@@ -83,7 +83,7 @@ Fill_Communication_Preference
     # ClickCheckbox            Migrate to Pandora          on                          anchor=63
     ClickText                  Yes                         anchor=1
     ClickText                  Yes                         anchor=2
-    ClickText                  Yes                         anchor=3
+    # ClickText                  Yes                         anchor=3
     ClickText                  Save                        anchor=Cancel
     VerifyText                 You are almost done!        timeout=5
 
@@ -104,14 +104,14 @@ Find_The_User
     ${is_user_visible}=        Run Keyword And Return Status                           VerifyText       ${user_email}    anchor=Email
     Log To Console             ${is_user_visible}
     IF                         ${is_user_visible}
-        ClickText              ${user_email}               anchor=User
+        ClickText              ${user_email}               anchor=CXOps_TEST_AUTOMATION
         VerifyAll              ${user_email}, Profile info
         # RETURN
     ELSE
         TypeText               username, name, email, company,                         ${user_email}
         ClickText              SEARCH                      anchor=country              timeout=5
         VerifyText             ${user_email}               anchor=Email
-        ClickText              ${user_email}               anchor=User
+        ClickText              ${user_email}               anchor=CXOps_TEST_AUTOMATION
         VerifyAll              ${user_email}, Profile info
         # RETURN
     END
@@ -119,8 +119,8 @@ Find_The_User
 
 GDPR_Deletion_Rondom_User
     [Documentation]            GDPR deletion of the test pixuser
-    # GoTo                     ${user_url}                 timeout=5
-    VerifyAll                  ${user_email}, Profile info                             timeout=5
+    # VerifyAll                  ${user_email}, Profile info                             timeout=5
+    ScrollTo                   Staff actions
     ClickText                  GDPR Deletion               tag=button
     CloseAlert                 accept                      10s
     VerifyText                 Account disabled upon GDPR request from data subject
