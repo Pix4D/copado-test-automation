@@ -6,6 +6,7 @@ Library                        FakerLibrary
 
 *** Variables ***
 ${url_dev}                     https://dev.cloud.pix4d.com
+${url_account_dev}             https://dev.account.pix4d.com
 ${email_domain}                pix4d.work
 ${country}                     Switzerland
 ${company_name}                CXOps_TEST_AUTOMATION
@@ -27,7 +28,7 @@ Fill_User_Email_And_Verify
     ${retries}=                Set Variable                3
     FOR                        ${index}                    IN RANGE                    ${retries}
         Create_Account_Email
-        GoTo                   ${url_dev}/signup
+        GoTo                   ${url_account_dev}/signup
         VerifyAll              Create your account, Enter email
         Type Text              Enter email                 ${user_email}
         Click Text             Continue
