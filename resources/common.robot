@@ -57,7 +57,7 @@ Create_Random_User_Data
 
 Fill_User_Form_And_Verify
     [Documentation]            Fill the user creation form and verify.
-    VerifyText                 Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
+    VerifyAll                  Password, First Name
     # VerifyText               ${user_email}
     Create_Random_User_Data
     Type Text                  Password                    ${user_password}
@@ -65,13 +65,15 @@ Fill_User_Form_And_Verify
     Type Text                  Last Name                   ${user_last_name}
     # DropDown                 Country                     ${country}                  anchor=Country
     # DropDown                 mat-select-value-3          ${country}
-    # DropDown                   //*[@id\='mat-select-value-3']                          English
+    # DropDown                 //*[@id\='mat-select-value-3']                          English
     TypeText                   Company                     ${company_name}
-    DropDown                   Industries                  Engineering
-    ClickText                  //*[@id\='mat-select-value-7']     
-    ClickText                  Software / Hardware manufacturer              
-    ClickText                  Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
-    ClickCheckbox              Yes, I agree to Pix4D's Privacy Policy.    on
+    # DropDown                 Industries                  Engineering
+    ClickText                  //*[@id\='mat-select-value-7']
+    ClickText                  Engineering
+    ClickText                  Software / Hardware manufacturer
+    ClickText                  Create your account         doubleclick=True    # to close open dropdown
+    ClickCheckbox              //*[@id\='mat-mdc-checkbox-1-input']                    on
+    ClickCheckbox              //*[@id\='mat-mdc-checkbox-2-input']                    on
     Click Text                 Continue                    anchor=Back
 
 
