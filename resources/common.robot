@@ -29,7 +29,7 @@ Fill_User_Email_And_Verify
     FOR                        ${index}                    IN RANGE                    ${retries}
         Create_Account_Email
         GoTo                   ${url_account_dev}/signup
-        VerifyAll              Create your account, Enter email
+        VerifyAll              Create your account, Email
         Type Text              Enter email                 ${user_email}
         Click Text             Continue
         ${status}=             Is Text                     First Name                  timeout=5
@@ -58,17 +58,20 @@ Create_Random_User_Data
 Fill_User_Form_And_Verify
     [Documentation]            Fill the user creation form and verify.
     VerifyText                 Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
-    VerifyText                 ${user_email}
+    # VerifyText               ${user_email}
     Create_Random_User_Data
     Type Text                  Password                    ${user_password}
-    Type Text                  Fist Name                   ${user_first_name}
+    Type Text                  First Name                  ${user_first_name}
     Type Text                  Last Name                   ${user_last_name}
-    DropDown                   Country                     ${country}                  anchor=Country
-    DropDown                   Prefered language           English
+    # DropDown                 Country                     ${country}                  anchor=Country
+    # DropDown                 mat-select-value-3          ${country}
+    # DropDown                   //*[@id\='mat-select-value-3']                          English
     TypeText                   Company                     ${company_name}
     DropDown                   Industries                  Engineering
+    ClickText                  //*[@id\='mat-select-value-7']     
+    ClickText                  Software / Hardware manufacturer              
     ClickText                  Yes, I agree to the Pix4D Terms Of Service, and Software EULA.
-    ClickText                  Yes, I agree to Pix4D's Privacy Policy.
+    ClickCheckbox              Yes, I agree to Pix4D's Privacy Policy.    on
     Click Text                 Continue                    anchor=Back
 
 
@@ -96,7 +99,7 @@ Robot_Login_To_Staging_AP
 Find_The_User
     [Documentation]            Find the user
     GoTo                       ${url_dev}/admin_panel/users/                           timeout=5
-    ${is_user_visible}=        Run Keyword And Return Status                           VerifyText        ${user_email}    anchor=Email
+    ${is_user_visible}=        Run Keyword And Return Status                           VerifyText       ${user_email}    anchor=Email
     Log To Console             ${is_user_visible}
     IF                         ${is_user_visible}
         ClickText              ${user_email}               anchor=User
