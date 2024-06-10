@@ -71,7 +71,7 @@ Fill_User_Form_And_Verify
     ClickText                  //*[@id\='mat-select-value-7']
     ClickText                  Engineering
     ClickText                  Software / Hardware manufacturer
-    ClickText                  Create your account         doubleclick=True    # to close open dropdown
+    ClickText                  Create your account         doubleclick=True            # to close open dropdown
     ClickCheckbox              //*[@id\='mat-mdc-checkbox-1-input']                    on
     ClickCheckbox              //*[@id\='mat-mdc-checkbox-2-input']                    on
     Click Text                 Continue                    anchor=Back
@@ -83,7 +83,7 @@ Fill_Communication_Preference
     # ClickCheckbox            Migrate to Pandora          on                          anchor=63
     ClickText                  Yes                         anchor=1
     ClickText                  Yes                         anchor=2
-    # ClickText                  Yes                         anchor=3
+    # ClickText                Yes                         anchor=3
     ClickText                  Save                        anchor=Cancel
     VerifyText                 You are almost done!        timeout=5
 
@@ -100,18 +100,28 @@ Robot_Login_To_Staging_AP
 
 Find_The_User
     [Documentation]            Find the user
+    VerifyText                 Cloud Projects
     GoTo                       ${url_dev}/admin_panel/users/                           timeout=5
-    ${is_user_visible}=        Run Keyword And Return Status                           VerifyText       ${user_email}    anchor=Email
+    ${is_user_visible}=        Run Keyword And Return Status                           VerifyText                  ${user_email}    anchor=Email
     Log To Console             ${is_user_visible}
     IF                         ${is_user_visible}
-        ClickText              ${user_email}               anchor=CXOps_TEST_AUTOMATION
+    # ${user_email}=           Set Variable                e2e-cloud+ca481be4-0f83-489d-88c1-aa7a9eaeb352@pix4d.work
+    # GetTableRow              e2e-cloud+ca481be4-0f83-489d-88c1-aa7a9eaeb352@pix4d.work
+    # ClickCell                r2c3
+    # ClickCell                r-1c-1                      #Last row, last cell
+        ClickCell              r?${user_email}/c1          #Click cell 1 in row that contains text SomeText(${user_email})
+        # ClickCell            r?Robot/c3                  Hello                       #Click cell 3 in row with words Robot and Hello in it
+        # ClickCell            r1c1                        tag=a                       #Clicks first child element with a tag
+        # ClickCell            r?Robot/c3                  index=2                     tag=input                   #Clicks the second child element of cell 3
+        # ClickText            ${user_email}               anchor=CXOps_TEST_AUTOMATION
         VerifyAll              ${user_email}, Profile info
         # RETURN
     ELSE
         TypeText               username, name, email, company,                         ${user_email}
         ClickText              SEARCH                      anchor=country              timeout=5
         VerifyText             ${user_email}               anchor=Email
-        ClickText              ${user_email}               anchor=CXOps_TEST_AUTOMATION
+        UseTable               USER
+        ClickCell              r?${user_email}/c1          anchor=1                    timeout=2
         VerifyAll              ${user_email}, Profile info
         # RETURN
     END
@@ -119,7 +129,7 @@ Find_The_User
 
 GDPR_Deletion_Rondom_User
     [Documentation]            GDPR deletion of the test pixuser
-    # VerifyAll                  ${user_email}, Profile info                             timeout=5
+    # VerifyAll                ${user_email}, Profile info                             timeout=5
     ScrollTo                   Staff actions
     ClickText                  GDPR Deletion               tag=button
     CloseAlert                 accept                      10s
