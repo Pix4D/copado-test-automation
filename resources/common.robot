@@ -109,6 +109,7 @@ Find_The_User
     # GetTableRow              e2e-cloud+ca481be4-0f83-489d-88c1-aa7a9eaeb352@pix4d.work
     # ClickCell                r2c3
     # ClickCell                r-1c-1                      #Last row, last cell
+        UseTable               USER
         ClickCell              r?${user_email}/c1          #Click cell 1 in row that contains text SomeText(${user_email})
         # ClickCell            r?Robot/c3                  Hello                       #Click cell 3 in row with words Robot and Hello in it
         # ClickCell            r1c1                        tag=a                       #Clicks first child element with a tag
