@@ -91,10 +91,10 @@ Fill_Communication_Preference
 Robot_Login_To_Staging_AP
     [Documentation]            Robot loging to staging Admin Panel
     GoTo                       ${url_dev}/admin_panel/     timeout=5
-    TypeText                   Enter email                 ${robot_username}
+    TypeText                   Enter email                 ${eum_username}
     ClickText                  Continue
     VerifyText                 Log in
-    TypeText                   Enter password              ${robot_password}
+    TypeText                   Enter password              ${eum_password}
     ClickText                  Log in                      anchor=Back
 
 
