@@ -15,6 +15,35 @@ ${industries}                  Engineering
 
 
 *** Keywords ***
+EUM_User_Login_To_Staging_AP
+    [Documentation]            Robot loging to staging Admin Panel
+    GoTo                       ${url_account_dev}          timeout=5
+    TypeText                   Enter email                 ${eum_username}
+    ClickText                  Continue
+    VerifyText                 Log in
+    TypeText                   Enter password              ${eum_password}
+    ClickText                  Log in                      anchor=Back
+
+
+
+# redirect credits and verify org selection is availbale
+Redirect_Credit_And_Verify_Org_Selection
+
+# redirect donwload and verify org selection is available
+Redirect_Download_And_Verify_Org_Selection
+
+# Select org and verify credit page component  
+Select_Org_and_Verify_Credit_Page_Component
+
+# Verify dowload page component
+Verify_Download_Page_Component
+    
+    
+
+
+# ------------------------------
+# ------------------------------
+
 Create_Account_Email
     [Documentation]            Create account email with Uuid4.
     ${uuid}=                   FakerLibrary.Uuid4
@@ -88,14 +117,6 @@ Fill_Communication_Preference
     VerifyText                 You are almost done!        timeout=5
 
 
-Robot_Login_To_Staging_AP
-    [Documentation]            Robot loging to staging Admin Panel
-    GoTo                       ${url_dev}/admin_panel/     timeout=5
-    TypeText                   Enter email                 ${eum_username}
-    ClickText                  Continue
-    VerifyText                 Log in
-    TypeText                   Enter password              ${eum_password}
-    ClickText                  Log in                      anchor=Back
 
 
 Find_The_User
