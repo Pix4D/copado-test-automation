@@ -53,7 +53,7 @@ Signup_user_creation_test
     Fill_Communication_Preference
 
     # login AP staging with Test user
-    Robot_Login_To_Staging_AP
+    # Robot_Login_To_Staging_AP
 
     # Find created user in staging
     Find_The_User
