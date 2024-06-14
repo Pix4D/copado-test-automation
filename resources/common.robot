@@ -1,14 +1,14 @@
 *** Settings ***
 Library                        QWeb
 Library                        String
-# Library                        FakerLibrary
+# Library                      FakerLibrary
 
 
 *** Variables ***
 # ${url_dev}                   https://dev.cloud.pix4d.com
 ${url_account_dev}             https://dev.account.pix4d.com
-${url_credit}                  https://account.pix4d.com/select-organization/credits
-${url_download}                https://account.pix4d.com/download-software
+${url_credit}                  https://dev.account.pix4d.com/credits
+${url_download}                https://dev.account.pix4d.com/download-software
 # ${email_domain}              pix4d.work
 # ${country}                   Switzerland
 # ${company_name}              CXOps_TEST_AUTOMATION
@@ -31,38 +31,40 @@ EUM_User_Login_To_Staging_AP
 
 
 Redirect_Credit_And_Verify_Org_Selection
-    GoTo                       ${url_credit}               timeout=5
-    VerifyAll                  Select an organization to continue, ${eum_org_name} 
+    VerifyText                 Log in                      timeout=5
+    # GoTo                       https://dev.account.pix4d.com/credits                   timeout=5
+    GoTo                     ${url_credit}               timeout=5
+    VerifyAll                  Select an organization to continue, ${eum_org_name}
 
 
 Redirect_Download_And_Verify_Org_Selection
-    GoTo                       ${url_download}               timeout=5
-    VerifyAll                  Select an organization to continue, ${eum_org_name} 
+    GoTo                       ${url_download}             timeout=5
+    VerifyAll                  Select an organization to continue, ${eum_org_name}
 
 Select_Org_and_Verify_Credit_Page_Component
     GoTo                       ${url_credit}               timeout=5
-    VerifyAll                  Select an organization to continue, ${eum_org_name} 
+    VerifyAll                  Select an organization to continue, ${eum_org_name}
     ClickText                  ${eum_org_name}
-    ClickText                  Continue                    anchor=Go Home    timeout=5
+    ClickText                  Continue                    anchor=Go Home              timeout=5
     VerifyText                 Credit transactions         anchor=Home
     VerifyText                 Estimate how many credits you need
 
 
 Verify_Download_Page_Component
-    VerifyText    Download software    anchor=Home
-    ClickText     Download software    anchor=Home
-    VerifyText    Your products
-    VerifyText    Discover more products
-    ScrollText    Discover more products
-    VerifyText    Download             anchor=Discover more products
+    VerifyText                 Download software           anchor=Home
+    ClickText                  Download software           anchor=Home
+    VerifyText                 Your products
+    VerifyText                 Discover more products
+    ScrollText                 Discover more products
+    VerifyText                 Download                    anchor=Discover more products
 
 
 
 
 
 
-# ------------------------------
-# ------------------------------
+    # ------------------------------
+    # ------------------------------
 
 Create_Account_Email
     [Documentation]            Create account email with Uuid4.
