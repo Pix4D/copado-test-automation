@@ -30,5 +30,5 @@ Signup_user_creation_test
     Redirect_Download_And_Verify_Org_Selection
 
     # Verify dowload page component
-    Verify_Download_Page_Component
+    Download_Page_Component
     
