@@ -32,14 +32,11 @@ EUM_User_Login_To_Staging_AP
 
 Redirect_Credit_And_Verify_Org_Selection
     VerifyText                 Log in                      timeout=5
-    # GoTo                       https://dev.account.pix4d.com/credits                   timeout=5
-    GoTo                     ${url_credit}               timeout=5
+    # GoTo                     https://dev.account.pix4d.com/credits                   timeout=5
+    GoTo                       ${url_credit}               timeout=5
     VerifyAll                  Select an organization to continue, ${eum_org_name}
 
 
-Redirect_Download_And_Verify_Org_Selection
-    GoTo                       ${url_download}             timeout=5
-    VerifyAll                  Select an organization to continue, ${eum_org_name}
 
 Select_Org_and_Verify_Credit_Page_Component
     GoTo                       ${url_credit}               timeout=5
@@ -47,16 +44,27 @@ Select_Org_and_Verify_Credit_Page_Component
     ClickText                  ${eum_org_name}
     ClickText                  Continue                    anchor=Go Home              timeout=5
     VerifyText                 Credit transactions         anchor=Home
-    VerifyText                 Estimate how many credits you need
+    VerifyText                 Credits                     anchor=//[@class\='credits-label']
+    # VerifyText               Estimate how many credits you need                      anchor=//[@title\='Estimate how many credits you need']
+    VerifyText                 Credit history              anchor=See how many credits you have used in the past
+
+
+Redirect_Download_And_Verify_Org_Selection
+    GoTo                       ${url_download}             timeout=5
+    VerifyAll                  Select an organization to continue, ${eum_org_name}
 
 
 Verify_Download_Page_Component
-    VerifyText                 Download software           anchor=Home
-    ClickText                  Download software           anchor=Home
+    # VerifyText               Download software           anchor=Home
+    # ClickText                Download software           anchor=Home
+    GoTo                       ${url_download}             timeout=5
     VerifyText                 Your products
-    VerifyText                 Discover more products
+    VerifyText                 PIX4Dreact                  index=1
+    VerifyText                 PIX4Dfields                 index=1
     ScrollText                 Discover more products
-    VerifyText                 Download                    anchor=Discover more products
+    VerifyText                 Discover more products
+
+
 
 
 
