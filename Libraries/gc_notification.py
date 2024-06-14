@@ -3,6 +3,8 @@ import time
 import json
 
 # credential will be suit level variable
+CRT_API_URL = ${CRT_API_URL}
+CRT_API_KEY = ${CRT_API_KEY}
 
 # Start the build
 payload = {
