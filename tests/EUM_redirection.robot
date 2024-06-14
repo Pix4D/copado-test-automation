@@ -4,7 +4,7 @@ Suite Setup                     Open Browser                about:blank         
 Suite Teardown                  CloseAllBrowsers
 Resource                        ../resources/common.robot
 Library                         QWeb
-Library                         String
+# Library                         String
 # Library                         FakerLibrary
 
 *** Variables ***
@@ -23,12 +23,12 @@ Signup_user_creation_test
     # redirect credits and verify org selection is availbale
     Redirect_Credit_And_Verify_Org_Selection
 
-    # redirect donwload and verify org selection is available
-    Redirect_Download_And_Verify_Org_Selection
-
     # Select org and verify credit page component  
     Select_Org_and_Verify_Credit_Page_Component
     
+    # redirect donwload and verify org selection is available
+    Redirect_Download_And_Verify_Org_Selection
+
     # Verify dowload page component
     Verify_Download_Page_Component
     
