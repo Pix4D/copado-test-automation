@@ -1,16 +1,19 @@
 *** Settings ***
 Library                        QWeb
 Library                        String
-Library                        FakerLibrary
+# Library                        FakerLibrary
 
 
 *** Variables ***
-${url_dev}                     https://dev.cloud.pix4d.com
+# ${url_dev}                   https://dev.cloud.pix4d.com
 ${url_account_dev}             https://dev.account.pix4d.com
-${email_domain}                pix4d.work
-${country}                     Switzerland
-${company_name}                CXOps_TEST_AUTOMATION
-${industries}                  Engineering
+${url_credit}                  https://account.pix4d.com/select-organization/credits
+${url_download}                https://account.pix4d.com/download-software
+# ${email_domain}              pix4d.work
+# ${country}                   Switzerland
+# ${company_name}              CXOps_TEST_AUTOMATION
+# ${industries}                Engineering
+${eum_org_name}                TestCXops EumRedirection space
 
 
 
@@ -26,19 +29,36 @@ EUM_User_Login_To_Staging_AP
 
 
 
-# redirect credits and verify org selection is availbale
+
 Redirect_Credit_And_Verify_Org_Selection
+    GoTo                       ${url_credit}               timeout=5
+    VerifyAll                  Select an organization to continue, ${eum_org_name} 
 
-# redirect donwload and verify org selection is available
+
 Redirect_Download_And_Verify_Org_Selection
+    GoTo                       ${url_download}               timeout=5
+    VerifyAll                  Select an organization to continue, ${eum_org_name} 
 
-# Select org and verify credit page component  
 Select_Org_and_Verify_Credit_Page_Component
+    GoTo                       ${url_credit}               timeout=5
+    VerifyAll                  Select an organization to continue, ${eum_org_name} 
+    ClickText                  ${eum_org_name}
+    ClickText                  Continue                    anchor=Go Home    timeout=5
+    VerifyText                 Credit transactions         anchor=Home
+    VerifyText                 Estimate how many credits you need
 
-# Verify dowload page component
+
 Verify_Download_Page_Component
-    
-    
+    VerifyText    Download software    anchor=Home
+    ClickText     Download software    anchor=Home
+    VerifyText    Your products
+    VerifyText    Discover more products
+    ScrollText    Discover more products
+    VerifyText    Download             anchor=Discover more products
+
+
+
+
 
 
 # ------------------------------
