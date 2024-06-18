@@ -1,9 +1,8 @@
 *** Settings ***
-Documentation                   E2e test EUM redirection
+Documentation                   E2e test for Partner and Account UI
 Suite Setup                     Open Browser                about:blank                 ${BROWSER}
 Suite Teardown                  CloseAllBrowsers
 Resource                        ../resources/common.robot
-Library                        ../Libraries/gc_notification.py
 Library                         QWeb
 Library                         DateTime
 Library                         
@@ -22,9 +21,8 @@ Partner_and_Account_UI_check
     [Tags]                      XXXXXXX
     Log                         XXXXXX                 console=True
     
-    # Create user, migrate to pandora, convert org to partner 
-    # Save env variables
     # login to partner page
+    EUM_User_Login_To_Partner_Dev
 
 
     # Home Check
