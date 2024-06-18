@@ -134,6 +134,7 @@ Verify_EUM_Org_Migration_From_User_Page
     ${eum_org_name}             Set Variable                ${fake_user_first_name} ${fake_user_last_name} space
     Log To Console              ${eum_org_name}
     Set Suite Variable          ${eum_org_name}
+    Sleep                       3
     RefreshPage
     ${is_eum_visible}=          Run Keyword And Return Status                           VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}    timeout=3
     Log                         EUM org is visible :${is_eum_visible}                   console=True
