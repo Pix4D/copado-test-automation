@@ -4,11 +4,8 @@ Library                QWeb
 *** Variables ***
 ${partner_base_url}    https://dev.partner.pix4d.com
 ${partner_home_url}    https://dev.partner.pix4d.com/organization/be69b1d6-df2a-49f6-aa44-8fac0f90d6cf/home
-${url_account_dev}     https://dev.account.pix4d.com
-${url_credit}          https://dev.account.pix4d.com/credits
-${url_download}        https://dev.account.pix4d.com/download-software
-${eum_org_name}        TestCXops EumRedirection space
-
+${partner_org_name}    TestCXops UI Test
+${user_fullname}       TestCXops UI
 
 
 *** Keywords ***
@@ -24,39 +21,58 @@ EUM_User_Login_To_Partner_Dev
 
 
 
-Redirect_Credit_And_Verify_Org_Selection
-    VerifyText         Log in                      timeout=5
-    GoTo               ${url_credit}               timeout=5
-    VerifyAll          Select an organization to continue, ${eum_org_name}
+Home_Page_Check
+    VerifyText         Welcome, ${partner_org_name}
+
+Invoice_Page_Check
+    ClickText          Invoices                    anchor=Home
+    VerifyText         Invoices                    anchor=No invoices found for the account
+
+Store_Products_Page_Check
+    ClickText          Store Products              anchor=Organization management
+    VerifyText         All products                anchor=Desktop
+
+
+Organization_Management_Page_Check
+    ClickText          Organization management     anchor=Store Products
+    VerifyAll          ${partner_org_name}, ${ui_test_username}
+
+
+Licenses_Page_Check
+    ClickText          Licenses                    anchor=Organization management
+    VerifyTable        Licenses
+    UseTable           Licenses
+
+
+Account_Switch_Test
+    ClickText          ${partner_org_name}         anchor=owner
+    ClickText          ${user_fullname}            anchor=${partner_org_name}
 
 
 
-Select_Org_and_Verify_Credit_Page_Component
-    # GoTo             ${url_credit}               timeout=5
-    VerifyAll          Select an organization to continue, ${eum_org_name}
-    ClickText          ${eum_org_name}
-    ClickText          Continue                    anchor=Go Home              timeout=5
-    VerifyText         Credit transactions         anchor=Home
-    VerifyText         Credits                     anchor=//[@class\='credits-label']
-    # VerifyText       Estimate how many credits you need                      anchor=//[@title\='Estimate how many credits you need']
-    VerifyText         Credit history              anchor=See how many credits you have used in the past
+Switch_To_Account_Verify_Home_Page
+    ClickElement    //    anchor=${ui_test_username}
+    ClickText       Account Settings    anchor=Logout
+    VerifyText      Home                anchor=3rd party integrations
+    VerifyText      Welcome, ${user_fullname}
+
+Privacy_Page_Check
+    ClickText    Privacy    anchor=Notifications
+    VerifyAll    Communication preferences, Analytics
+
+Notification_Page_Check
+    ClickText    Notifications    anchor=Privacy
 
 
-Redirect_Download_And_Verify_Org_Selection
-    GoTo               ${url_download}             timeout=5
-    VerifyAll          Select an organization to continue, ${eum_org_name}
+Account_Settings_Page_Check
+    ClickText    Account settings    anchor=Notifications
+    VerifyAll    Personal information, Personal preference
 
 
-Download_Page_Component
-    # VerifyText       Download software           anchor=Home
-    # ClickText        Download software           anchor=Home
-    # VerifyAll        Select an organization to continue, ${eum_org_name}
-    ClickText          ${eum_org_name}
-    ClickText          Continue                    anchor=Go Home              timeout=5
-    # VerifyAll        Select an organization to continue, ${eum_org_name}
-    VerifyText         Your products
-    VerifyText         PIX4Dreact                  index=1
-    VerifyText         PIX4Dfields                 index=1
-    ScrollText         Discover more products
-    VerifyText         Discover more products
+
+
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 
