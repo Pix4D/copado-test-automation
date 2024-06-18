@@ -4,15 +4,11 @@ Suite Setup                     Open Browser                about:blank         
 Suite Teardown                  CloseAllBrowsers
 Resource                        ../resources/common.robot
 Library                         QWeb
-Library                         DateTime
-Library                         
 
 
 
 *** Variables ***
 ${BROWSER}                      chrome
-${message_success}                Test succesful
-${mesage_fail}                    Test failed
 
 
 *** Test Cases ***
@@ -24,24 +20,33 @@ Partner_and_Account_UI_check
     # login to partner page
     EUM_User_Login_To_Partner_Dev
 
-
     # Home Check
+    Home_Page_Check
 
     # Invoices 
+    Invoice_Page_Check
 
     # Store products
+    Store_Products_Page_Check
 
     # Organization managements
+    Organization_Management_Page_Check
 
     # Licenses
+    Licenses_Page_Check
      
-    # Switcher Check: Click user and click back
+    # Account switcher test
+    Account_Switch_Test
 
-    # Switch user account page
-
-    # Home, Privacy
+    # Switch to account and verify home page
+    Switch_To_Account_Verify_Home_Page
+    
+    # Privacy
+    Privacy_Page_Check
 
     # Notifications
+    Notification_Page_Check
 
     # Account settings
+    Account_Settings_Page_Check
      
