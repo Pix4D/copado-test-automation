@@ -3,6 +3,7 @@ Library                     QWeb
 
 *** Variables ***
 ${partner_account_base_url}                             https://dev.partner.pix4d.com
+${partner_home_url}         https://dev.partner.pix4d.com/organization/be69b1d6-df2a-49f6-aa44-8fac0f90d6cf/home
 ${url_account_dev}          https://dev.account.pix4d.com
 ${url_credit}               https://dev.account.pix4d.com/credits
 ${url_download}             https://dev.account.pix4d.com/download-software
@@ -13,7 +14,7 @@ ${eum_org_name}             TestCXops EumRedirection space
 *** Keywords ***
 EUM_User_Login_To_Partner_Dev
     [Documentation]         Robot loging to staging Admin Panel
-    GoTo                    ${partner_account_base_url}                             timeout=5
+    GoTo                    ${partner_home_url}         timeout=5
     TypeText                Enter email                 ${ui_test_username}
     ClickText               Continue
     VerifyText              Log in
