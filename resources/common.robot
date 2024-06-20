@@ -134,19 +134,19 @@ Verify_EUM_Org_Migration_From_User_Page
     ${eum_org_name}             Set Variable                ${fake_user_first_name} ${fake_user_last_name} space
     Log To Console              ${eum_org_name}
     Set Suite Variable          ${eum_org_name}
-    Sleep                       3
-    RefreshPage
-    ${is_eum_visible}=          Run Keyword And Return Status                           VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}    timeout=3
-    Log                         EUM org is visible :${is_eum_visible}                   console=True
-    IF                          ${is_eum_visible}
-        Log                     EUM org is visible :${is_eum_visible}                   console=True
-        RETURN
-    ELSE
-        Sleep                   5
+    ${retries}=                 Set Variable                3
+    FOR                         ${index}                    IN RANGE                    ${retries}
         RefreshPage
-        VerifyText              Already part of EUM
+        ${is_eum_visible}=      Run Keyword And Return Status                           VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}    timeout=3
+        Log                     EUM org is visible :${is_eum_visible}                   console=True
+        IF                      ${is_eum_visible}
+            Log                 EUM org is visible :${is_eum_visible}                   console=True
+            RETURN
+        ELSE
+            Sleep               5
+        END
     END
-        
+    FAIL                        EUM migration verification is failed after ${retries}.
 
 Get_EUM_Org_uuid_And_Set_Acount_UI_path
     ClickText                   ${eum_org_name}
