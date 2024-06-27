@@ -134,19 +134,20 @@ Verify_EUM_Org_Migration_From_User_Page
     ${eum_org_name}             Set Variable                ${fake_user_first_name} ${fake_user_last_name} space
     Log To Console              ${eum_org_name}
     Set Suite Variable          ${eum_org_name}
-    ${retries}=                 Set Variable                3
-    FOR                         ${index}                    IN RANGE                    ${retries}
+    ${attempt}=                 Set Variable                1
+    ${max_retries}=             Set Variable                5
+    FOR                         ${index}                    IN RANGE                    ${max_retries}
         RefreshPage
         ${is_eum_visible}=      Run Keyword And Return Status                           VerifyAll                   ${fake_user_uuid}, Already part of EUM, ${eum_org_name}    timeout=3
-        Log                     EUM org is visible :${is_eum_visible}                   console=True
-        IF                      ${is_eum_visible}
-            Log                 EUM org is visible :${is_eum_visible}                   console=True
-            RETURN
-        ELSE
-            Sleep               5
-        END
+        Log                     EUM org is visible: ${is_eum_visible} in attempt: ${attempt}                        console=True
+        Exit For Loop If        ${is_eum_visible}
+        ${attempt}=             Evaluate                    ${attempt}+1
+        Log                     Unsuccessful attempt number: ${attempt}                 console=True
+        Sleep                   5
     END
-    FAIL                        EUM migration verification is failed after ${retries}.
+    Run Keyword If              ${is_eum_visible} == False                              Fail                        msg=Elements not visible after ${max_retries} attempts.
+
+
 
 Get_EUM_Org_uuid_And_Set_Acount_UI_path
     ClickText                   ${eum_org_name}
