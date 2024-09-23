@@ -6,7 +6,7 @@ ${partner_base_url}    https://dev.partner.pix4d.com
 ${partner_home_url}    https://dev.partner.pix4d.com/organization/be69b1d6-df2a-49f6-aa44-8fac0f90d6cf/home
 ${partner_org_name}    TestCXops UI Test
 ${user_fullname}       TestCXops UI
-${home_page_text}       Manage your orders, buy more products and check the licenses bought
+${home_page_text}      Manage your orders, buy more products and check the licenses bought
 
 
 *** Keywords ***
@@ -57,13 +57,13 @@ Account_Switcher_Test
 Switch_To_Account_App_Verify_Home_Page
     ClickElement       //*[@data-test\='icon-user_circle']
     ClickText          Account Settings            anchor=Logout
-    VerifyText         Home                        anchor=3rd party integrations    timeout=3
+    VerifyText         Home                        anchor=3rd party integrations            timeout=3
     VerifyText         Welcome, ${user_fullname}
     VerifyAll          Collaborate with others, Protect your data
 
 Privacy_Page_Check
     ClickText          Privacy                     anchor=Notifications
-    VerifyAll          Communication preferences, Analytics    timeout=3
+    VerifyAll          Communication preferences, Analytics                    timeout=3
 
 Notification_Page_Check
     ClickText          Notifications               anchor=Privacy
