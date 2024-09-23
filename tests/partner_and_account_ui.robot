@@ -19,15 +19,19 @@ Partner_and_Account_UI_check
     # login to partner page
     EUM_User_Login_To_Partner_Dev
     # Home Check
-    Home_Page_Check
+    Organization_Dashboard_Page_Check
     # Invoices
     Invoice_Page_Check
     # Store products
-    Store_Products_Page_Check
+    Product_Store_Page_Check
     # Organization managements
-    Organization_Management_Page_Check
+    Organization_Settings_Page_Check
+    # Org member
+    User_Management_Page_Check
     # Licenses
     Licenses_Page_Check
+    # Vouchers list
+    Vouchers_Page_Check
     # Account switcher test
     Account_Switcher_Test
     # Switch to account and verify home page
