@@ -6,6 +6,7 @@ ${partner_base_url}    https://dev.partner.pix4d.com
 ${partner_home_url}    https://dev.partner.pix4d.com/organization/be69b1d6-df2a-49f6-aa44-8fac0f90d6cf/home
 ${partner_org_name}    TestCXops UI Test
 ${user_fullname}       TestCXops UI
+${home_page_text}       Manage your orders, buy more products and check the licenses bought
 
 
 *** Keywords ***
@@ -19,7 +20,8 @@ EUM_User_Login_To_Partner_Dev
     ClickText          Log in                      anchor=Back
 
 Home_Page_Check
-    VerifyText         Welcome, ${user_fullname}
+    VerifyText         ${partner_org_name}
+    VerifyText         ${home_page_text}
 
 Invoice_Page_Check
     ClickText          Invoices                    anchor=Home
