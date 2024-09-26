@@ -39,7 +39,7 @@ User_Management_Page_Check
 
 Organization_Settings_Page_Check
     ClickText          Organization settings       anchor=User management
-    VerifyAll          My organization, Legal owner, Data protection officer
+    VerifyAll          Organization Logo, Legal owner, Data protection officer              # replace "Organization Logo" with "My organization"
 
 Licenses_Page_Check
     ClickText          Licenses                    anchor=Organization settings
