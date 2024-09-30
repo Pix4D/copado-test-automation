@@ -34,4 +34,4 @@ Signup_user_creation_test
     Find_The_User
     
     # GDPR deletion of the test user
-    GDPR_Deletion_Rondom_User
+    Account_Deletion_Rondom_User
