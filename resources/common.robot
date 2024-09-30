@@ -141,7 +141,6 @@ Account_Deletion_Rondom_User
     # VerifyAll                ${user_email}, Profile info                             timeout=5
     ScrollTo                   Staff actions
     ClickText                  Account Deletion
-    ClickText                  Delete Account              anchor=Schedule GDPR-compliant data erasure and notify the user via email.    tag=button
+    ClickText                  Delete Account              anchor=user-delete-btn      tag=button
     CloseAlert                 accept                      timeout=10
     VerifyText                 The account will be deleted shortly
-
