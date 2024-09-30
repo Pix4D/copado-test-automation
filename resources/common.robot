@@ -77,12 +77,13 @@ Hubspot sync verify
     Set Suite Variable          ${hubspot_id}
 
 
-GDPR_Deletion
-    [Documentation]             GDPR deletion of the test pixuser
+Account_Deletion_Rondom_User
+    [Documentation]             Account deletion of the test pixuser
     GoTo                        ${my_user_url}
     VerifyText                  ${email_address}
     VerifyAll                   ${email_address}, Profile info
-    ClickText                   GDPR Deletion               tag=button
-    CloseAlert                  accept                      10s
-    VerifyText                  Account disabled upon GDPR request from data subject
-
+    ScrollTo                    Staff actions
+    ClickText                   Account Deletion
+    ClickText                   Delete Account              anchor=user-delete-btn      tag=button
+    CloseAlert                  accept                      timeout=10
+    VerifyText                  The account will be deleted shortly
