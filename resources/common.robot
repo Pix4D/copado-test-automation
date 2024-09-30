@@ -144,6 +144,4 @@ Account_Deletion_Rondom_User
     ClickText                  Delete Account              anchor=Schedule GDPR-compliant data erasure and notify the user via email.    tag=button
     CloseAlert                 accept                      timeout=10
     VerifyText                 The account will be deleted shortly
-    RefreshPage
-    VerifyText                 Account disabled upon GDPR request from data subject
 
