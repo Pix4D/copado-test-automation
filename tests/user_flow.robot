@@ -27,4 +27,4 @@ User Journey
     Hubspot sync verify    ${my_user_url}
     CreateLicense          ${email_address}    ${my_user_url}    ${product_key}    ${product_description}    # Some variable suite level no need to pass to function
     CreateInvoice          ${email_address}    ${license_key}    ${product_key}    ${product_description}
-    GDPR_Deletion
+    Account_Deletion_Rondom_User
