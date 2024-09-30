@@ -72,4 +72,4 @@ Partner_Store_Test
     AP_Verify_Invoice_Generation_With_Correct_Product
 
     # Back to fake user page and delete user
-    GDPR_Deletion_Rondom_User
+    Account_Deletion_Rondom_User
