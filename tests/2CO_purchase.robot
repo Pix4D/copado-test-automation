@@ -46,4 +46,4 @@ ${BROWSER}                      chrome
     # Verify invoice geneartion with correct product and credit from org page in admin panel
     Verify_Invoice_Generation_With_Correct_Product
     # Back to fake user page and delete user
-    GDPR_Deletion_Rondom_User
+    Account_Deletion_Rondom_User
