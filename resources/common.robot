@@ -320,12 +320,12 @@ AP_Verify_Invoice_Generation_With_Correct_Product
     Should Contain              ${invoice_product_AP}       ${product_cloud_advanced}
     Should Contain              ${invoice_product_AP}       ${product_credits}
 
-
-GDPR_Deletion_Rondom_User
-    [Documentation]             GDPR deletion of the test pixuser
+Account_Deletion_Rondom_User
+    [Documentation]             Account deletion of the test pixuser
     GoTo                        ${fake_user_url}            timeout=5
     VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}     timeout=5
-    ClickText                   GDPR Deletion               tag=button
-    CloseAlert                  accept                      10s
-    VerifyText                  Account disabled upon GDPR request from data subject
-
+    ScrollTo                    Staff actions
+    ClickText                   Account Deletion
+    ClickText                   Delete Account              anchor=user-delete-btn      tag=button
+    CloseAlert                  accept                      timeout=10
+    VerifyText                  The account will be deleted shortly
