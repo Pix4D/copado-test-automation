@@ -140,10 +140,10 @@ Account_Deletion_Rondom_User
     [Documentation]            GDPR deletion of the test pixuser
     # VerifyAll                ${user_email}, Profile info                             timeout=5
     ScrollTo                   Staff actions
-    ClickText                  Account Deletion    anchor=Disable user
-    ClickText                  Delete Account      anchor=Schedule GDPR Deletion      tag=button
-    CloseAlert                 accept                      10s
-    VerifyText                 The account will be deleted shortly.
+    ClickText                  Account Deletion
+    ClickText                  Delete Account              anchor=Schedule GDPR-compliant data erasure and notify the user via email.    tag=button
+    CloseAlert                 accept                      timeout=10
+    VerifyText                 The account will be deleted shortly
     RefreshPage
     VerifyText                 Account disabled upon GDPR request from data subject
 
