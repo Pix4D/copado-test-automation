@@ -14,7 +14,7 @@ ${BROWSER}                      chrome
 *** Test Cases ***
 Partner_and_Account_UI_check
     [Documentation]             Partner and Account app UI element test
-    [Tags]                      Account, Partner
+    [Tags]                      ci, Account, Partner
     Log                         Partner and Account UI Test Starting        console=True
     # login to partner page
     EUM_User_Login_To_Partner_Dev
