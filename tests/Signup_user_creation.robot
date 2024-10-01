@@ -15,7 +15,7 @@ ${BROWSER}                      chrome
 *** Test Cases ***
 Signup_user_creation_test
     [Documentation]             New Partner portal e2e test flow
-    [Tags]                      signup
+    [Tags]                      ci    signup
     Log                         Signup user creation test starting                 console=True
 
     # Create your account email
