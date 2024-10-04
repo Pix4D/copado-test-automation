@@ -326,6 +326,6 @@ Account_Deletion_Rondom_User
     VerifyAll                   ${fake_user_email}, Profile info, ${fake_user_uuid}     timeout=5
     ScrollTo                    Staff actions
     ClickText                   Account Deletion
-    ClickText                   Delete Account              anchor=user-delete-btn      tag=button
+    ClickText                   Delete Account              anchor=user-delete-btn      timeout=3                   tag=button
     CloseAlert                  accept                      timeout=10
     VerifyText                  The account will be deleted shortly
