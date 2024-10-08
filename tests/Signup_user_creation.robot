@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation                   E2e test for 2Checkout purchase flow
-Suite Setup                     Open Browser                about:blank                 ${BROWSER}
+Suite Setup                     Open Browser                about:blank     ${BROWSER}
 Suite Teardown                  CloseAllBrowsers
 Resource                        ../resources/common.robot
 Library                         QWeb
@@ -15,8 +15,8 @@ ${BROWSER}                      chrome
 *** Test Cases ***
 Signup_user_creation_test
     [Documentation]             New Partner portal e2e test flow
-    [Tags]                      ci    signup
-    Log                         Signup user creation test starting                 console=True
+    [Tags]                      ci                          signup          # tags not case sensitive, you can use multiple.
+    Log                         Signup user creation test starting          console=True
 
     # Create your account email
     Fill_User_Email_And_Verify
@@ -32,6 +32,6 @@ Signup_user_creation_test
 
     # Find created user in staging
     Find_The_User
-    
+
     # GDPR deletion of the test user
     Account_Deletion_Rondom_User
