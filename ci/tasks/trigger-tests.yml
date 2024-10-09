@@ -1,0 +1,22 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: python
+    tag: 3.12-alpine
+
+inputs:
+  - name: copado-test-automation
+
+params:
+  CRT_API_KEY: ((crt_api_key))
+  CRT_API_URL: ((crt_api_url))
+
+run:
+  path: sh
+  args:
+    - -exc
+    - |
+      pip install requests
+      python copado-test-automation/scripts/trigger_tests.py
