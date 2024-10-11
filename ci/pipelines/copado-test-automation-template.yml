@@ -46,11 +46,15 @@ jobs:
     max_in_flight: 1
     on_failure:
       put: copado-google-chat
+      no_get: true
+      inputs: []
       params:
         chat_message: "[CONCOURSE CI] ❌ COPADO Tests Failed!"
         state: failure
     on_success:
       put: copado-google-chat
+      no_get: true
+      inputs: []
       params:
         chat_message: "[CONCOURSE CI] ✅ COPADO Tests Passed Successfully!"
         state: success
@@ -61,5 +65,6 @@ jobs:
       - task: run-tests
         file: copado-test-automation/ci/tasks/trigger-tests.yml
         params:
-          CRT_API_KEY: ((crt_api_key))
-          CRT_API_URL: ((crt_api_url))
+          COPADO_PERSONAL_ACCESS_KEY: ((COPADO_PERSONAL_ACCESS_KEY))
+          COPADO_API_BASE_URL: ((COPADO_API_BASE_URL))
+          COPADO_CHAT_WEBHOOK_URL: ((COPADO_CHAT_WEBHOOK_URL))

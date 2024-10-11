@@ -10,13 +10,14 @@ inputs:
   - name: copado-test-automation
 
 params:
-  CRT_API_KEY: ((crt_api_key))
-  CRT_API_URL: ((crt_api_url))
+  COPADO_PERSONAL_ACCESS_KEY: ((COPADO_PERSONAL_ACCESS_KEY))
+  COPADO_CHAT_WEBHOOK_URL: ((COPADO_CHAT_WEBHOOK_URL))
+  COPADO_API_BASE_URL: ((COPADO_API_BASE_URL))
 
 run:
   path: sh
   args:
     - -exc
     - |
-      pip install requests
+      pip install requests httplib2 python-dotenv
       python copado-test-automation/scripts/trigger_tests.py
