@@ -60,8 +60,9 @@ jobs:
         state: success
     plan:
       - get: version
-        trigger: true
+        trigger: ((trigger))
       - get: copado-test-automation
+        trigger: true
       - task: run-tests
         file: copado-test-automation/ci/tasks/trigger-tests.yml
         params:

@@ -1,3 +1,4 @@
 branch: master
 project: copado-test-automation
 team: cloud
+trigger: true
