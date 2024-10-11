@@ -1,0 +1,71 @@
+resource_types:
+  - name: counter-resource
+    type: registry-image
+    check_every: 24h
+    source:
+      repository: pix4d/counter-resource
+      tag: latest
+  
+  - name: cogito
+    type: registry-image
+    check_every: 24h
+    source:
+      repository: pix4d/cogito
+      tag: latest
+
+resources:
+  - name: version
+    type: counter-resource
+    source:
+      driver: s3
+      aws_access_key_id: ((concourse_user_access_key))
+      aws_secret_access_key: ((concourse_user_secret_key))
+      bucket: ci-pix4d-concourse-pipeline
+      key: _concourse/platform-cloud-django-staging/staging/count
+
+  - name: copado-test-automation
+    type: git
+    icon: git
+    webhook_token: ((concourse_gh_webhook))
+    source:
+      uri: git@github.com:Pix4D/copado-test-automation.git
+      branch: ((branch))
+      private_key: ((github_ssh_key))
+  
+  - name: copado-google-chat
+    check_every: never
+    icon: chat-alert
+    type: cogito
+    source:
+      sinks:
+        - gchat
+      gchat_webhook: ((copado_tests_gchat_hook))
+
+jobs:
+  - name: run-copado-tests
+    max_in_flight: 1
+    on_failure:
+      put: copado-google-chat
+      no_get: true
+      inputs: []
+      params:
+        chat_message: "[CONCOURSE CI] ❌ COPADO Tests Failed!"
+        state: failure
+    on_success:
+      put: copado-google-chat
+      no_get: true
+      inputs: []
+      params:
+        chat_message: "[CONCOURSE CI] ✅ COPADO Tests Passed Successfully!"
+        state: success
+    plan:
+      - get: version
+        trigger: ((trigger))
+      - get: copado-test-automation
+        trigger: true
+      - task: run-tests
+        file: copado-test-automation/ci/tasks/trigger-tests.yml
+        params:
+          COPADO_PERSONAL_ACCESS_KEY: ((COPADO_PERSONAL_ACCESS_KEY))
+          COPADO_API_BASE_URL: ((COPADO_API_BASE_URL))
+          COPADO_CHAT_WEBHOOK_URL: ((COPADO_CHAT_WEBHOOK_URL))

@@ -1,0 +1,23 @@
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: python
+    tag: 3.12-alpine
+
+inputs:
+  - name: copado-test-automation
+
+params:
+  COPADO_PERSONAL_ACCESS_KEY: ((COPADO_PERSONAL_ACCESS_KEY))
+  COPADO_CHAT_WEBHOOK_URL: ((COPADO_CHAT_WEBHOOK_URL))
+  COPADO_API_BASE_URL: ((COPADO_API_BASE_URL))
+
+run:
+  path: sh
+  args:
+    - -exc
+    - |
+      pip install requests httplib2 python-dotenv
+      python copado-test-automation/scripts/trigger_tests.py
